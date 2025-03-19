@@ -7,6 +7,7 @@ function App() {
     <div>
       <h1>HOME PAGE gayyyyyy!</h1>
       <Button>Click</Button>
+      <p>test dsf sdf</p>
     </div>
   )
 }

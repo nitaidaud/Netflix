@@ -5,7 +5,7 @@ function App() {
 
   return (
     <div>
-      <h1>HOME PAGE gay</h1>
+      <h1>HOME PAGE</h1>
       <Button>Click</Button>
     </div>
   )

@@ -4,8 +4,14 @@ type ContainerProps = {
     children: React.ReactNode
 }
 
-const Container: React.FC<ContainerProps> = ({children}) => {
-    return <div className="max-w-4xl mx-auto min-h-screen p-4">{children}</div>
+const Container: React.FC<ContainerProps> = ({ children }) => {
+    return (
+        <div className="flex items-center justify-center p-4 bg-black">
+            <div className="w-full max-w-6xl">
+                {children}
+            </div>
+        </div>
+    )
 }
 
-export default Container;
+export default Container

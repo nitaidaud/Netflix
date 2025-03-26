@@ -1,0 +1,29 @@
+
+body{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #000; 
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  
+
+}
+
+.app-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 1rem;
+}
+
+html {
+  height: 100%;
+}

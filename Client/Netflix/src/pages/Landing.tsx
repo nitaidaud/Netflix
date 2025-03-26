@@ -2,7 +2,7 @@
 import Typography from '@/components/shared/typography'
 import NavBar from '@/components/shared/NavBar'
 
-const Home = () => {
+const Landing = () => {
   return (
     <div>
       <NavBar>
@@ -27,4 +27,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Landing

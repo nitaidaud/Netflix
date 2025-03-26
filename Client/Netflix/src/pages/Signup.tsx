@@ -32,7 +32,7 @@ const SignInPage: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button type="submit" className="w-full bg-red-600 hover:bg-red-700 font-bold" variant={"destructive"}>
+          <Button type="submit" className="w-full bg-red-600 hover:bg-red-700 font-bold">
             Sign In
           </Button>
           

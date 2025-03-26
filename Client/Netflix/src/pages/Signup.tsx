@@ -1,7 +1,6 @@
 import Container from "../components/shared/Container";
 import Typography from "../components/shared/typography";
 import Signup from "../features/signup";
-import { Button } from "@/components/ui/button";
 
 const SignupPage = () => {
   return (

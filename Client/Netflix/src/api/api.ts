@@ -20,7 +20,7 @@ export interface AuthResponse extends BaseApiResponse {
 export const signinRequest = async (
     formData : SigninFormData
 ): Promise<AuthResponse> => {
-    const { data } = await api.post("/api/users/signin", formData);
+    const { data } = await api.post("/api/users/login", formData);
     return data;
 };
 

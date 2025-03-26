@@ -1,51 +1,31 @@
-import React, { useState } from "react";
-import { Input } from "@/components/ui/input";
+import Container from "../components/shared/Container";
+import Typography from "../components/shared/typography";
+import Signup from "../features/signup";
 import { Button } from "@/components/ui/button";
 
-
-const SignInPage: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Signing in with", { email, password });
-  };
-
+const SignupPage = () => {
   return (
-    <div className="flex justify-center items-center min-h-screen bg-black bg-opacity-60 text-white relative">
-      <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/background.jpg')", filter: "blur(8px)" }}></div>
-      <div className="relative bg-gray-900 bg-opacity-80 p-10 rounded-lg w-full max-w-md">
-        <h1 className="text-3xl font-bold mb-6 text-center">Sign In</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            type="email"
-            placeholder="Email or phone number"
-            className="w-full bg-gray-800 text-white border-white"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Input
-            type="password"
-            placeholder="Password"
-            className="w-full bg-gray-800 text-white border-white"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button type="submit" className="w-full bg-red-600 hover:bg-red-700 font-bold" variant={"destructive"}>
-            Sign In
-          </Button>
-          
-          <div className="flex justify-between items-center text-gray-400 text-sm">
-            <span className="hover:underline cursor-pointer">Forgot password?</span>
-          </div>
-        </form>
-        <p className="text-gray-400 text-sm mt-6 text-center">
-          New to Netflix? <span className="text-white hover:underline cursor-pointer">Sign up now</span>.
+    <Container>
+      <div className="w-full max-w-sm bg-black bg-opacity-80 text-white p-8 rounded-md space-y-4 shadow-lg">
+        <Typography size="text-2xl" weight="font-bold" className="mb-4">
+          Sign Up
+        </Typography>
+        <Signup />
+        <div className="text-sm text-gray-400 text-center mt-4">
+          Already have an account?{" "}
+          <span className="text-white font-medium hover:underline cursor-pointer">
+            Sign in now.
+          </span>
+        </div>
+        <p className="text-xs text-gray-500 text-center leading-tight mt-6 max-w-xs mx-auto">
+          This page is protected by Google reCAPTCHA to ensure you're not a bot.{" "}
+          <span className="text-blue-500 hover:underline cursor-pointer">
+            Learn more.
+          </span>
         </p>
       </div>
-    </div>
+    </Container>
   );
 };
 
-export default SignInPage;
+export default SignupPage;

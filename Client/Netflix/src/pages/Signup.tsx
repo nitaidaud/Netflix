@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Container from "../components/shared/Container";
 import Typography from "../components/shared/typography";
 import Signup from "../features/signup";
@@ -12,9 +13,9 @@ const SignupPage = () => {
         <Signup />
         <div className="text-sm text-gray-400 text-center mt-4">
           Already have an account?{" "}
-          <span className="text-white font-medium hover:underline cursor-pointer">
+          <Link to="/signin" className="text-white font-medium hover:underline cursor-pointer">
             Sign in now.
-          </span>
+          </Link>
         </div>
         <p className="text-xs text-gray-500 text-center leading-tight mt-6 max-w-xs mx-auto">
           This page is protected by Google reCAPTCHA to ensure you're not a bot.{" "}

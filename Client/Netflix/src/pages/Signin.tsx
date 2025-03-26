@@ -1,4 +1,5 @@
 
+import { Link } from "react-router-dom";
 import Container from "../components/shared/Container";
 import Typography from "../components/shared/typography";
 import Signin from "../features/signin";
@@ -24,9 +25,9 @@ const SigninPage = () => {
          </div>
           <div className="text-sm text-gray-400 text-center mt-4">
           New to Netflix?{" "}
-         <span className="text-white font-medium hover:underline cursor-pointer">
+          <Link to="/signup" className="text-white font-medium hover:underline cursor-pointer">
             Sign up now.
-          </span>
+          </Link>
         </div>
        <p className="text-xs text-gray-500 text-center leading-tight mt-6 max-w-xs mx-auto">
           This page is protected by Google reCAPTCHA to ensure you're not a bot.{" "}

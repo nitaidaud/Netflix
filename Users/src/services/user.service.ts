@@ -1,22 +1,19 @@
 import { compare } from "bcrypt";
 import { inject, injectable } from "inversify";
-import { MAIL_USERNAME } from "../../env_exports";
 import { TOKENS } from "../../tokens";
 import LoginRequestDTO from "../DTOs/login.dto";
 import ResetPasswordRequestDTO from "../DTOs/reset-password.dto";
 import SignupRequestDTO from "../DTOs/signup.dto";
 import UpdateRequestDTO from "../DTOs/update.dto";
-import { IMailOptions } from "../interfaces/IMailOptions";
+import IBaseSendEmailRequest from "../interfaces/IBaseSendEmailRequest";
 import INodemailerService from "../interfaces/INodemailerService";
+import ISendResetPasswordEmail from "../interfaces/ISendResetPasswordEmail";
 import ISendEmailVerificationRequest from "../interfaces/ISendVerificationEmailRequest";
 import IUser from "../interfaces/IUser";
 import IUserRepository from "../interfaces/IUserRepository";
 import IUserService from "../interfaces/IUserService";
 import { hash } from "../utils/bcrypt";
 import { sign } from "../utils/jwt";
-import IResetTokenRequest from "../interfaces/IResetTokenRequest";
-import ISendResetPasswordEmail from "../interfaces/ISendResetPasswordEmail";
-import IBaseSendEmailRequest from "../interfaces/IBaseSendEmailRequest";
 
 @injectable()
 export class UserService implements IUserService {

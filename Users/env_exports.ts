@@ -9,6 +9,7 @@ export const {
   MAIL_USERNAME,
   MAIL_PASSWORD,
   DOMAIN,
+  ORIGIN
 } = process.env;
 
 export const validateEnv = () => {
@@ -30,5 +31,9 @@ export const validateEnv = () => {
 
   if (!DOMAIN) {
     throw new Error("Missing domain");
+  }
+
+  if (!ORIGIN) {
+    throw new Error("Missing origin");
   }
 };

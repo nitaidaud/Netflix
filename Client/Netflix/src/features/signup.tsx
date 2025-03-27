@@ -8,8 +8,11 @@ import { signup } from "@/store/slices/auth.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+type SignupProps = {
+  defaultEmail?: string;
+};
 
-const Signup = () => {
+const Signup: React.FC<SignupProps> = ({ defaultEmail = "" }) => {
   const dispatch = useAppDispatch();
   const error = useAppSelector((state) => state.auth.error);
 
@@ -18,7 +21,10 @@ const Signup = () => {
     handleSubmit,
     formState: { errors }
   } = useForm<SignupFormData>({
-    resolver: zodResolver(signupSchema)
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      email: defaultEmail
+    }
   });
 
   const onSubmit = (data: SignupFormData) => {
@@ -29,7 +35,7 @@ const Signup = () => {
     <Form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <Input
         type="text"
-        placeholder="Enter Name:"
+        placeholder="Name"
         {...register("name")}
         error={errors.name?.message}
         className="w-full bg-transparent border border-gray-500 focus:border-white focus:outline-none text-white px-4 py-3 rounded placeholder-gray-400"
@@ -57,7 +63,7 @@ const Signup = () => {
         type="submit"
         className="w-full bg-red-600 hover:bg-red-700 font-bold text-lg py-3 rounded"
       >
-        Sign Up
+        Sign up
       </Button>
     </Form>
   );

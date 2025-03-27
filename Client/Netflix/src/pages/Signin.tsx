@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import Container from "../components/shared/Container";
 import Typography from "../components/shared/typography";
-import Signin from "../features/signin";
+import Signin from "../features/Signin";
 import { Button } from "@/components/ui/button";
 
 

@@ -1,30 +1,15 @@
+import GetStartedSection from "@/components/ui/Landing/GetStartedSection";
 
-import Typography from '@/components/shared/typography'
-import NavBar from '@/components/shared/NavBar'
+const LandingPage = () => {
 
-const Landing = () => {
   return (
-    <div>
-      <NavBar>
-      <h1 className="text-xl font-bold">Netflix</h1>
-      <div>
-        <button className="bg-red-600 px-4 py-2 rounded-lg">Sign In</button>
-      </div>
-    </NavBar>
-      <Typography size="text-xl" weight="font-bold" color="text-white">
-          The best movies and TV shows, all in one place.
-        </Typography>
-
-        <Typography size="text-lg" weight="font-normal" color="text-gray-300">
-          Watch anywhere. Cancel anytime.
-        </Typography>
-
-        <Typography size="text-md" weight="font-light" color="text-gray-500">
-         Ready to watch? Enter your email to create or restart your membership.
-        </Typography>
-    </div>
+    <div className="relative w-full h-full">
     
-  )
-}
+      {/* <div className="absolute inset-0 bg-gradient-to-br from-black to-transparent"></div> */}
+     <GetStartedSection/>
+      <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut necessitatibus adipisci in amet, veniam nesciunt reiciendis fugiat totam est eveniet nobis alias incidunt temporibus facilis nostrum enim, cumque expedita perspiciatis!</p>
+    </div>
+  );
+};
 
-export default Landing
+export default LandingPage;

@@ -1,19 +1,25 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Container from "../components/shared/Container";
 import Typography from "../components/shared/typography";
-import Signup from "../features/signup";
+import Signup from "../features/Signup";
 
 const SignupPage = () => {
+  const location = useLocation();
+  const defaultEmail = location.state?.email || "";
+
   return (
     <Container>
       <div className="w-full max-w-sm bg-black bg-opacity-80 text-white p-8 rounded-md space-y-4 shadow-lg">
         <Typography size="text-2xl" weight="font-bold" className="mb-4">
           Sign Up
         </Typography>
-        <Signup />
+        <Signup defaultEmail={defaultEmail} />
         <div className="text-sm text-gray-400 text-center mt-4">
           Already have an account?{" "}
-          <Link to="/signin" className="text-white font-medium hover:underline cursor-pointer">
+          <Link
+            to="/signin"
+            className="text-white font-medium hover:underline cursor-pointer"
+          >
             Sign in now.
           </Link>
         </div>

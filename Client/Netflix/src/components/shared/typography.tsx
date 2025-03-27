@@ -3,9 +3,9 @@ import React from "react";
 type TypographyProps = {
   children: React.ReactNode;
   className?: string;
-  size?: "text-sm" | "text-md" | "text-lg" | "text-xl" | "text-2xl"; 
+  size?: "text-sm" | "text-md" | "text-lg" | "text-xl" | "text-2xl" | "text-4xl"; 
   weight?: "font-light" | "font-normal" | "font-bold"; 
-  color?: "text-white" | "text-gray-300" | "text-gray-500"; 
+  color?: "text-white" | "text-gray-300" | "text-gray-500" | "text-red-500"; 
   spacing?: "tracking-tight" | "tracking-normal" | "tracking-wide"; 
 };
 

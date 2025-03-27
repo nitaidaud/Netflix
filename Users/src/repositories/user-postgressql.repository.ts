@@ -5,6 +5,7 @@ import UpdateRequestDTO from "../DTOs/update.dto";
 import IUser from "../interfaces/IUser";
 import IUserRepository from "../interfaces/IUserRepository";
 import ResetPasswordRequestDTO from "../DTOs/reset-password.dto";
+import IEmailVerificationRequest from "../interfaces/IEmailVerificationRequest";
 
 @injectable()
 export class UserPostgressqlRepository implements IUserRepository {
@@ -33,7 +34,7 @@ export class UserPostgressqlRepository implements IUserRepository {
     return user;
   }
 
-  update(id: string, data: UpdateRequestDTO): Promise<IUser | null> {
+  updateInfo(id: string, data: UpdateRequestDTO): Promise<IUser | null> {
     const user = prisma.user.update({
       where: {
         id,
@@ -54,5 +55,17 @@ export class UserPostgressqlRepository implements IUserRepository {
       data,
     });
     return user;
+  }
+
+  async updateEmailVerification(
+    id: string,
+    data: IEmailVerificationRequest,
+  ): Promise<void> {
+    await prisma.user.update({
+      where: {
+        id,
+      },
+      data,
+    });
   }
 }

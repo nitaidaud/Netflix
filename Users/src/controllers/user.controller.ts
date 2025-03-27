@@ -7,10 +7,16 @@ import SignupRequestDTO from "../DTOs/signup.dto";
 import { handleError } from "../utils/handle-error-request";
 import ResetPasswordRequestDTO from "../DTOs/reset-password.dto";
 import UpdateRequestDTO from "../DTOs/update.dto";
+import IVerificationTokenService from "../interfaces/IVerificationToken";
+import IBaseSendEmailRequest from "../interfaces/IBaseSendEmailRequest";
 
 @injectable()
 export class UserController {
-  constructor(@inject(TOKENS.IUserService) private userService: IUserService) {}
+  constructor(
+    @inject(TOKENS.IUserService) private userService: IUserService,
+    @inject(TOKENS.IVerificationTokenService)
+    private verificationTokenService: IVerificationTokenService,
+  ) {}
 
   async signup(req: Request, res: Response) {
     try {
@@ -82,10 +88,22 @@ export class UserController {
     }
   }
 
-  async sendMail(req: Request, res: Response) {
+  async sendVerificationMail(req: Request, res: Response) {
     try {
-      const { id } = req.params;
-      const isSent = await this.userService.sendEmail(id);
+      const data: IBaseSendEmailRequest = req.body;
+      const { email } = data;
+
+      if (!email || email == "") {
+        return res.status(400).json({ message: "Email is required" });
+      }
+
+      const verificationToken =
+        await this.verificationTokenService.generateVerificationToken(email);
+
+      const isSent = await this.userService.sendEmail({
+        email,
+        tokenId: verificationToken.id,
+      });
 
       if (isSent) {
         res.status(200).json({ message: "Email sent" });
@@ -114,7 +132,7 @@ export class UserController {
     }
   }
 
-  async forgotPassword(req: Request, res: Response) {
+  async sendMailForgotPassword(req: Request, res: Response) {
     try {
       const { email } = req.body;
 

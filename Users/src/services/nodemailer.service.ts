@@ -8,10 +8,16 @@ import IBaseSendEmailRequest from "../interfaces/IBaseSendEmailRequest";
 import ISendEmailResponse from "../interfaces/ISendEmailResponse";
 import ISendResetPasswordEmail from "../interfaces/ISendResetPasswordEmail";
 import ISendEmailVerificationRequest from "../interfaces/ISendVerificationEmailRequest";
+import {
+  DOMAIN,
+  MAIL_HOST,
+  MAIL_PASSWORD,
+  MAIL_USERNAME,
+} from "../../env_exports";
 
 @injectable()
 export class NodemailerService implements INodemailerService {
-  private domain = process.env.DOMAIN!;
+  private domain = DOMAIN!;
 
   private logger = winston.createLogger({
     level: "debug",
@@ -21,10 +27,10 @@ export class NodemailerService implements INodemailerService {
 
   private sendMail = async (data: IMailOptions) => {
     const transporter = nodemailer.createTransport({
-      service: process.env.MAIL_HOST,
+      service: MAIL_HOST,
       auth: {
-        user: process.env.MAIL_USERNAME,
-        pass: process.env.MAIL_PASSWORD,
+        user: MAIL_USERNAME,
+        pass: MAIL_PASSWORD,
       },
     });
 
@@ -50,7 +56,7 @@ export class NodemailerService implements INodemailerService {
       const confirmationLink = `${this.domain}/verify-email?token=${tokenId}`;
 
       const mail: IMailOptions = {
-        from: "onboarding@resend.dev",
+        from: MAIL_USERNAME!,
         to: email,
         subject: "verify your email",
         html: `<p>Click <a href=${confirmationLink}>here</a> to verify your email`,
@@ -71,7 +77,7 @@ export class NodemailerService implements INodemailerService {
       const resetPasswordLink = `${this.domain}/auth/reset-password?token=${resetToken}`;
 
       const mail: IMailOptions = {
-        from: "onboarding@resend.dev",
+        from: MAIL_USERNAME!,
         to: email,
         subject: "reset your password",
         html: `<p>Click <a href=${resetPasswordLink}>here</a> to reset your password`,
@@ -91,7 +97,7 @@ export class NodemailerService implements INodemailerService {
       const dashboardLink = `${this.domain}/dashboard`;
 
       const mail: IMailOptions = {
-        from: "onboarding@resend.dev",
+        from: MAIL_USERNAME!,
         to: email,
         subject: "Password reset was successful",
         html: `<p>Click <a href=${dashboardLink}>here</a> to go to your dashboard`,

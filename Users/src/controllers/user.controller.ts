@@ -100,7 +100,7 @@ export class UserController {
       const verificationToken =
         await this.verificationTokenService.generateVerificationToken(email);
 
-      const isSent = await this.userService.sendEmail({
+      const isSent = await this.userService.sendVerificationEmail({
         email,
         tokenId: verificationToken.id,
       });
@@ -136,13 +136,36 @@ export class UserController {
     try {
       const { email } = req.body;
 
-      const isSent = await this.userService.forgotPassword(email);
+      const resetToken = await this.verificationTokenService.resetPasswordToken(
+        email,
+      );
+
+      if (!resetToken) {
+        res.status(400).json({ message: "Email not found" });
+        return;
+      }
+
+      const isSent = await this.userService.forgotPassword({
+        email,
+        resetToken,
+      });
 
       if (isSent) {
         res.status(200).json({ message: "Email sent" });
       } else {
         res.status(401).json({ message: "Sending failed" });
       }
+    } catch (error) {
+      handleError(res, error);
+    }
+  }
+
+  async sendResetSuccessfulEmail(req: Request, res: Response) {
+    try {
+      const data: IBaseSendEmailRequest = req.body;
+      await this.userService.sendResetSuccessfulEmail(data);
+
+      res.status(200).json({ message: "Email sent" });
     } catch (error) {
       handleError(res, error);
     }

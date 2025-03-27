@@ -1,11 +1,12 @@
 import { injectable } from "inversify";
 import { prisma } from "../../prisma/prisma";
+import ResetPasswordRequestDTO from "../DTOs/reset-password.dto";
 import SignupRequestDTO from "../DTOs/signup.dto";
 import UpdateRequestDTO from "../DTOs/update.dto";
+import IEmailVerificationRequest from "../interfaces/IEmailVerificationRequest";
+import IResetTokenRequest from "../interfaces/IResetTokenRequest";
 import IUser from "../interfaces/IUser";
 import IUserRepository from "../interfaces/IUserRepository";
-import ResetPasswordRequestDTO from "../DTOs/reset-password.dto";
-import IEmailVerificationRequest from "../interfaces/IEmailVerificationRequest";
 
 @injectable()
 export class UserPostgressqlRepository implements IUserRepository {
@@ -67,5 +68,23 @@ export class UserPostgressqlRepository implements IUserRepository {
       },
       data,
     });
+  }
+
+  async resetPasswordToken(
+    id: string,
+    data: IResetTokenRequest,
+  ): Promise<string | null> {
+    const { resetPasswordExpiresAt, resetPasswordToken } = data;
+    const user = await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        resetPasswordToken: resetPasswordToken,
+        resetPasswordExpiresAt: new Date(resetPasswordExpiresAt),
+      },
+    });
+
+    return user.resetPasswordToken;
   }
 }

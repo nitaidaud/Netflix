@@ -1,4 +1,5 @@
 import { VerificationToken } from "@prisma/client";
+import bcrypt from "bcrypt";
 import { inject, injectable } from "inversify";
 import { v4 as uuid } from "uuid";
 import { TOKENS } from "../../tokens";
@@ -94,5 +95,26 @@ export class VerificationTokenService implements IVerificationTokenService {
     await this.verificationTokenRepository.delete(token.id);
 
     return { success: true, message: "Email verified successfully" };
+  }
+
+  async resetPasswordToken(email: string): Promise<string | null> {
+    const user = await this.userRepository.findByEmail(email);
+
+    if (!user) throw new Error("User not found");
+
+    const resetPasswordToken = await bcrypt.genSalt();
+    const resetPasswordExpiresAt = new Date(Date.now() + 1 * 60 * 60 * 1000); //1 hour
+
+    const resetPasswordTokenId = await this.userRepository.resetPasswordToken(
+      user.id,
+      {
+        resetPasswordToken,
+        resetPasswordExpiresAt,
+      },
+    );
+
+    if (!resetPasswordTokenId) throw new Error("Error in update user");
+
+    return resetPasswordTokenId;
   }
 }

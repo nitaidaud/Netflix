@@ -14,6 +14,9 @@ import IUserRepository from "../interfaces/IUserRepository";
 import IUserService from "../interfaces/IUserService";
 import { hash } from "../utils/bcrypt";
 import { sign } from "../utils/jwt";
+import IResetTokenRequest from "../interfaces/IResetTokenRequest";
+import ISendResetPasswordEmail from "../interfaces/ISendResetPasswordEmail";
+import IBaseSendEmailRequest from "../interfaces/IBaseSendEmailRequest";
 
 @injectable()
 export class UserService implements IUserService {
@@ -110,7 +113,9 @@ export class UserService implements IUserService {
     return updatedUser;
   }
 
-  async sendEmail(data: ISendEmailVerificationRequest): Promise<boolean> {
+  async sendVerificationEmail(
+    data: ISendEmailVerificationRequest,
+  ): Promise<boolean> {
     const { email } = data;
     if (!email || email == "") {
       throw new Error("Not valid email");
@@ -160,7 +165,8 @@ export class UserService implements IUserService {
     return isUpdated;
   }
 
-  async forgotPassword(email: string): Promise<boolean> {
+  async forgotPassword(data: ISendResetPasswordEmail): Promise<boolean> {
+    const { email } = data;
     const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
@@ -168,12 +174,21 @@ export class UserService implements IUserService {
     }
 
     try {
-      await this.nodemailerService.sendPasswordResetEmail();
+      await this.nodemailerService.sendPasswordResetEmail(data);
       console.log("Email sent");
       return true;
     } catch (error) {
       console.log(error);
       return false;
+    }
+  }
+
+  async sendResetSuccessfulEmail(data: IBaseSendEmailRequest): Promise<void> {
+    try {
+      await this.nodemailerService.sendResetSuccessfulEmail(data);
+    } catch (error) {
+      console.error(error);
+      throw new Error("Email sending failed!");
     }
   }
 }

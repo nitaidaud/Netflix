@@ -2,6 +2,7 @@ import ResetPasswordRequestDTO from "../DTOs/reset-password.dto";
 import SignupRequestDTO from "../DTOs/signup.dto";
 import UpdateRequestDTO from "../DTOs/update.dto";
 import IUpdateEmailVerification from "./IEmailVerificationRequest";
+import IResetPasswordTokenRequest from "./IResetTokenRequest";
 import IUser from "./IUser";
 
 export default interface IUserRepository {
@@ -17,4 +18,8 @@ export default interface IUserRepository {
     id: string,
     data: ResetPasswordRequestDTO,
   ): Promise<IUser | null>;
+  resetPasswordToken(
+    id: string,
+    data: IResetPasswordTokenRequest,
+  ): Promise<string | null>;
 }

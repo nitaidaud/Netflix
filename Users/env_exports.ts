@@ -8,6 +8,7 @@ export const {
   MAIL_HOST,
   MAIL_USERNAME,
   MAIL_PASSWORD,
+  DOMAIN,
 } = process.env;
 
 export const validateEnv = () => {
@@ -25,5 +26,9 @@ export const validateEnv = () => {
 
   if (!MAIL_HOST || !MAIL_USERNAME || !MAIL_PASSWORD) {
     throw new Error("Missing mail credentials");
+  }
+
+  if (!DOMAIN) {
+    throw new Error("Missing domain");
   }
 };

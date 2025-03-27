@@ -1,6 +1,10 @@
 export const TOKENS = {
   IUserService: "IUserService",
   IUserRepository: "IUserRepository",
+  IVerificationTokenService: "IVerificationTokenService",
+  IVerificationTokenRepository: "IVerificationTokenRepository",
   UserController: "UserController",
-  token: "Token"
+  INodemailerService: "INodemailerService",
+  NodemailerService: "NodemailerService",
+  token: "Token",
 };

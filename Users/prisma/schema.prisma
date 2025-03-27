@@ -8,18 +8,19 @@ datasource db {
 }
 
 model User {
-  id                     String                @id @default(cuid())
+  id                     String    @id @default(cuid())
   name                   String
-  email                  String                @unique
+  email                  String    @unique
   password               String
   emailVerified          Boolean?
   image                  String?
-  createdAt              DateTime              @default(now())
-  updatedAt              DateTime              @updatedAt
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
   resetPasswordToken     String?
   resetPasswordExpiresAt DateTime?
   accounts               Account[]
   sessions               Session[]
+  profiles               Profile[]
 
   @@map("users")
 }
@@ -64,4 +65,49 @@ model VerificationToken {
   expires DateTime
 
   @@map("verification_tokens")
+}
+
+model Profile {
+  id                 String  @id @default(cuid())
+  User               User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId             String?
+  moviesFavoriteList Movie[]
+
+  @@map("profiles")
+}
+
+model Movie {
+  id            String   @id @default(cuid())
+  name          String
+  image         String
+  genre         Genre[]
+  adult         Boolean
+  time          DateTime
+  backdrop_path String
+  Profile       Profile? @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId     String?
+
+  @@map("movies")
+}
+
+enum Genre {
+  Action
+  Adventure
+  Animation
+  Comedy
+  Crime
+  Documentary
+  Drama
+  Family
+  Fantasy
+  History
+  Horror
+  Music
+  Mystery
+  Romance
+  Science_Fiction
+  Thriller
+  TV_Movie
+  War
+  Western
 }

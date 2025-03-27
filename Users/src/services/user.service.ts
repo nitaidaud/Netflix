@@ -7,17 +7,20 @@ import ResetPasswordRequestDTO from "../DTOs/reset-password.dto";
 import SignupRequestDTO from "../DTOs/signup.dto";
 import UpdateRequestDTO from "../DTOs/update.dto";
 import { IMailOptions } from "../interfaces/IMailOptions";
+import INodemailerService from "../interfaces/INodemailerService";
+import ISendEmailVerificationRequest from "../interfaces/ISendVerificationEmailRequest";
 import IUser from "../interfaces/IUser";
 import IUserRepository from "../interfaces/IUserRepository";
 import IUserService from "../interfaces/IUserService";
 import { hash } from "../utils/bcrypt";
 import { sign } from "../utils/jwt";
-import { sendMail } from "./nodemailer.service";
 
 @injectable()
 export class UserService implements IUserService {
   constructor(
     @inject(TOKENS.IUserRepository) private userRepository: IUserRepository,
+    @inject(TOKENS.INodemailerService)
+    private nodemailerService: INodemailerService,
   ) {}
 
   async signup(data: SignupRequestDTO): Promise<string> {
@@ -95,7 +98,7 @@ export class UserService implements IUserService {
 
     const hashedPassword = await hash(password);
 
-    const updatedUser = await this.userRepository.update(id, {
+    const updatedUser = await this.userRepository.updateInfo(id, {
       name,
       password: hashedPassword,
     });
@@ -107,26 +110,20 @@ export class UserService implements IUserService {
     return updatedUser;
   }
 
-  //TODO: send verification code email
-  async sendEmail(id: string): Promise<boolean> {
-    if (!id || id == "") {
-      throw new Error("Not valid id");
+  async sendEmail(data: ISendEmailVerificationRequest): Promise<boolean> {
+    const { email } = data;
+    if (!email || email == "") {
+      throw new Error("Not valid email");
     }
 
-    const user = await this.userRepository.findById(id);
+    const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
       throw new Error("user not found, can't send email");
     }
 
-    const emailOptions: IMailOptions = {
-      from: MAIL_USERNAME!,
-      to: user.email,
-      subject: "Verification Email",
-      html: "<h1>Verify your email</h1><p>Click here to verify your email</p>",
-    };
     try {
-      await sendMail(emailOptions);
+      await this.nodemailerService.sendVerificationEmail(data);
       console.log("Email sent");
       return true;
     } catch (error) {
@@ -135,6 +132,7 @@ export class UserService implements IUserService {
     }
   }
 
+  //TODO: check if need to get the confirm password
   async resetPassword(
     id: string,
     data: ResetPasswordRequestDTO,
@@ -169,14 +167,8 @@ export class UserService implements IUserService {
       throw new Error("User not found!");
     }
 
-    const emailOptions: IMailOptions = {
-      from: MAIL_USERNAME!,
-      to: user.email,
-      subject: "Reset Password",
-      html: "<h1>Reset Password</h1><p>Click here to reset your password</p>",
-    };
     try {
-      await sendMail(emailOptions);
+      await this.nodemailerService.sendPasswordResetEmail();
       console.log("Email sent");
       return true;
     } catch (error) {

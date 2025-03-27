@@ -47,7 +47,7 @@ userRouter.post(
 );
 
 userRouter.post("/send-email/:id", (req: Request, res: Response) => {
-  userController.sendMail(req, res);
+  userController.sendVerificationMail(req, res);
 });
 
 userRouter.post("/reset-password/:id", (req: Request, res: Response) => {
@@ -55,7 +55,7 @@ userRouter.post("/reset-password/:id", (req: Request, res: Response) => {
 });
 
 userRouter.post("/forgot-password", (req: Request, res: Response) => {
-  userController.forgotPassword(req, res);
+  userController.sendMailForgotPassword(req, res);
 });
 
 export { userRouter };

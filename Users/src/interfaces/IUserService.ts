@@ -2,6 +2,7 @@ import LoginRequestDTO from "../DTOs/login.dto";
 import ResetPasswordRequestDTO from "../DTOs/reset-password.dto";
 import SignupRequestDTO from "../DTOs/signup.dto";
 import UpdateRequestDTO from "../DTOs/update.dto";
+import ISendEmailVerificationRequest from "./ISendVerificationEmailRequest";
 import IUser from "./IUser";
 
 export default interface IUserService {
@@ -9,7 +10,7 @@ export default interface IUserService {
   login(data: LoginRequestDTO): Promise<string>;
   getUser(id: string): Promise<IUser | null>;
   updateUser(id: string, data: UpdateRequestDTO): Promise<IUser | null>;
-  sendEmail(id: string): Promise<boolean>;
+  sendEmail(data: ISendEmailVerificationRequest): Promise<boolean>;
   resetPassword(id: string, data: ResetPasswordRequestDTO): Promise<boolean>;
   forgotPassword(email: string): Promise<boolean>;
 }

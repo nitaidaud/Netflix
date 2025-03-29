@@ -3,9 +3,9 @@ import { BrowserRouter, Navigate, Route, BrowserRouter as Router, Routes } from 
 import './App.css';
 import SignInPage from './pages/Signin';
 import SignupPage from './pages/Signup';
-import { useAppSelector } from "./store/store";
+import { useAppSelector } from "./store/Store";
 import Landing from './pages/Landing';
-import NetflixNavBar from './components/shared/NeftlixNavBar';
+import NetflixNavBar from './components/Shared/NeftlixNavBar';
 
 
 function App() {

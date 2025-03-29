@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import NavBar from "@/components/shared/NavBar";
+import NavBar from "@/components/Shared/NavBar";
 
 const SignInButton = () => {
   const navigate = useNavigate();

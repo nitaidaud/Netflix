@@ -1,12 +1,12 @@
-import Typography from "@/components/shared/typography";
+import Typography from "@/components/Shared/Typography";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 
-import Form from "@/components/shared/Form";
+import Form from "@/components/Shared/Form";
 import { SigninFormData, signinSchema } from "@/schemas/auth.schema";
-import { signin } from "@/store/slices/auth.slice";
-import { useAppDispatch, useAppSelector } from "@/store/store";
+import { signin } from "@/store/Slices/Auth.Slice";
+import { useAppDispatch, useAppSelector } from "@/store/Store";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 // const Signin: React.FC = () => {

@@ -1,7 +1,7 @@
 import { SigninFormData, SignupFormData } from '@/schemas/auth.schema';
 import { getErrorMessage } from '@/utils/axios.error.handler';
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { AuthResponse, signinRequest, signupRequest } from '../../api/API';
+import { AuthResponse, signinRequest, signupRequest } from '../../api/api';
 
 interface AuthState { 
     name: string;

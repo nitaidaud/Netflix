@@ -1,4 +1,4 @@
-import GetStartedSection from "@/components/ui/Landing/GetStartedSection";
+import GetStartedSection from "@/components/ui/landing/GetStartedSection";
 
 const LandingPage = () => {
 

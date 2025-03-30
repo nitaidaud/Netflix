@@ -1,10 +1,10 @@
 
 import { Link } from "react-router-dom";
-import Container from "../components/Shared/Container";
-import Typography from "../components/Shared/Typography";
+import Container from "../components/shared/Container";
+import Typography from "../components/shared/Typography";
 import Signin from "../features/Signin";
 import { Button } from "@/components/ui/button";
-import STRINGS from "../components/ui/Auth/STRINGS";
+import STRINGS from "../components/ui/auth/STRINGS";
 
 
 const SigninPage = () => {

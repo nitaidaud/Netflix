@@ -1,11 +1,11 @@
-import Typography from "@/components/Shared/Typography";
+import Typography from "@/components/shared/Typography";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 
-import Form from "@/components/Shared/Form";
+import Form from "@/components/shared/Form";
 import { SigninFormData, signinSchema } from "@/schemas/auth.schema";
-import { signin } from "@/store/Slices/Auth.Slice";
+import { signin } from "@/store/slice/auth.slice";
 import { useAppDispatch, useAppSelector } from "@/store/Store";
 import { zodResolver } from "@hookform/resolvers/zod";
 

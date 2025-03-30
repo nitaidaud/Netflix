@@ -1,5 +1,5 @@
 import GetStartedForm from "@/features/GetStartedForm";
-import GetStartedTitle from "@/components/ui/Landing/GetStartedTitle";
+import GetStartedTitle from "@/components/ui/landing/GetStartedTitle";
 
 const GetStartedSection = () => {
   return (

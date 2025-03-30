@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import Container from "../components/shared/Container";
 import Typography from "../components/shared/Typography";
-import STRINGS from "../components/ui/auth/STRINGS";
 import Signin from "../features/Signin";
+import { Button } from "@/components/ui/button";
+import STRINGS from "../components/ui/auth/STRINGS";
+
 
 const SigninPage = () => {
   return (

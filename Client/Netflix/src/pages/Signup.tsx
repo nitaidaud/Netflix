@@ -1,8 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import Container from "../components/Shared/Container";
-import Typography from "../components/Shared/Typography";
+import Typography from "../components/shared/Typography";
 import Signup from "../features/Signup";
-import STRINGS from "@/components/ui/Auth/STRINGS";
+import STRINGS from "@/components/ui/auth/STRINGS";
 
 const SignupPage = () => {
   const location = useLocation();
@@ -21,7 +21,7 @@ const SignupPage = () => {
             to="/signin"
             className="text-white font-medium hover:underline cursor-pointer"
           >
-            {STRINGS.SignInNow} 
+            {STRINGS.SignInNow}
           </Link>
         </div>
         <p className="text-xs text-gray-500 text-center leading-tight mt-6 max-w-xs mx-auto">

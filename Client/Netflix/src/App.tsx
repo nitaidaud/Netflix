@@ -5,7 +5,7 @@ import SignInPage from './pages/Signin';
 import SignupPage from './pages/Signup';
 import { useAppSelector } from "./store/Store";
 import Landing from './pages/Landing';
-import NetflixNavBar from './components/Shared/NeftlixNavBar';
+import NetflixNavBar from './components/shared/NeftlixNavBar';
 
 
 function App() {

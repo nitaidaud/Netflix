@@ -1,4 +1,4 @@
-import Typography from "@/components/Shared/Typography";
+import Typography from "@/components/shared/Typography";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -19,12 +19,12 @@ const Signup: React.FC<SignupProps> = ({ defaultEmail = "" }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      email: defaultEmail
-    }
+      email: defaultEmail,
+    },
   });
 
   const onSubmit = (data: SignupFormData) => {

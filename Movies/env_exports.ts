@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-export const { PORT, DOMAIN, ORIGIN } = process.env;
+export const { PORT, DOMAIN, ORIGIN,  } = process.env;
 
 export const validateEnv = () => {
   if (!PORT) {

@@ -10,9 +10,9 @@ export class MovieController {
     @inject(TOKENS.IMovieService) private movieService: IMovieService, 
   ) {}
 
-  async getAllMovies(req: Request, res: Response) {
+  async getPopularMovies(req: Request, res: Response) {
     try {
-      const movies = await this.movieService.getAllMovies();
+      const movies = await this.movieService.getPopularMovies();
       res.json(movies);
     } catch (error) {
       handleError(res, error);

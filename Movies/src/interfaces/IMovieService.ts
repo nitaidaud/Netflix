@@ -1,5 +1,7 @@
+import IPopularMovie from "./IPopularMovie";
+
 export default interface IMovieService {
-    getAllMovies(): Promise<any>;
+    getPopularMovies(): Promise<IPopularMovie[]>;
     getMovieById(id: string): Promise<any>;
     getMovieByTitle(title: string): Promise<any>;
     getMoviesByGenre(genre: string): Promise<any>;

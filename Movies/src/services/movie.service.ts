@@ -1,12 +1,14 @@
 import { injectable } from "inversify";
 import IMovieService from "../interfaces/IMovieService";
 import tmbd from "../api/tmdb";
+import IPopularMovie from "../interfaces/IPopularMovie";
 
 @injectable()
 export class MovieService implements IMovieService {
-  async getAllMovies() {
+  async getPopularMovies() {
     const res = await tmbd.get("/movie/popular");
-    return res.data.results;
+    const movies = res.data.results as IPopularMovie[];
+    return movies;
   }
 
   async getMovieById(id: string) {

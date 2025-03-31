@@ -1,13 +1,10 @@
 import axios from "axios";
-
-const apiKey = process.env.API_KEY;
-const baseURL = process.env.BASE_URL;
-const token = process.env.MOVIE_API_KEY;
+import { MOVIE_BASE_URL, MOVIE_API_KEY } from "../../env_exports";
 
 const tmbd = axios.create({
-    baseURL,
+    baseURL: MOVIE_BASE_URL,
     headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${MOVIE_API_KEY}`,
         Accept: "application/json",
       },
 })

@@ -58,4 +58,36 @@ export class MovieController {
     }
   }
 
+  async getTrailer(req: Request, res: Response) {
+    try{
+      const movieId = req.params.id;
+      const trailerKey = await this.movieService.getTrailerById(movieId);
+
+      if(!trailerKey){
+        res.status(404).json({ message: "No trailer found" });
+        return;
+      }
+
+      res.json({ 
+        key: trailerKey,
+        embedUrl: `https://www.youtube.com/embed/${trailerKey}`,
+      });
+    } catch (err) {
+      console.error("Error getting trailer:", err);
+      handleError(res, err);
+    }
+  }
+
+  async getMoviesByPage(req: Request, res: Response): Promise<void> {
+    try {
+      const page = parseInt(req.params.page);
+      if (isNaN(page) || page < 1) {
+        throw new Error("Invalid page number");
+      }
+      const movies = await this.movieService.getMoviesByPage(page);
+      res.json(movies);
+    } catch (err) {
+      handleError(res, err);
+    }
+  }
 }

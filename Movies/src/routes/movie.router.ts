@@ -28,4 +28,12 @@ movieRouter.get("/:id", (req: Request, res: Response) => {
   movieController.getMovieById(req, res);
 })
 
+movieRouter.get("/:id/trailer", (req: Request, res: Response) => {
+  movieController.getTrailer(req, res);
+})
+
+movieRouter.get("/movies", (req, res) =>
+  movieController.getMoviesByPage(req, res),
+);
+
 export { movieRouter };

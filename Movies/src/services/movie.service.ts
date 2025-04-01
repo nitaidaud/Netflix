@@ -46,4 +46,15 @@ export class MovieService implements IMovieService {
     const res = await tmbd.get("/movie/top_rated");
     return res.data.results.slice(0, 10);
   };
+
+  async getTrailerById(Id: string) {
+    const res = await tmbd.get(`/movie/${Id}/videos`);
+    if(res.data.results.length) return res.data.results[0].key;
+    return null;
+  }
+
+  async getMoviesByPage(page: number) {
+    const res = await tmbd.get(`/movie/popular`, { params: { page } });
+    return res.data.results;
+  }
 }

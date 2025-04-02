@@ -9,6 +9,7 @@ import ResetPasswordRequestDTO from "../DTOs/reset-password.dto";
 import UpdateRequestDTO from "../DTOs/update.dto";
 import IVerificationTokenService from "../interfaces/IVerificationToken";
 import IBaseSendEmailRequest from "../interfaces/IBaseSendEmailRequest";
+import { verify } from "../utils/jwt";
 
 @injectable()
 export class UserController {
@@ -176,6 +177,23 @@ export class UserController {
       } else {
         res.status(401).json({ success: false, message: "Sending failed" });
       }
+    } catch (error) {
+      handleError(res, error);
+    }
+  }
+
+  async checkAuth(req: Request, res: Response) {
+    const { Token } = req.cookies;
+
+    if (!Token) {
+      return res.json({ isAuthenticated: false });
+    }
+
+    try {
+      const decoded = verify(Token);
+      console.log("decoded", decoded);
+
+      res.json({ isAuthenticated: !!decoded });
     } catch (error) {
       handleError(res, error);
     }

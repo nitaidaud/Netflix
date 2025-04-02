@@ -2,6 +2,7 @@ import axios from "axios";
 import { apiBaseUrl } from "@/config/config";
 import { SigninFormData, SignupFormData } from "@/schemas/auth.schema";
 import ISendMailResponse from "./interfaces/IVerifyMailResponse";
+import IAuthResponse from "./interfaces/IAuthResponse";
 
 const api = axios.create({
   baseURL: apiBaseUrl,
@@ -78,4 +79,14 @@ export const resetPassword = async (
 
 export const logoutRequest = async () => {
   await api.post("/api/users/logout");
+};
+
+export const checkAuthRequest = async () => {
+  const { data } = await api.post<IAuthResponse>(
+    "/api/users/check-auth",
+    {},
+    { timeout: 1000 },
+  );
+
+  return data.isAuthenticated;
 };

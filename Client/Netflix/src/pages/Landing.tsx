@@ -1,4 +1,5 @@
 import GetStartedSection from "@/components/ui/landing/GetStartedSection";
+import { Link } from "react-router-dom";
 
 const LandingPage = () => {
   return (
@@ -10,6 +11,7 @@ const LandingPage = () => {
         necessitatibus adipisci in amet, veniam nesciunt reiciendis fugiat totam
         est eveniet nobis alias incidunt temporibus facilis nostrum enim, cumque
         expedita perspiciatis!
+        <Link to={"/home"}>Home</Link>
       </p>
     </div>
   );

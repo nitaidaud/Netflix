@@ -1,8 +1,10 @@
-import { logoutRequest } from "@/api/api";
+import { logout } from "@/store/slice/auth.slice";
+import { useAppDispatch } from "@/store/Store";
 
 const LogoutButton = () => {
-  const handleClick = async () => {
-    await logoutRequest();
+  const dispatch = useAppDispatch();
+  const handleClick = async() => {
+    await dispatch(logout());
   };
 
   return (

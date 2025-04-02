@@ -3,6 +3,7 @@ import { getErrorMessage } from "@/utils/axios.error.handler";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   AuthResponse,
+  checkAuthRequest,
   logoutRequest,
   signinRequest,
   signupRequest,
@@ -71,6 +72,23 @@ export const logout = createAsyncThunk(
   },
 );
 
+export const checkAuth = createAsyncThunk(
+  "auth/check-auth",
+  async (_, { rejectWithValue }) => {
+    try {
+      const isAuthenticated = await checkAuthRequest();
+
+      console.log("isAuthenticated in checkAuth", isAuthenticated);
+      
+
+      return isAuthenticated;
+    } catch (error) {
+      const errorMessage: string = getErrorMessage(error);
+      return rejectWithValue(errorMessage);
+    }
+  },
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -118,9 +136,15 @@ const authSlice = createSlice({
       })
       .addCase(logout.rejected, (state, action) => {
         state.error = action.payload as string;
+      })
+      .addCase(checkAuth.fulfilled, (state, action) => {
+        state.isAuthenticated = action.payload;
+      })
+      .addCase(checkAuth.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.isAuthenticated = false;
       });
   },
 });
-
 
 export default authSlice.reducer;

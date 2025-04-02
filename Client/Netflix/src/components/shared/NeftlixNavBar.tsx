@@ -5,12 +5,7 @@ import LogoutButton from "../auth/LogoutButton";
 import SigninButton from "../auth/SigninButton";
 
 const NetflixNavBar = () => {
-  const isAuthenticated = useAppSelector(
-    (state) => state.auth.isAuthenticated,
-  );
-
-  console.log("is auth", isAuthenticated);
-  
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
 
   return (
     <NavBar className="fixed top-0 left-0 z-50 bg-gradient-to-b from-black to-transparent">

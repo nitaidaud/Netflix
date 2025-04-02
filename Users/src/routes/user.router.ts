@@ -62,4 +62,8 @@ userRouter.post("/forgot-password", (req: Request, res: Response) => {
   userController.sendMailForgotPassword(req, res);
 });
 
+userRouter.post("/check-auth", (req: Request, res: Response) => {
+  userController.checkAuth(req, res);
+});
+
 export { userRouter };

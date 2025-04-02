@@ -16,10 +16,8 @@ export class MovieService implements IMovieService {
     return res.data;
   };
 
-  async getMovieByTitle(title: string) {
-    const res = await tmbd.get(`/search/movie`, {
-      params: { query: title },
-    });
+  async search(title: string) {
+    const res = await tmbd.get(`/search/movie?query=${title}`);
     return res.data.results;
   };
 
@@ -31,7 +29,7 @@ export class MovieService implements IMovieService {
       thriller: 53,
       adventure: 12,
       crime: 80,
-      mystery: 99,
+      myster: 99,
     };
     const genereId = genreMap[genre.toLowerCase()];
     if(!genereId) return [];
@@ -54,7 +52,88 @@ export class MovieService implements IMovieService {
   }
 
   async getMoviesByPage(page?: number) {
-    const res = await tmbd.get(`/movie/popular`, { params: { page } });
+    const res = await tmbd.get(`/discover/movie`, { params: { page } });
     return res.data.results;
+  }
+
+  async getNewMovies(): Promise<any> {
+    const res = await tmbd.get(`/movie/now_playing`)
+    return res.data.results;
+  }
+
+  async getComedyMovies(): Promise<any[]> {
+    const res = await tmbd.get(`/discover/movie?with_genres=35`);
+    return res.data.results;
+  }
+
+  async getHorrorMovies(): Promise<any[]> {
+    const res = await tmbd.get(`/discover/movie?with_genres=27`);
+    return res.data.results;
+  }
+
+  async getActionMovies(): Promise<any[]> {
+    const res = await tmbd.get(`/discover/movie?with_genres=28`);
+    return res.data.results;
+  }
+
+  async getRomanceMovies(): Promise<any[]> {
+    const res = await tmbd.get(`/discover/movie?with_genres=10749`);
+    return res.data.results;
+  }
+
+  async getKidsMovies(): Promise<any[]> {
+    const res = await tmbd.get(`/discover/movie?with_genres=10762`);
+    return res.data.results;
+  }
+
+  async getAnimationMovies(): Promise<any[]> {
+    const res = await tmbd.get(`/discover/movie?with_genres=16`);
+    return res.data.results;
+  }
+
+  async getCrimeMovies(): Promise<any[]> {
+    const res = await tmbd.get(`/discover/movie?with_genres=80`);
+    return res.data.results;
+  }
+
+  async getDocumentaryMovies(): Promise<any[]> {
+    const res = await tmbd.get(`/discover/movie?with_genres=99`);
+    return res.data.results;
+  }
+
+  async getHomeContent(): Promise<any> {
+    const [
+      newMovies,
+      comedy,
+      horror,
+      action,
+      romance,
+      kids,
+      animation,
+      crime,
+      documentary
+    ] = await Promise.all([
+      this.getNewMovies(),
+      this.getComedyMovies(),
+      this.getHorrorMovies(),
+      this.getActionMovies(),
+      this.getRomanceMovies(),
+      this.getKidsMovies(),
+      this.getAnimationMovies(),
+      this.getCrimeMovies(),
+      this.getDocumentaryMovies()
+    ]);
+
+    return {
+      new: newMovies,
+      comedy,
+      horror,
+      action,
+      romance,
+      kids,
+      animation,
+      crime,
+      documentary
+    }
   }
 }

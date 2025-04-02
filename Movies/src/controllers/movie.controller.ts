@@ -29,10 +29,10 @@ export class MovieController {
     }
   }
 
-  async getMovieByTitle(req: Request, res: Response) {
+  async search(req: Request, res: Response) {
     try {
       const { title } = req.params;
-      const movies = await this.movieService.getMovieByTitle(title as string);
+      const movies = await this.movieService.search(title as string);
       res.json(movies);
     } catch (error) {
       handleError(res, error);
@@ -95,6 +95,96 @@ export class MovieController {
           throw new Error("Invalid page number");
         }
       }
+    } catch (err) {
+      handleError(res, err);
+    }
+  }
+
+  async getNewMovies(req: Request, res: Response): Promise<void> {
+    try {
+      const movies = await this.movieService.getNewMovies();
+      res.json(movies);
+    } catch (err) {
+      handleError(res, err);
+    }
+  }
+
+  async getComedyMovies(req: Request, res: Response): Promise<void> {
+    try {
+      const movies = await this.movieService.getComedyMovies();
+      res.json(movies);
+    } catch (err) {
+      handleError(res, err);
+    }
+  }
+
+  async getHorrorMovies(req: Request, res: Response): Promise<void> {
+    try {
+      const movies = await this.movieService.getHorrorMovies();
+      res.json(movies);
+    } catch (err) {
+      handleError(res, err);
+    }
+  }
+
+  async getActionMovies(req: Request, res: Response): Promise<void> {
+    try {
+      const movies = await this.movieService.getActionMovies();
+      res.json(movies);
+    } catch (err) {
+      handleError(res, err);
+    }
+  }
+
+  async getRomanceMovies(req: Request, res: Response): Promise<void> {
+    try {
+      const movies = await this.movieService.getRomanceMovies();
+      res.json(movies);
+    } catch (err) {
+      handleError(res, err);
+    }
+  }
+
+  async getKidsMovies(req: Request, res: Response): Promise<void> {
+    try {
+      const movies = await this.movieService.getKidsMovies();
+      res.json(movies);
+    } catch (err) {
+      handleError(res, err);
+    }
+  }
+
+  async getAnimationMovies(req: Request, res: Response): Promise<void> {
+    try {
+      const movies = await this.movieService.getAnimationMovies();
+      res.json(movies);
+    } catch (err) {
+      handleError(res, err);
+    }
+  }
+
+  async getCrimeMovies(req: Request, res: Response): Promise<void> {
+    try {
+      const movies = await this.movieService.getCrimeMovies();
+      res.json(movies);
+    } catch (err) {
+      handleError(res, err);
+    }
+  }
+
+  async getDocumentaryMovies(req: Request, res: Response): Promise<void> {
+    try {
+      const movies = await this.movieService.getDocumentaryMovies();
+      res.json(movies);
+    } catch (err) {
+      handleError(res, err);
+    }
+  }
+
+  async getHomeContent(req: Request, res: Response): Promise<void> {
+    try {
+      const content = await this.movieService.getHomeContent();
+      res.json(content);
     } catch (err) {
       handleError(res, err);
     }

@@ -53,7 +53,7 @@ export class MovieService implements IMovieService {
     return null;
   }
 
-  async getMoviesByPage(page: number) {
+  async getMoviesByPage(page?: number) {
     const res = await tmbd.get(`/movie/popular`, { params: { page } });
     return res.data.results;
   }

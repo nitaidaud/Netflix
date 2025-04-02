@@ -8,5 +8,5 @@ export default interface IMovieService {
     getTopMovies(): Promise<any>;
     getTrailerById(movieId: string): Promise<string | null>;
     //searchMovies(query: string): Promise<any>;
-    getMoviesByPage(page: number): Promise<any>;
+    getMoviesByPage(page?: number): Promise<any>;
  }

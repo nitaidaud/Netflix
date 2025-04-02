@@ -13,7 +13,7 @@ export default interface IUserService {
   getUser(id: string): Promise<IUser | null>;
   updateUser(id: string, data: UpdateRequestDTO): Promise<IUser | null>;
   sendVerificationEmail(data: ISendEmailVerificationRequest): Promise<boolean>;
-  resetPassword(id: string, data: ResetPasswordRequestDTO): Promise<boolean>;
+  resetPassword(token: string, data: ResetPasswordRequestDTO): Promise<IUser | null>;
   forgotPassword(data: ISendResetPasswordEmail): Promise<boolean>;
   sendResetSuccessfulEmail(data: IBaseSendEmailRequest): Promise<void>;
 }

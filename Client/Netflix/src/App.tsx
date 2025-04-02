@@ -1,29 +1,33 @@
-
-import { BrowserRouter, Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import './App.css';
-import SignInPage from './pages/Signin';
-import SignupPage from './pages/Signup';
-import { useAppSelector } from "./store/Store";
-import Landing from './pages/Landing';
-import NetflixNavBar from './components/shared/NeftlixNavBar';
-
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
+import "./App.css";
+import NetflixNavBar from "./components/shared/NeftlixNavBar";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import ResetPassword from "./pages/auth/ResetPassword";
+import SignInPage from "./pages/auth/Signin";
+import SignupPage from "./pages/auth/Signup";
+import VerifyEmail from "./pages/auth/VerifyEmail";
+import Landing from "./pages/Landing";
 
 function App() {
-
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-
   return (
-
-    <BrowserRouter>
-    <NetflixNavBar/>
+    <Router>
+      <NetflixNavBar />
       <Routes>
-        <Route path="/" element={<Landing />} />
+        <Route index element={<Landing />} />
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
-    </BrowserRouter>
-    
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;

@@ -49,11 +49,16 @@ export class UserPostgressqlRepository implements IUserRepository {
     id: string,
     data: ResetPasswordRequestDTO,
   ): Promise<IUser | null> {
+    const { password } = data;
     const user = prisma.user.update({
       where: {
         id,
       },
-      data,
+      data: {
+        password,
+        resetPasswordExpiresAt: null,
+        resetPasswordToken: null,
+      },
     });
     return user;
   }
@@ -86,5 +91,17 @@ export class UserPostgressqlRepository implements IUserRepository {
     });
 
     return user.resetPasswordToken;
+  }
+
+  async findByResetPasswordToken(token: string): Promise<IUser | null> {
+    const nowDate = new Date(Date.now());
+    const user = await prisma.user.findUnique({
+      where: {
+        resetPasswordToken: token,
+        resetPasswordExpiresAt: { gt: nowDate },
+      },
+    });
+
+    return user;
   }
 }

@@ -1,12 +1,14 @@
+import Form from "@/components/shared/Form";
 import Typography from "@/components/shared/Typography";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
-import Form from "@/components/shared/Form";
 import { SignupFormData, signupSchema } from "@/schemas/auth.schema";
 import { signup } from "@/store/slice/auth.slice";
 import { useAppDispatch, useAppSelector } from "@/store/Store";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LucideLoader } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 type SignupProps = {
   defaultEmail?: string;
@@ -15,6 +17,8 @@ type SignupProps = {
 const Signup: React.FC<SignupProps> = ({ defaultEmail = "" }) => {
   const dispatch = useAppDispatch();
   const error = useAppSelector((state) => state.auth.error);
+  const success = useAppSelector((state) => state.auth.success);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -27,8 +31,15 @@ const Signup: React.FC<SignupProps> = ({ defaultEmail = "" }) => {
     },
   });
 
-  const onSubmit = (data: SignupFormData) => {
-    dispatch(signup(data));
+  const onSubmit = async (data: SignupFormData) => {
+    setLoading(true);
+    try {
+      await dispatch(signup(data));
+    } catch (err) {
+      console.error("Signup failed:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -55,15 +66,21 @@ const Signup: React.FC<SignupProps> = ({ defaultEmail = "" }) => {
         className="w-full bg-transparent border border-gray-500 focus:border-white focus:outline-none text-white px-4 py-3 rounded placeholder-gray-400"
       />
       {error && (
-        <Typography className="text-red-500" size="text-sm">
+        <Typography color="text-red-500" size="text-sm">
           {error}
+        </Typography>
+      )}
+      {success && (
+        <Typography color="text-green-800" size="text-sm">
+          {success}
         </Typography>
       )}
       <Button
         type="submit"
         className="w-full bg-red-600 hover:bg-red-700 font-bold text-lg py-3 rounded"
+        disabled={loading}
       >
-        Sign up
+        {loading ? <LucideLoader className="animate-spin" /> : "Sign up"}
       </Button>
     </Form>
   );

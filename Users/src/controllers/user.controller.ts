@@ -115,17 +115,38 @@ export class UserController {
     }
   }
 
+  async verifyEmail(req: Request, res: Response) {
+    try {
+      const { tokenId } = req.params;
+
+      const isVerified = await this.verificationTokenService.verifyEmail(
+        tokenId,
+      );
+
+      if (isVerified.success) {
+        res.status(200).json({ success: true, message: isVerified.message });
+      } else {
+        res.status(401).json({ success: true, message: isVerified.message });
+      }
+    } catch (error) {
+      handleError(res, error);
+    }
+  }
+
   async resetPassword(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const { token } = req.params;
       const data: ResetPasswordRequestDTO = req.body;
 
-      const isUpdated = await this.userService.resetPassword(id, data);
+      const updatedUser = await this.userService.resetPassword(token, data);
 
-      if (isUpdated) {
-        res.status(200).json({ message: "Password updated" });
+      if (updatedUser) {
+        res.status(200).json({ success: true, message: "Password updated" });
+        await this.userService.sendResetSuccessfulEmail({
+          email: updatedUser.email,
+        });
       } else {
-        res.status(401).json({ message: "Updating failed" });
+        res.status(401).json({ success: false, message: "Updating failed" });
       }
     } catch (error) {
       handleError(res, error);
@@ -141,7 +162,7 @@ export class UserController {
       );
 
       if (!resetToken) {
-        res.status(400).json({ message: "Email not found" });
+        res.status(400).json({ success: false, message: "Email not found" });
         return;
       }
 
@@ -151,23 +172,23 @@ export class UserController {
       });
 
       if (isSent) {
-        res.status(200).json({ message: "Email sent" });
+        res.status(200).json({ success: true, message: "Email sent" });
       } else {
-        res.status(401).json({ message: "Sending failed" });
+        res.status(401).json({ success: false, message: "Sending failed" });
       }
     } catch (error) {
       handleError(res, error);
     }
   }
 
-  async sendResetSuccessfulEmail(req: Request, res: Response) {
-    try {
-      const data: IBaseSendEmailRequest = req.body;
-      await this.userService.sendResetSuccessfulEmail(data);
+  // async sendResetSuccessfulEmail(req: Request, res: Response) {
+  //   try {
+  //     const data: IBaseSendEmailRequest = req.body;
+  //     await this.userService.sendResetSuccessfulEmail(data);
 
-      res.status(200).json({ message: "Email sent" });
-    } catch (error) {
-      handleError(res, error);
-    }
-  }
+  //     res.status(200).json({ message: "Email sent" });
+  //   } catch (error) {
+  //     handleError(res, error);
+  //   }
+  // }
 }

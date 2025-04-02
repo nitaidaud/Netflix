@@ -1,8 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
-import Container from "../components/shared/Container";
-import Typography from "../components/shared/Typography";
-import Signup from "../features/Signup";
+import Container from "@/components/shared/Container";
+import Typography from "@/components/shared/Typography";
 import STRINGS from "@/components/ui/auth/STRINGS";
+import Signup from "@/features/auth/signup";
 
 const SignupPage = () => {
   const location = useLocation();
@@ -16,7 +16,7 @@ const SignupPage = () => {
         </Typography>
         <Signup defaultEmail={defaultEmail} />
         <div className="text-sm text-gray-400 text-center mt-4">
-          {STRINGS.AlreadyHaveAnAcount}{" "}
+          {STRINGS.AlreadyHaveAnAccount}{" "}
           <Link
             to="/signin"
             className="text-white font-medium hover:underline cursor-pointer"

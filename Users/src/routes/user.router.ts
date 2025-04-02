@@ -50,7 +50,11 @@ userRouter.post("/send-email", (req: Request, res: Response) => {
   userController.sendVerificationMail(req, res);
 });
 
-userRouter.post("/reset-password/:id", (req: Request, res: Response) => {
+userRouter.post("/verify-email/:tokenId", (req: Request, res: Response) => {
+  userController.verifyEmail(req, res);
+});
+
+userRouter.post("/reset-password/:token", (req: Request, res: Response) => {
   userController.resetPassword(req, res);
 });
 

@@ -8,41 +8,16 @@ import { SigninFormData, signinSchema } from "@/schemas/auth.schema";
 import { signin } from "@/store/slice/auth.slice";
 import { useAppDispatch, useAppSelector } from "@/store/Store";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { LucideLoader } from "lucide-react";
 
-// const Signin: React.FC = () => {
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-
-//   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-//     e.preventDefault();
-//     console.log("Signing in with", { email, password });
-//   };
-
-//   return (
-//     <div >
-// <form onSubmit={handleSubmit} className="space-y-4">
-//   <input
-//     type="email"
-//     placeholder="Email or phone number"
-//     className="w-full bg-transparent border border-gray-500 focus:border-white focus:outline-none text-white px-4 py-3 rounded placeholder-gray-400"
-//     value={email}
-//     onChange={(e) => setEmail(e.target.value)}
-//   />
-//   <input
-//     type="password"
-//     placeholder="Password"
-//     className="w-full bg-transparent border border-gray-500 focus:border-white focus:outline-none text-white px-4 py-3 rounded placeholder-gray-400"
-//     value={password}
-//     onChange={(e) => setPassword(e.target.value)}
-//   />
-// </form>
-//     </div>
-//   );
-// };
-
-const Signin = () => {
+const SigninForm = () => {
   const dispatch = useAppDispatch();
   const error = useAppSelector((state) => state.auth.error);
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -52,9 +27,23 @@ const Signin = () => {
     resolver: zodResolver(signinSchema),
   });
 
-  const onSubmit = (data: SigninFormData) => {
-    dispatch(signin(data));
+  const onSubmit = async (data: SigninFormData) => {
+    setLoading(true);
+
+    try {
+      await dispatch(signin(data));
+    } catch (err) {
+      console.error("Signin failed:", err);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/", { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -73,18 +62,19 @@ const Signin = () => {
         {...register("password")}
       />
       {error && (
-        <Typography className="text-red-500" size="text-sm">
+        <Typography className="px-2" color="text-red-500" size="text-sm">
           {error}
         </Typography>
       )}
       <Button
         type="submit"
         className="w-full bg-red-600 hover:bg-red-700 font-bold text-lg py-3 rounded"
+        disabled={loading}
       >
-        Sign In
+        {loading ? <LucideLoader className="animate-spin" /> : "Sign In"}
       </Button>
     </Form>
   );
 };
 
-export default Signin;
+export default SigninForm;

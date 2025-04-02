@@ -1,37 +1,81 @@
-import axios from 'axios';
-import { apiBaseUrl } from '@/config/config';
-import { SigninFormData, SignupFormData } from '@/schemas/auth.schema';
-
+import axios from "axios";
+import { apiBaseUrl } from "@/config/config";
+import { SigninFormData, SignupFormData } from "@/schemas/auth.schema";
+import ISendMailResponse from "./interfaces/IVerifyMailResponse";
 
 const api = axios.create({
-    baseURL: apiBaseUrl,
-    timeout: 1000 * 60,
-    withCredentials: true
-})
+  baseURL: apiBaseUrl,
+  timeout: 1000 * 60,
+  withCredentials: true,
+});
 
 export interface BaseApiResponse {
-    message: string
+  message: string;
 }
 
 export interface AuthResponse extends BaseApiResponse {
-    token: string
+  token: string;
 }
 
 export const signinRequest = async (
-    formData : SigninFormData
+  formData: SigninFormData,
 ): Promise<AuthResponse> => {
-    const { data } = await api.post("/api/users/login", formData);
-    return data;
+  const { data } = await api.post<AuthResponse>("/api/users/login", formData);
+  return data;
 };
 
 export const signupRequest = async (
-    formData: SignupFormData
+  formData: SignupFormData,
 ): Promise<AuthResponse> => {
-    const { data } = await api.post("/api/users/signup", {
-        email: formData.email,
-        name: formData.name,
-        password: formData.password,
+  const { data } = await api.post<AuthResponse>("/api/users/signup", {
+    email: formData.email,
+    name: formData.name,
+    password: formData.password,
+  });
+
+  if (data.token) {
+    await api.post(`/api/users/send-email`, {
+      email: formData.email,
     });
-    return data;
+  }
+
+  return data;
 };
 
+export const newVerification = async (
+  token: string,
+): Promise<ISendMailResponse> => {
+  const { data } = await api.post<ISendMailResponse>(
+    `/api/users/verify-email/${token}`,
+  );
+  return data;
+};
+
+export const forgotPassword = async (
+  email: string,
+): Promise<ISendMailResponse> => {
+  const { data } = await api.post<ISendMailResponse>(
+    `/api/users/forgot-password`,
+    {
+      email,
+    },
+  );
+  return data;
+};
+
+export const resetPassword = async (
+  token: string,
+  password: string,
+): Promise<ISendMailResponse> => {
+  const { data } = await api.post<ISendMailResponse>(
+    `/api/users/reset-password/${token}`,
+    {
+      password,
+    },
+  );
+  return data;
+};
+
+export const logoutRequest = async () => {
+  await api.post("/api/users/logout");
+};

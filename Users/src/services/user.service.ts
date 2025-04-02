@@ -136,19 +136,19 @@ export class UserService implements IUserService {
 
   //TODO: check if need to get the confirm password
   async resetPassword(
-    id: string,
+    token: string,
     data: ResetPasswordRequestDTO,
-  ): Promise<boolean> {
+  ): Promise<IUser | null> {
     const { password } = data;
 
     if (!password) {
       throw new Error("Invalid data");
     }
 
-    const user = await this.userRepository.findById(id);
+    const user = await this.userRepository.findByResetPasswordToken(token);
 
     if (!user) {
-      throw new Error("User not found!");
+      throw new Error("Invalid or expired token");
     }
 
     const hashedPassword = await hash(password);
@@ -157,9 +157,7 @@ export class UserService implements IUserService {
       password: hashedPassword,
     });
 
-    const isUpdated = !!updatedUser;
-
-    return isUpdated;
+    return updatedUser;
   }
 
   async forgotPassword(data: ISendResetPasswordEmail): Promise<boolean> {

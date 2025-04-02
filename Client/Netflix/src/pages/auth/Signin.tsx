@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
-import Container from "../components/shared/Container";
-import Typography from "../components/shared/Typography";
-import Signin from "../features/Signin";
-import { Button } from "@/components/ui/button";
-import STRINGS from "../components/ui/auth/STRINGS";
-
+import Container from "../../components/shared/Container";
+import Typography from "../../components/shared/Typography";
+import STRINGS from "../../components/ui/auth/STRINGS";
+import SigninForm from "../../features/auth/signin";
 
 const SigninPage = () => {
   return (
@@ -13,10 +11,10 @@ const SigninPage = () => {
         <Typography size="text-2xl" weight="font-bold" className="mb-4">
           {STRINGS.SignIn}
         </Typography>
-        <Signin />
+        <SigninForm />
         <div className="flex justify-between items-center text-sm text-gray-400 mt-2">
           <span className="hover:underline cursor-pointer">
-            {STRINGS.ForgotPassword}
+            <Link to="/forgot-password">{STRINGS.ForgotPassword}</Link>
           </span>
           <label className="flex items-center space-x-2 cursor-pointer">
             <input

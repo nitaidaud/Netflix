@@ -46,7 +46,6 @@ export class MovieService implements IMovieService {
     return res.data.results.slice(0, 10);
   }
 
-  //TODO: check the response
   async getTrailerById(Id: string) {
     const {data} = await tmbd.get(`/movie/${Id}/videos`);
     

@@ -1,4 +1,5 @@
 import IBaseMovie from "./IBaseMovie";
+import IHomeContent from "./IHomeContent";
 
 export default interface IMovieService {
     getPopularMovies(): Promise<IBaseMovie[]>;
@@ -19,5 +20,6 @@ export default interface IMovieService {
     getCrimeMovies(): Promise<IBaseMovie[]>;
     getDocumentaryMovies(): Promise<IBaseMovie[]>;
 
-    getHomeContent(): Promise<any>;
+
+    getHomeContent(): Promise<IHomeContent>;
  }

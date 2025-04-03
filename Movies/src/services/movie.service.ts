@@ -1,9 +1,11 @@
 import { injectable } from "inversify";
-import IMovieService from "../interfaces/IMovieService";
 import tmbd from "../api/tmdb";
-import IBaseResponse from "../interfaces/IBaseResponse";
-import genres from "../utils/genres";
 import IBaseMovie from "../interfaces/IBaseMovie";
+import IBaseResponse from "../interfaces/IBaseResponse";
+import IMovieService from "../interfaces/IMovieService";
+import ITrailerResponse from "../interfaces/ITrailerResponse";
+import genres from "../utils/genres";
+import IHomeContent from "../interfaces/IHomeContent";
 
 @injectable()
 export class MovieService implements IMovieService {
@@ -47,63 +49,71 @@ export class MovieService implements IMovieService {
   }
 
   async getTrailerById(Id: string) {
-    const {data} = await tmbd.get(`/movie/${Id}/videos`);
-    
-    if (data.results.length) return data.results[0].key;
+    const { data } = await tmbd.get<ITrailerResponse | null>(
+      `/movie/${Id}/videos`,
+    );
+
+    if (data) return data.results[0].key;
     return null;
   }
 
   async getMoviesByPage(page?: number) {
-    const res = await tmbd.get(`/discover/movie`, { params: { page } });
+    const res = await tmbd.get<IBaseResponse>(`/discover/movie`, {
+      params: { page },
+    });
     return res.data.results;
   }
 
   async getNewMovies(): Promise<IBaseMovie[]> {
-    const res = await tmbd.get(`/movie/now_playing`);
+    const res = await tmbd.get<IBaseResponse>(`/movie/now_playing`);
     return res.data.results;
   }
 
   async getComedyMovies(): Promise<IBaseMovie[]> {
-    const res = await tmbd.get(`/discover/movie?with_genres=35`);
+    const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=35`);
     return res.data.results;
   }
 
   async getHorrorMovies(): Promise<IBaseMovie[]> {
-    const res = await tmbd.get(`/discover/movie?with_genres=27`);
+    const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=27`);
     return res.data.results;
   }
 
   async getActionMovies(): Promise<IBaseMovie[]> {
-    const res = await tmbd.get(`/discover/movie?with_genres=28`);
+    const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=28`);
     return res.data.results;
   }
 
   async getRomanceMovies(): Promise<IBaseMovie[]> {
-    const res = await tmbd.get(`/discover/movie?with_genres=10749`);
+    const res = await tmbd.get<IBaseResponse>(
+      `/discover/movie?with_genres=10749`,
+    );
     return res.data.results;
   }
 
   async getKidsMovies(): Promise<IBaseMovie[]> {
-    const res = await tmbd.get(`/discover/movie?with_genres=10762`);
+    const res = await tmbd.get<IBaseResponse>(
+      `/discover/movie?with_genres=10762`,
+    );
     return res.data.results;
   }
 
   async getAnimationMovies(): Promise<IBaseMovie[]> {
-    const res = await tmbd.get(`/discover/movie?with_genres=16`);
+    const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=16`);
     return res.data.results;
   }
 
   async getCrimeMovies(): Promise<IBaseMovie[]> {
-    const res = await tmbd.get(`/discover/movie?with_genres=80`);
+    const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=80`);
     return res.data.results;
   }
 
   async getDocumentaryMovies(): Promise<IBaseMovie[]> {
-    const res = await tmbd.get(`/discover/movie?with_genres=99`);
+    const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=99`);
     return res.data.results;
   }
 
-  async getHomeContent(): Promise<any> {
+  async getHomeContent(): Promise<IHomeContent> {
     const [
       newMovies,
       comedy,
@@ -115,27 +125,27 @@ export class MovieService implements IMovieService {
       crime,
       documentary,
     ] = await Promise.all([
-      this.getNewMovies(),
-      this.getComedyMovies(),
-      this.getHorrorMovies(),
-      this.getActionMovies(),
-      this.getRomanceMovies(),
-      this.getKidsMovies(),
-      this.getAnimationMovies(),
-      this.getCrimeMovies(),
-      this.getDocumentaryMovies(),
+      tmbd.get<IBaseResponse>(`/movie/now_playing`),
+      tmbd.get<IBaseResponse>(`/discover/movie?with_genres=35`),
+      tmbd.get<IBaseResponse>(`/discover/movie?with_genres=27`),
+      tmbd.get<IBaseResponse>(`/discover/movie?with_genres=28`),
+      tmbd.get<IBaseResponse>(`/discover/movie?with_genres=10749`),
+      tmbd.get<IBaseResponse>(`/discover/movie?with_genres=10762`),
+      tmbd.get<IBaseResponse>(`/discover/movie?with_genres=16`),
+      tmbd.get<IBaseResponse>(`/discover/movie?with_genres=80`),
+      tmbd.get<IBaseResponse>(`/discover/movie?with_genres=99`),
     ]);
 
     return {
-      new: newMovies,
-      comedy,
-      horror,
-      action,
-      romance,
-      kids,
-      animation,
-      crime,
-      documentary,
+      newMovies: newMovies.data.results,
+      comedy: comedy.data.results,
+      horror: horror.data.results,
+      action: action.data.results,
+      romance: romance.data.results,
+      kids: kids.data.results,
+      animation: animation.data.results,
+      crime: crime.data.results,
+      documentary: documentary.data.results,
     };
   }
 }

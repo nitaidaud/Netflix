@@ -1,23 +1,23 @@
-import IPopularMovie from "./IPopularMovie";
+import IBaseMovie from "./IBaseMovie";
 
 export default interface IMovieService {
-    getPopularMovies(): Promise<IPopularMovie[]>;
-    getMovieById(id: string): Promise<any>;
-    search(title: string): Promise<any>;
-    getMoviesByGenre(genre: string): Promise<any>;
-    getTopMovies(): Promise<any>;
+    getPopularMovies(): Promise<IBaseMovie[]>;
+    getMovieById(id: string): Promise<IBaseMovie>;
+    search(title: string): Promise<IBaseMovie[]>;
+    getMoviesByGenre(genre: string): Promise<IBaseMovie[]>;
+    getTopMovies(): Promise<IBaseMovie[]>;
     getTrailerById(movieId: string): Promise<string | null>;
     //searchMovies(query: string): Promise<any>;
-    getMoviesByPage(page?: number): Promise<any>;
-    getNewMovies(): Promise<any[]>;
-    getComedyMovies(): Promise<any[]>;
-    getHorrorMovies(): Promise<any[]>;
-    getActionMovies(): Promise<any[]>;
-    getRomanceMovies(): Promise<any[]>;
-    getKidsMovies(): Promise<any[]>;
-    getAnimationMovies(): Promise<any[]>;
-    getCrimeMovies(): Promise<any[]>;
-    getDocumentaryMovies(): Promise<any[]>;
+    getMoviesByPage(page?: number): Promise<IBaseMovie[]>;
+    getNewMovies(): Promise<IBaseMovie[]>;
+    getComedyMovies(): Promise<IBaseMovie[]>;
+    getHorrorMovies(): Promise<IBaseMovie[]>;
+    getActionMovies(): Promise<IBaseMovie[]>;
+    getRomanceMovies(): Promise<IBaseMovie[]>;
+    getKidsMovies(): Promise<IBaseMovie[]>;
+    getAnimationMovies(): Promise<IBaseMovie[]>;
+    getCrimeMovies(): Promise<IBaseMovie[]>;
+    getDocumentaryMovies(): Promise<IBaseMovie[]>;
 
     getHomeContent(): Promise<any>;
  }

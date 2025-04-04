@@ -6,114 +6,336 @@ import IMovieService from "../interfaces/IMovieService";
 import ITrailerResponse from "../interfaces/ITrailerResponse";
 import genres from "../utils/genres";
 import IHomeContent from "../interfaces/IHomeContent";
+import RedisClient from "../config/redis";
+import { TOKENS } from "../../tokens";
+
 
 @injectable()
 export class MovieService implements IMovieService {
+
+  private cacheClient = RedisClient;
+
   async getPopularMovies() {
+    const cacheKey = TOKENS.PopularCacheName;
+
+    // Check if movies exist in Redis
+    const cachedMovies = await this.cacheClient.get(cacheKey);
+    if (cachedMovies) {
+      console.log("Returning popular movies cached data...");
+      const data = JSON.parse(cachedMovies) as IBaseMovie[];
+      return data;
+    }
+    console.log("getting popular movies new data");
+    
+
     const res = await tmbd.get<IBaseResponse>("/movie/popular");
     const movies = res.data.results;
+
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour 
     return movies;
   }
 
-  async getMovieById(id: string) {
+  async getMovieById(id: string) { 
+    const cacheKey = `movie_${id}`;
+
+    const cachedMovies = await this.cacheClient.get(cacheKey);
+    if (cachedMovies) {
+      console.log(`Returning movie ${id} cached data...`);
+      const data = JSON.parse(cachedMovies) as IBaseMovie;
+      return data;
+    }
+    console.log(`getting movie ${id} new data`);
+
     const res = await tmbd.get(`/movie/${id}`);
-    return res.data;
+    const movie = res.data;
+
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movie)); //1 hour
+    return movie;
   }
 
   async search(title: string) {
+    const cacheKey = `search_${title}`;
+    const cachedMovies = await this.cacheClient.get(cacheKey);
+    if (cachedMovies) {
+      console.log(`Returning search results for ${title} cached data...`);
+      const data = JSON.parse(cachedMovies) as IBaseMovie[];
+      return data;
+    }
+    console.log(`getting search results for ${title} new data`);
     const res = await tmbd.get<IBaseResponse>(`/search/movie?query=${title}`);
-    console.log("res", res);
+    const movies = res.data.results;
 
-    return res.data.results;
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
+    return movies;
   }
 
   async getMoviesByGenre(genre: string) {
+    
     if (!genres.has(genre.toLowerCase())) {
       return [];
     }
-
+    
     const genreId = genres.get(genre.toLowerCase());
     if (!genreId) {
       return [];
     }
+    const cacheKey = genre;
+    const cachedMovies = await this.cacheClient.get(cacheKey);
+
+    if (cachedMovies) {
+      console.log(`Returning movies by ${genre} cached data...`);
+      const data = JSON.parse(cachedMovies) as IBaseMovie[];
+      
+      return data;
+    }
+    console.log(`getting ${genre} movies new data`);
 
     const res = await tmbd.get<IBaseResponse>(`/discover/movie`, {
       params: { with_genres: genreId },
     });
+    
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(res.data.results)); //1 hour
     return res.data.results;
   }
 
   async getTopMovies() {
+    const cacheKey = "top_movies";
+    const cachedMovies = await this.cacheClient.get(cacheKey);
+    if (cachedMovies) {
+      console.log("Returning top movies cached data...");
+      const data = JSON.parse(cachedMovies) as IBaseMovie[];
+      return data;
+    }
+    console.log("getting top movies new data");
+
+
     const res = await tmbd.get<IBaseResponse>("/movie/top_rated");
-    return res.data.results.slice(0, 10);
+    const movies = res.data.results.slice(0, 10);
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
+    return movies;
   }
 
   async getTrailerById(Id: string) {
+    const cacheKey = `trailer_${Id}`;
+    const cached = await this.cacheClient.get(cacheKey);
+
+    if (cached) {
+      console.log(`Returning trailer for movie ${Id} cached data...`);
+      //const data = JSON.parse(cached) as IBaseMovie[];
+      return cached;
+    }
+    console.log(`getting trailer for movie ${Id} new data`);
+
     const { data } = await tmbd.get<ITrailerResponse | null>(
       `/movie/${Id}/videos`,
     );
 
-    if (data) return data.results[0].key;
-    return null;
+    const key = data?.results[0]?.key ?? null;
+
+    if (key) await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(key)); //1 hour
+    return key;
   }
 
   async getMoviesByPage(page?: number) {
+    const cacheKey = `movies_page_${page || 1}`;
+    const cachedMovies = await this.cacheClient.get(cacheKey);
+    if (cachedMovies) {
+      console.log(`Returning movies page ${page || 1} cached data...`);
+      const data = JSON.parse(cachedMovies) as IBaseMovie[];
+      return data;
+    }
+    console.log(`getting movies page ${page || 1} new data`);
     const res = await tmbd.get<IBaseResponse>(`/discover/movie`, {
       params: { page },
     });
+    
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(res.data.results)); //1 hour
+
     return res.data.results;
   }
 
   async getNewMovies(): Promise<IBaseMovie[]> {
+    const cacheKey = "new_movies";
+    const cachedMovies = await this.cacheClient.get(cacheKey);
+
+    if (cachedMovies) {
+      console.log("Returning new movies cached data...");
+      const data = JSON.parse(cachedMovies) as IBaseMovie[];
+      return data;
+    }
+    console.log("getting new movies cached data");
+
     const res = await tmbd.get<IBaseResponse>(`/movie/now_playing`);
-    return res.data.results;
+    const movies = res.data.results
+
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
+    return movies;
   }
 
   async getComedyMovies(): Promise<IBaseMovie[]> {
+
+    const cacheKey = "comedy_movies";
+    const cachedMovies = await this.cacheClient.get(cacheKey);
+    if (cachedMovies) {
+      console.log("Returning comedy movies cached data...");
+      const data = JSON.parse(cachedMovies) as IBaseMovie[];
+      return data;
+    }
+    console.log("getting comedy movies cached data");
+
+
     const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=35`);
-    return res.data.results;
+    const movies = res.data.results
+
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
+    return movies;
   }
 
   async getHorrorMovies(): Promise<IBaseMovie[]> {
+    const cacheKey = "horror_movies";
+    const cachedMovies = await this.cacheClient.get(cacheKey);
+    if (cachedMovies) {
+      console.log("Returning horror movies cached data...");
+      const data = JSON.parse(cachedMovies) as IBaseMovie[];
+      return data;
+    }
+    console.log("getting horror movies cached data");
+
     const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=27`);
-    return res.data.results;
+    const movies = res.data.results;
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
+    return movies;
   }
 
   async getActionMovies(): Promise<IBaseMovie[]> {
+    const cacheKey = "action_movies";
+    const cachedMovies = await this.cacheClient.get(cacheKey);
+
+    if (cachedMovies) {
+      console.log("Returning action movies cached data...");
+      const data = JSON.parse(cachedMovies) as IBaseMovie[];
+      return data;
+    }
+    console.log("getting action movies cached data");
+
     const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=28`);
-    return res.data.results;
+    const movies = res.data.results;
+
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
+    return movies;
   }
 
   async getRomanceMovies(): Promise<IBaseMovie[]> {
+
+    const cacheKey = "romance_movies";
+    const cachedMovies = await this.cacheClient.get(cacheKey);
+    if (cachedMovies) {
+      console.log("Returning romance movies cached data...");
+      const data = JSON.parse(cachedMovies) as IBaseMovie[];
+      return data;
+    }
+    console.log("getting romance movies cached data");
+
+
     const res = await tmbd.get<IBaseResponse>(
       `/discover/movie?with_genres=10749`,
     );
-    return res.data.results;
+    const movies = res.data.results;
+
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
+    return movies;
   }
 
   async getKidsMovies(): Promise<IBaseMovie[]> {
+
+    const cacheKey = "kids_movies";
+    const cachedMovies = await this.cacheClient.get(cacheKey);
+
+    if (cachedMovies) {
+      console.log("Returning kids movies cached data...");
+      const data = JSON.parse(cachedMovies) as IBaseMovie[];
+      return data;
+    }
+    console.log("getting kids movies cached data");
+
     const res = await tmbd.get<IBaseResponse>(
-      `/discover/movie?with_genres=10762`,
+      `/discover/movie?with_genres=10751`,
     );
-    return res.data.results;
+    const movies = res.data.results;
+
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
+    return movies;
   }
 
   async getAnimationMovies(): Promise<IBaseMovie[]> {
+
+    const cacheKey = "animation_movies";
+    const cachedMovies = await this.cacheClient.get(cacheKey);
+
+    if (cachedMovies) {
+      console.log("Returning animation movies cached data...");
+      const data = JSON.parse(cachedMovies) as IBaseMovie[];
+      return data;
+    }
+    console.log("getting animation movies cached data");
+
     const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=16`);
-    return res.data.results;
+    const movies = res.data.results;
+
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
+    return movies;
   }
 
   async getCrimeMovies(): Promise<IBaseMovie[]> {
+
+    const cacheKey = "crime_movies";
+    const cachedMovies = await this.cacheClient.get(cacheKey);
+    if (cachedMovies) {
+      console.log("Returning crime movies cached data...");
+      const data = JSON.parse(cachedMovies) as IBaseMovie[];
+      return data;
+    }
+    console.log("getting crime movies cached data");
+
     const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=80`);
-    return res.data.results;
+    const movies = res.data.results;
+
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
+    return movies;
   }
 
   async getDocumentaryMovies(): Promise<IBaseMovie[]> {
+
+    const cacheKey = "documentary_movies";
+    const cachedMovies = await this.cacheClient.get(cacheKey);
+
+    if (cachedMovies) {
+      console.log("Returning documentary movies cached data...");
+      const data = JSON.parse(cachedMovies) as IBaseMovie[];
+      return data;
+    }
+    console.log("getting documentary movies cached data");
+
     const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=99`);
-    return res.data.results;
+    const movies = res.data.results;
+
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
+    return movies;
   }
 
   async getHomeContent(): Promise<IHomeContent> {
+
+    const cacheKey = "home_content";
+    const cachedContent = await this.cacheClient.get(cacheKey);
+
+    if (cachedContent) {
+      console.log("Returning home content cached data...");
+      const data = JSON.parse(cachedContent) as IHomeContent;
+      return data;
+    }
+    console.log("getting home content cached data");
+
+
     const [
       newMovies,
       comedy,
@@ -136,7 +358,7 @@ export class MovieService implements IMovieService {
       tmbd.get<IBaseResponse>(`/discover/movie?with_genres=99`),
     ]);
 
-    return {
+    const result = {
       newMovies: newMovies.data.results,
       comedy: comedy.data.results,
       horror: horror.data.results,
@@ -147,5 +369,9 @@ export class MovieService implements IMovieService {
       crime: crime.data.results,
       documentary: documentary.data.results,
     };
+
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(result)); //1 hour
+    return result;
+    
   }
 }

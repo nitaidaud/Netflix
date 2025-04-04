@@ -147,6 +147,8 @@ export class MovieController {
 
   async getKidsMovies(req: Request, res: Response): Promise<void> {
     try {
+      console.log("get kids movies");
+      
       const movies = await this.movieService.getKidsMovies();
       res.json(movies);
     } catch (err) {

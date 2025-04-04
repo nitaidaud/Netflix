@@ -24,7 +24,7 @@ movieRouter.get("/genre/:genre", (req: Request, res: Response) => {
   movieController.getMoviesByGenre(req, res);
 })
 
-movieRouter.get("/:id", (req: Request, res: Response) => {
+movieRouter.get("/getMovieById/:id", (req: Request, res: Response) => {
   movieController.getMovieById(req, res);
 })
 
@@ -40,56 +40,53 @@ movieRouter.get("/movies", (req, res) =>
   movieController.getMoviesByPage(req, res),
 );
 
-movieRouter.post("/new", (req, res) =>{
+movieRouter.get("/new", (req, res) =>{
 
-  
   movieController.getNewMovies(req, res)
 }
 );
 
-movieRouter.post("/comedy", (req, res) =>{
-  console.log("ahhhh");
-  
+movieRouter.get("/comedy", (req, res) =>{
   movieController.getComedyMovies(req, res)
 }
 );
 
-movieRouter.post("/horror", (req, res) =>{
+movieRouter.get("/horror", (req, res) =>{
   movieController.getHorrorMovies(req, res)
 }
 );
 
-movieRouter.post("/action", (req, res) =>{
+movieRouter.get("/action", (req, res) =>{
   movieController.getActionMovies(req, res)
 }
 );
 
-movieRouter.post("/romance", (req, res) =>{
+movieRouter.get("/romance", (req, res) =>{
   movieController.getRomanceMovies(req, res)
 }
 );
 
-movieRouter.post("/kids", (req, res) =>{
+movieRouter.get("/kids", (req: Request, res: Response) =>{
   movieController.getKidsMovies(req, res)
 }
 );
 
-movieRouter.post("/animation", (req, res) =>{
+movieRouter.get("/animation", (req, res) =>{
   movieController.getAnimationMovies(req, res)
 }
 );
 
-movieRouter.post("/crime", (req, res) =>{
+movieRouter.get("/crime", (req, res) =>{
   movieController.getCrimeMovies(req, res)
 }
 );
 
-movieRouter.post("/documentary", (req, res) =>{
+movieRouter.get("/documentary", (req, res) =>{
   movieController.getDocumentaryMovies(req, res)
 }
 );
 
-movieRouter.post("/home", (req, res) =>{
+movieRouter.get("/home", (req, res) =>{
   movieController.getHomeContent(req, res)
 }
 );

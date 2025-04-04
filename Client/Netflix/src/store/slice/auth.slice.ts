@@ -7,6 +7,7 @@ import {
   logoutRequest,
   signinRequest,
   signupRequest,
+  verifyEmailRequest,
 } from "../../api/api";
 
 interface AuthState {
@@ -14,8 +15,16 @@ interface AuthState {
   email: string;
   token: string;
   isAuthenticated: boolean;
+  emailVerified: boolean;
   success: string | null;
   error: string | null;
+}
+
+// Define a type for the verification response
+interface VerifyEmailResponse {
+  success: boolean;
+  message: string;
+  emailVerified: boolean;
 }
 
 const initialState: AuthState = {
@@ -23,6 +32,7 @@ const initialState: AuthState = {
   email: "",
   token: "",
   isAuthenticated: false,
+  emailVerified: false,
   success: null,
   error: null,
 };
@@ -72,16 +82,32 @@ export const logout = createAsyncThunk(
   },
 );
 
+export const verifyEmail = createAsyncThunk<
+  VerifyEmailResponse,
+  string,
+  { rejectValue: string }
+>("auth/verify-email", async (token: string, { rejectWithValue }) => {
+  try {
+    console.log("in verify email thunk", token);
+    const res = await verifyEmailRequest(token);
+
+    // Return both the API response and our custom field
+    return {
+      ...res,
+      emailVerified: res.success,
+    };
+  } catch (error) {
+    return rejectWithValue(getErrorMessage(error));
+  }
+});
+
 export const checkAuth = createAsyncThunk(
   "auth/check-auth",
   async (_, { rejectWithValue }) => {
     try {
-      const isAuthenticated = await checkAuthRequest();
+      const authCheck = await checkAuthRequest();
 
-      console.log("isAuthenticated in checkAuth", isAuthenticated);
-      
-
-      return isAuthenticated;
+      return authCheck;
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
       return rejectWithValue(errorMessage);
@@ -114,7 +140,7 @@ const authSlice = createSlice({
         state.token = action.payload.token;
         state.email = action.payload.email;
         state.name = action.payload.name;
-        state.isAuthenticated = true;
+        state.isAuthenticated = false;
         state.success = "Email Sent Successfully";
         state.error = null;
       })
@@ -138,11 +164,21 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       })
       .addCase(checkAuth.fulfilled, (state, action) => {
-        state.isAuthenticated = action.payload;
+        state.isAuthenticated = action.payload.isAuthenticated;
+        state.emailVerified = action.payload.emailVerified ?? false;
       })
       .addCase(checkAuth.rejected, (state, action) => {
         state.error = action.payload as string;
         state.isAuthenticated = false;
+        state.emailVerified = false;
+      })
+      .addCase(verifyEmail.fulfilled, (state, action) => {
+        state.emailVerified = action.payload.emailVerified;
+        state.success = action.payload.message;
+      })
+      .addCase(verifyEmail.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.emailVerified = false;
       });
   },
 });

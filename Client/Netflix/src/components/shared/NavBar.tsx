@@ -1,12 +1,12 @@
 import { newVerificationRequest } from "@/api/api";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/store/Store";
-import { useEffect, useState, useTransition } from "react";
-import { Button } from "../ui/button";
-import Typography from "./Typography";
-import STRINGS from "./STRINGS";
 import { X } from "lucide-react";
+import { useState, useTransition } from "react";
 import { useLocation } from "react-router-dom";
+import { Button } from "../ui/button";
+import STRINGS from "./STRINGS";
+import Typography from "./Typography";
 
 type NavBarProps = {
   children: React.ReactNode;

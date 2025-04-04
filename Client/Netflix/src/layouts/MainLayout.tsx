@@ -1,7 +1,4 @@
-import { ReactNode, useEffect, useTransition } from "react";
-import { useAppDispatch } from "../store/Store";
-import { checkAuth } from "../store/slice/auth.slice";
-import { LucideLoader } from "lucide-react";
+import { ReactNode } from "react";
 import NetflixNavBar from "../components/shared/NeftlixNavBar";
 
 type MainLayoutProps = {

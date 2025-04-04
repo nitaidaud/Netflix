@@ -8,16 +8,13 @@ import { SigninFormData, signinSchema } from "@/schemas/auth.schema";
 import { signin } from "@/store/slice/auth.slice";
 import { useAppDispatch, useAppSelector } from "@/store/Store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { LucideLoader } from "lucide-react";
+import { useState } from "react";
 
 const SigninForm = () => {
   const dispatch = useAppDispatch();
   const error = useAppSelector((state) => state.auth.error);
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const {
     register,
@@ -39,11 +36,11 @@ const SigninForm = () => {
     }
   };
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/", { replace: true });
-    }
-  }, [isAuthenticated, navigate]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     navigate("/", { replace: true });
+  //   }
+  // }, [isAuthenticated, navigate]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

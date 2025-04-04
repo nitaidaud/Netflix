@@ -3,6 +3,7 @@ import { apiBaseUrl } from "@/config/config";
 import { SigninFormData, SignupFormData } from "@/schemas/auth.schema";
 import ISendMailResponse from "./interfaces/IVerifyMailResponse";
 import IAuthResponse from "./interfaces/IAuthResponse";
+import IUser from "./interfaces/IUser";
 
 const api = axios.create({
   baseURL: apiBaseUrl,
@@ -43,12 +44,31 @@ export const signupRequest = async (
   return data;
 };
 
-export const newVerification = async (
+export const newVerificationRequest = async () => {
+  const { data: userData } = await api.get<IUser | null>("/api/users/get-user");
+
+  if (!userData) {
+    throw new Error("User not found");
+  }
+  console.log("userData", userData);
+
+  const { email } = userData;
+  console.log("email", email);
+
+  const { data } = await api.post<ISendMailResponse>(`/api/users/send-email`, {
+    email,
+  });
+
+  return data;
+};
+
+export const verifyEmailRequest = async (
   token: string,
 ): Promise<ISendMailResponse> => {
   const { data } = await api.post<ISendMailResponse>(
     `/api/users/verify-email/${token}`,
   );
+
   return data;
 };
 
@@ -82,11 +102,7 @@ export const logoutRequest = async () => {
 };
 
 export const checkAuthRequest = async () => {
-  const { data } = await api.post<IAuthResponse>(
-    "/api/users/check-auth",
-    {},
-    { timeout: 1000 },
-  );
+  const { data } = await api.post<IAuthResponse>("/api/users/check-auth");
 
-  return data.isAuthenticated;
+  return data;
 };

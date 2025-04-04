@@ -69,7 +69,11 @@ export class VerificationTokenService implements IVerificationTokenService {
   }
 
   async verifyEmail(tokenId: string): Promise<IVerifyResponse> {
+    console.log("tokenId", tokenId);
+
     const token = await this.verificationTokenRepository.findById(tokenId);
+
+    console.log("token", token);
 
     if (!token) {
       return { success: false, message: "Invalid token" };

@@ -14,6 +14,7 @@ import IUserRepository from "../interfaces/IUserRepository";
 import IUserService from "../interfaces/IUserService";
 import { hash } from "../utils/bcrypt";
 import { sign } from "../utils/jwt";
+import IAuthResponse from "../interfaces/IAuthResponse";
 
 @injectable()
 export class UserService implements IUserService {
@@ -185,5 +186,18 @@ export class UserService implements IUserService {
       console.error(error);
       throw new Error("Email sending failed!");
     }
+  }
+
+  async checkAuth(id: string): Promise<IAuthResponse> {
+    const user = await this.userRepository.findById(id);
+
+    if (!user) {
+      return { isAuthenticated: false, emailVerified: false };
+    }
+
+    return {
+      isAuthenticated: true,
+      emailVerified: user.emailVerified ?? false,
+    };
   }
 }

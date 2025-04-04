@@ -2,6 +2,7 @@ import LoginRequestDTO from "../DTOs/login.dto";
 import ResetPasswordRequestDTO from "../DTOs/reset-password.dto";
 import SignupRequestDTO from "../DTOs/signup.dto";
 import UpdateRequestDTO from "../DTOs/update.dto";
+import IAuthResponse from "./IAuthResponse";
 import IBaseSendEmailRequest from "./IBaseSendEmailRequest";
 import ISendResetPasswordEmail from "./ISendResetPasswordEmail";
 import ISendEmailVerificationRequest from "./ISendVerificationEmailRequest";
@@ -16,4 +17,5 @@ export default interface IUserService {
   resetPassword(token: string, data: ResetPasswordRequestDTO): Promise<IUser | null>;
   forgotPassword(data: ISendResetPasswordEmail): Promise<boolean>;
   sendResetSuccessfulEmail(data: IBaseSendEmailRequest): Promise<void>;
+  checkAuth(id: string): Promise<IAuthResponse>;
 }

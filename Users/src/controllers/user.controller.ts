@@ -25,9 +25,9 @@ export class UserController {
 
       const token = await this.userService.signup(data);
 
-      res.cookie(TOKENS.token, token, {
-        httpOnly: true,
-      });
+      // res.cookie(TOKENS.token, token, {
+      //   httpOnly: true,
+      // });
 
       res.status(200).json({ message: "signup successfully", token });
     } catch (error) {
@@ -62,11 +62,20 @@ export class UserController {
 
   async getUser(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const { Token } = req.cookies;
+      if (!Token) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
 
-      const user = await this.userService.getUser(id);
+      const userId = verify(Token);
 
-      res.status(200).json({ message: "User found", user });
+      if (!userId) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      const user = await this.userService.getUser(userId.id);
+
+      res.status(200).json({ message: "User found", ...user });
     } catch (error) {
       handleError(res, error);
     }
@@ -74,10 +83,20 @@ export class UserController {
 
   async updateUser(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const { Token } = req.cookies;
+      if (!Token) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      const userId = verify(Token);
+
+      if (!userId) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
       const data: UpdateRequestDTO = req.body;
 
-      const updateUser = await this.userService.updateUser(id, data);
+      const updateUser = await this.userService.updateUser(userId.id, data);
 
       if (updateUser) {
         res.status(200).json({ message: "User updated", updateUser });
@@ -95,7 +114,7 @@ export class UserController {
       const { email } = data;
 
       if (!email || email == "") {
-        return res.status(400).json({ message: "Email is required" });
+        return res.status(400).json({ message: "Email is required", success: false });
       }
 
       const verificationToken =
@@ -107,9 +126,9 @@ export class UserController {
       });
 
       if (isSent) {
-        res.status(200).json({ message: "Email sent" });
+        res.status(200).json({ message: "Email sent", success: true });
       } else {
-        res.status(401).json({ message: "Sending failed" });
+        res.status(401).json({ message: "Sending failed", success: false });
       }
     } catch (error) {
       handleError(res, error);
@@ -186,14 +205,19 @@ export class UserController {
     const { Token } = req.cookies;
 
     if (!Token) {
-      return res.json({ isAuthenticated: false });
+      return res.json({ isAuthenticated: false, emailVerified: false });
     }
 
     try {
-      const decoded = verify(Token);
-      console.log("decoded", decoded);
+      const userId = verify(Token);
+      if (!userId) {
+        return res.json({ isAuthenticated: false, emailVerified: false });
+      }
+      const authCheck = await this.userService.checkAuth(userId.id);
 
-      res.json({ isAuthenticated: !!decoded });
+      console.log("authCheck", authCheck);
+
+      return res.json(authCheck);
     } catch (error) {
       handleError(res, error);
     }

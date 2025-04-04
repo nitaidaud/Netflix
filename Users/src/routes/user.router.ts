@@ -33,7 +33,7 @@ userRouter.post("/logout", (req: Request, res: Response) => {
   userController.logout(req, res);
 });
 
-userRouter.get("/:id", (req: Request, res: Response) => {
+userRouter.get("/get-user", (req: Request, res: Response) => {
   userController.getUser(req, res);
 });
 

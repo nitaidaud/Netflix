@@ -1,8 +1,9 @@
+import { motion, AnimatePresence } from "framer-motion";
 import EmailVerification from "@/features/navbar/EmailVerification";
 import { useAppSelector } from "@/store/Store";
 import { useLocation } from "react-router-dom";
 import VerifiedEmailMessage from "../ui/navbar/VerifiedEmailMessage";
-import STRINGS from "./STRINGS";
+import STRINGS from "../shared/STRINGS";
 
 type NavBarProps = {
   children: React.ReactNode;
@@ -13,20 +14,39 @@ const NavBar: React.FC<NavBarProps> = ({ children, className = "" }) => {
   const authState = useAppSelector((state) => state.auth);
   const { state } = useLocation();
   const cameFromVerifyEmail = (state?.cameFromVerifyEmail as boolean) || false;
-
+  
   return (
-    <nav
-      className={`w-full bg-gradient-to-b from-black to-transparent text-white p-4 ${className}`}
+    <motion.nav
+      className={`w-full text-white p-2 md:p-4 ${className}`}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
     >
-      {cameFromVerifyEmail && (
-        <VerifiedEmailMessage message={STRINGS.emailVerified} />
-      )}
-
-      {!authState.emailVerified && authState.isAuthenticated && (
-        <EmailVerification />
-      )}
+      <AnimatePresence>
+        {cameFromVerifyEmail && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <VerifiedEmailMessage message={STRINGS.emailVerified} />
+          </motion.div>
+        )}
+        
+        {!authState.emailVerified && authState.isAuthenticated && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            transition={{ duration: 0.3 }}
+          >
+            <EmailVerification />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
       {children}
-    </nav>
+    </motion.nav>
   );
 };
 

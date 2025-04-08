@@ -13,7 +13,7 @@ const SigninPage = () => {
         </Typography>
         <SigninForm />
         <div className="flex justify-between items-center text-sm text-gray-400 mt-2">
-          <span className="hover:underline cursor-pointer">
+          <span className="hover:underline cursor-pointer text-[#646cff]">
             <Link to="/forgot-password">{STRINGS.ForgotPassword}</Link>
           </span>
           <label className="flex items-center space-x-2 cursor-pointer">
@@ -28,7 +28,7 @@ const SigninPage = () => {
           {STRINGS.NewToNetflix}{" "}
           <Link
             to="/signup"
-            className="text-white font-medium hover:underline cursor-pointer"
+            className="text-[#646cff] font-medium hover:underline cursor-pointer"
           >
             {STRINGS.SignUpNow}
           </Link>

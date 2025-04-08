@@ -36,12 +36,6 @@ const SigninForm = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     navigate("/", { replace: true });
-  //   }
-  // }, [isAuthenticated, navigate]);
-
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <Input

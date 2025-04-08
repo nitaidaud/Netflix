@@ -99,7 +99,7 @@ export class MovieService implements IMovieService {
   }
 
   async getTopMovies() {
-    const cacheKey = "top_movies";
+    const cacheKey = TOKENS.TopMoviesCache;
     const cachedMovies = await this.cacheClient.get(cacheKey);
     if (cachedMovies) {
       console.log("Returning top movies cached data...");
@@ -155,7 +155,7 @@ export class MovieService implements IMovieService {
   }
 
   async getNewMovies(): Promise<IBaseMovie[]> {
-    const cacheKey = "new_movies";
+    const cacheKey = TOKENS.NewMoviesCache;
     const cachedMovies = await this.cacheClient.get(cacheKey);
 
     if (cachedMovies) {
@@ -174,7 +174,7 @@ export class MovieService implements IMovieService {
 
   async getComedyMovies(): Promise<IBaseMovie[]> {
 
-    const cacheKey = "comedy_movies";
+    const cacheKey = TOKENS.ComedyMoviesCache;
     const cachedMovies = await this.cacheClient.get(cacheKey);
     if (cachedMovies) {
       console.log("Returning comedy movies cached data...");
@@ -192,7 +192,7 @@ export class MovieService implements IMovieService {
   }
 
   async getHorrorMovies(): Promise<IBaseMovie[]> {
-    const cacheKey = "horror_movies";
+    const cacheKey = TOKENS.HorrorMoviesCache;
     const cachedMovies = await this.cacheClient.get(cacheKey);
     if (cachedMovies) {
       console.log("Returning horror movies cached data...");
@@ -208,7 +208,7 @@ export class MovieService implements IMovieService {
   }
 
   async getActionMovies(): Promise<IBaseMovie[]> {
-    const cacheKey = "action_movies";
+    const cacheKey = TOKENS.ActionMoviesCache;
     const cachedMovies = await this.cacheClient.get(cacheKey);
 
     if (cachedMovies) {
@@ -227,7 +227,7 @@ export class MovieService implements IMovieService {
 
   async getRomanceMovies(): Promise<IBaseMovie[]> {
 
-    const cacheKey = "romance_movies";
+    const cacheKey = TOKENS.RomanceMoviesCache;
     const cachedMovies = await this.cacheClient.get(cacheKey);
     if (cachedMovies) {
       console.log("Returning romance movies cached data...");
@@ -248,7 +248,7 @@ export class MovieService implements IMovieService {
 
   async getKidsMovies(): Promise<IBaseMovie[]> {
 
-    const cacheKey = "kids_movies";
+    const cacheKey = TOKENS.KidsMoviesCache;
     const cachedMovies = await this.cacheClient.get(cacheKey);
 
     if (cachedMovies) {
@@ -269,7 +269,7 @@ export class MovieService implements IMovieService {
 
   async getAnimationMovies(): Promise<IBaseMovie[]> {
 
-    const cacheKey = "animation_movies";
+    const cacheKey = TOKENS.AnimationMoviesCache;
     const cachedMovies = await this.cacheClient.get(cacheKey);
 
     if (cachedMovies) {
@@ -288,7 +288,7 @@ export class MovieService implements IMovieService {
 
   async getCrimeMovies(): Promise<IBaseMovie[]> {
 
-    const cacheKey = "crime_movies";
+    const cacheKey = TOKENS.CrimeMoviesCache;
     const cachedMovies = await this.cacheClient.get(cacheKey);
     if (cachedMovies) {
       console.log("Returning crime movies cached data...");
@@ -306,7 +306,7 @@ export class MovieService implements IMovieService {
 
   async getDocumentaryMovies(): Promise<IBaseMovie[]> {
 
-    const cacheKey = "documentary_movies";
+    const cacheKey = TOKENS.DocumentaryMoviesCache;
     const cachedMovies = await this.cacheClient.get(cacheKey);
 
     if (cachedMovies) {
@@ -325,7 +325,7 @@ export class MovieService implements IMovieService {
 
   async getHomeContent(): Promise<IHomeContent> {
 
-    const cacheKey = "home_content";
+    const cacheKey = TOKENS.HomeContantCache;
     const cachedContent = await this.cacheClient.get(cacheKey);
 
     if (cachedContent) {

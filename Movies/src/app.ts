@@ -20,4 +20,3 @@ app.all("*", (req: Request, res: Response) => {
 });
 
 export { app };
-

@@ -31,8 +31,8 @@ export class MovieController {
 
   async search(req: Request, res: Response) {
     try {
-      const { title } = req.params;
-      const movies = await this.movieService.search(title as string);
+      const title: string = req.params.title;
+      const movies = await this.movieService.search(title);
       res.json(movies);
     } catch (error) {
       handleError(res, error);
@@ -148,7 +148,7 @@ export class MovieController {
   async getKidsMovies(req: Request, res: Response): Promise<void> {
     try {
       console.log("get kids movies");
-      
+
       const movies = await this.movieService.getKidsMovies();
       res.json(movies);
     } catch (err) {

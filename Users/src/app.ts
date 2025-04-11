@@ -8,6 +8,8 @@ const app: Application = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+console.log("origin", ORIGIN);
+
 app.use(cors({ origin: ORIGIN, credentials: true }));
 app.use(cookieParser());
 

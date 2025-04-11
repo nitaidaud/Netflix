@@ -1,11 +1,10 @@
-import { useAppSelector } from "@/store/Store";
+import { useAppSelector } from "@/store/store";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import LogoutButton from "../auth/LogoutButton";
 import SigninButton from "../auth/SigninButton";
 import MobileMenu from "../ui/navbar/MobileMenu";
 import NavLinks from "../ui/navbar/NavLinks";
-import NavLogo from "../ui/navbar/NavLogo";
 import NavBar from "./NavBar";
 
 const NetflixNavBar = () => {

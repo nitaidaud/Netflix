@@ -4,6 +4,7 @@ import { SigninFormData, SignupFormData } from "@/schemas/auth.schema";
 import ISendMailResponse from "./interfaces/IVerifyMailResponse";
 import IAuthResponse from "./interfaces/IAuthResponse";
 import IUser from "./interfaces/IUser";
+import IHomeContent from "@/api/interfaces/IHomeContent";
 
 const api = axios.create({
   baseURL: apiBaseUrl,
@@ -104,5 +105,13 @@ export const logoutRequest = async () => {
 export const checkAuthRequest = async () => {
   const { data } = await api.post<IAuthResponse>("/api/users/check-auth");
 
+  return data;
+};
+
+//TODO: set to gateway after implement the gateway
+export const getHomeContentRequest = async () => {
+  const { data } = await axios.get<IHomeContent>(
+    `http://localhost:3001/api/movies/home`,
+  );
   return data;
 };

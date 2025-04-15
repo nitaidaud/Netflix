@@ -1,9 +1,9 @@
-import { motion, AnimatePresence } from "framer-motion";
 import EmailVerification from "@/features/navbar/EmailVerification";
-import { useAppSelector } from "@/store/Store";
+import { useAppSelector } from "@/store/store";
+import { AnimatePresence, motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
-import VerifiedEmailMessage from "../ui/navbar/VerifiedEmailMessage";
 import STRINGS from "../shared/STRINGS";
+import VerifiedEmailMessage from "../ui/navbar/VerifiedEmailMessage";
 
 type NavBarProps = {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ const NavBar: React.FC<NavBarProps> = ({ children, className = "" }) => {
   const authState = useAppSelector((state) => state.auth);
   const { state } = useLocation();
   const cameFromVerifyEmail = (state?.cameFromVerifyEmail as boolean) || false;
-  
+
   return (
     <motion.nav
       className={`w-full text-white p-2 md:p-4 ${className}`}
@@ -33,8 +33,8 @@ const NavBar: React.FC<NavBarProps> = ({ children, className = "" }) => {
             <VerifiedEmailMessage message={STRINGS.emailVerified} />
           </motion.div>
         )}
-        
-        {!authState.emailVerified && authState.isAuthenticated && (
+
+        {authState.isAuthenticated && authState.emailVerified === false && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
@@ -44,7 +44,7 @@ const NavBar: React.FC<NavBarProps> = ({ children, className = "" }) => {
           </motion.div>
         )}
       </AnimatePresence>
-      
+
       {children}
     </motion.nav>
   );

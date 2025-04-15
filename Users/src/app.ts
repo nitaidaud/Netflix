@@ -8,8 +8,14 @@ const app: Application = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: ORIGIN, credentials: true }));
+console.log("origin", ORIGIN);
+
+app.use(cors({ origin: ["http://localhost:5000", "http://localhost:5173"], credentials: true }));
 app.use(cookieParser());
+
+app.get("/api/users/test-direct", (req, res) => {
+  res.send("User service is working directly!");
+});
 
 app.get("/", (req: Request, res: Response) => {
   res.json({ message: "Hello World!" });

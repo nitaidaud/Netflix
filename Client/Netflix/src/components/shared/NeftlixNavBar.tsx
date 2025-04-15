@@ -5,7 +5,6 @@ import LogoutButton from "../auth/LogoutButton";
 import SigninButton from "../auth/SigninButton";
 import MobileMenu from "../ui/navbar/MobileMenu";
 import NavLinks from "../ui/navbar/NavLinks";
-import NavLogo from "../ui/navbar/NavLogo";
 import NavBar from "./NavBar";
 
 const NetflixNavBar = () => {

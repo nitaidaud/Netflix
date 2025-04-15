@@ -1,6 +1,22 @@
+import ActionsMovies from "@/components/home/movies/ActionsMovies";
+import Container from "@/components/shared/Container";
+import useHomeContent from "@/hooks/useHomeContent";
 
 const Home = () => {
-  return <div>Home</div>;
+  const { data, isLoading } = useHomeContent();
+
+  if (isLoading || !data) {
+    return (
+      <Container>
+        <div>Loading...</div>
+      </Container>
+    );
+  }
+  return (
+    <Container>
+      <ActionsMovies movies={data.action} />
+    </Container>
+  );
 };
 
 export default Home;

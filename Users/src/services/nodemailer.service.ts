@@ -13,11 +13,12 @@ import {
   MAIL_HOST,
   MAIL_PASSWORD,
   MAIL_USERNAME,
+  CLIENT,
 } from "../../env_exports";
 
 @injectable()
 export class NodemailerService implements INodemailerService {
-  private origin = ORIGIN!;
+  private origin = CLIENT!;
   private logger = winston.createLogger({
     level: "debug",
     format: winston.format.json(),

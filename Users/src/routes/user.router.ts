@@ -47,6 +47,8 @@ userRouter.post(
 );
 
 userRouter.post("/send-email", (req: Request, res: Response) => {
+  console.log("send email");
+  
   userController.sendVerificationMail(req, res);
 });
 

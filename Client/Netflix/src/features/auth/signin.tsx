@@ -5,17 +5,16 @@ import { useForm } from "react-hook-form";
 
 import Form from "@/components/shared/Form";
 import { SigninFormData, signinSchema } from "@/schemas/auth.schema";
-import { signin } from "@/store/slice/auth.slice";
-import { useAppDispatch, useAppSelector } from "@/store/Store";
+import { checkAuth, signin } from "@/store/slice/auth.slice";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LucideLoader } from "lucide-react";
-import { useState } from "react";
+import { useTransition } from "react";
 
 const SigninForm = () => {
   const dispatch = useAppDispatch();
   const error = useAppSelector((state) => state.auth.error);
-  const [loading, setLoading] = useState(false);
-
+  const [isPending, startTransition] = useTransition();
   const {
     register,
     handleSubmit,
@@ -25,14 +24,15 @@ const SigninForm = () => {
   });
 
   const onSubmit = async (data: SigninFormData) => {
-    setLoading(true);
-
     try {
-      await dispatch(signin(data));
+      startTransition(async () => {
+        await Promise.all([
+          await dispatch(signin(data)),
+          await dispatch(checkAuth()),
+        ]);
+      });
     } catch (err) {
       console.error("Signin failed:", err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -60,9 +60,9 @@ const SigninForm = () => {
       <Button
         type="submit"
         className="w-full bg-red-600 hover:bg-red-700 font-bold text-lg py-3 rounded"
-        disabled={loading}
+        disabled={isPending}
       >
-        {loading ? <LucideLoader className="animate-spin" /> : "Sign In"}
+        {isPending ? <LucideLoader className="animate-spin" /> : "Sign In"}
       </Button>
     </Form>
   );

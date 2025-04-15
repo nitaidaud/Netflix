@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/store/Store";
+import { useAppSelector } from "@/store/store";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import LogoutButton from "../auth/LogoutButton";

@@ -21,14 +21,14 @@ type TypographyProps = {
   spacing?: "tracking-tight" | "tracking-normal" | "tracking-wide";
 };
 
-const Typography: React.FC<TypographyProps> = ({
+const Typography = ({
   children,
   className = "",
   size = "text-md",
   weight = "font-normal",
   color = "text-white",
   spacing = "tracking-normal",
-}) => {
+}: TypographyProps) => {
   return (
     <p className={`${size} ${weight} ${color} ${spacing} ${className}`}>
       {children}

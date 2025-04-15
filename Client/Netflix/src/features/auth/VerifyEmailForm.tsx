@@ -2,7 +2,7 @@ import CardWrapper from "@/components/ui/auth/CardWrapper";
 import { FormError } from "@/components/ui/auth/FormError";
 import { FormSuccess } from "@/components/ui/auth/FormSuccess";
 import { verifyEmail } from "@/store/slice/auth.slice";
-import { useAppDispatch } from "@/store/Store";
+import { useAppDispatch } from "@/store/store";
 import { LucideLoader } from "lucide-react";
 import { useCallback, useEffect, useState, useTransition } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";

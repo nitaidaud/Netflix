@@ -17,7 +17,7 @@ import ResetPassword from "./pages/ResetPassword";
 import SignInPage from "./pages/Signin";
 import SignupPage from "./pages/Signup";
 import VerifyEmail from "./pages/VerifyEmail";
-import { useAppDispatch, useAppSelector } from "./store/Store";
+import { useAppDispatch, useAppSelector } from "./store/store";
 import { checkAuth } from "./store/slice/auth.slice";
 import MoviesPage from "./pages/MoviesPage";
 

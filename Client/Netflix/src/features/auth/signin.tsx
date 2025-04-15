@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import Form from "@/components/shared/Form";
 import { SigninFormData, signinSchema } from "@/schemas/auth.schema";
 import { checkAuth, signin } from "@/store/slice/auth.slice";
-import { useAppDispatch, useAppSelector } from "@/store/Store";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LucideLoader } from "lucide-react";
 import { useTransition } from "react";

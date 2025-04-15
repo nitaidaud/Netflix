@@ -1,9 +1,9 @@
-import { motion, AnimatePresence } from "framer-motion";
 import EmailVerification from "@/features/navbar/EmailVerification";
-import { useAppSelector } from "@/store/Store";
+import { useAppSelector } from "@/store/store";
+import { AnimatePresence, motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
-import VerifiedEmailMessage from "../ui/navbar/VerifiedEmailMessage";
 import STRINGS from "../shared/STRINGS";
+import VerifiedEmailMessage from "../ui/navbar/VerifiedEmailMessage";
 
 type NavBarProps = {
   children: React.ReactNode;

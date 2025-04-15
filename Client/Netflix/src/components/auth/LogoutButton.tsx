@@ -1,9 +1,9 @@
 import { logout } from "@/store/slice/auth.slice";
-import { useAppDispatch } from "@/store/Store";
+import { useAppDispatch } from "@/store/store";
 
 const LogoutButton = () => {
   const dispatch = useAppDispatch();
-  const handleClick = async() => {
+  const handleClick = async () => {
     await dispatch(logout());
   };
 

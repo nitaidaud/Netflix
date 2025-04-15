@@ -4,7 +4,7 @@ import Typography from "@/components/shared/Typography";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
-import React, { useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 
 const EmailVerification = () => {
   const [message, setMessage] = useState<string | null>(null);

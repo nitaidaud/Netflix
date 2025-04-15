@@ -20,6 +20,7 @@ import VerifyEmail from "./pages/VerifyEmail";
 import { useAppDispatch, useAppSelector } from "./store/store";
 import { checkAuth } from "./store/slice/auth.slice";
 import MoviesPage from "./pages/MoviesPage";
+import Browse from "./pages/Browse";
 
 // Layouts
 
@@ -60,6 +61,7 @@ function App() {
                 <Route index element={<Home />} />
                 <Route path="/verify-email" element={<VerifyEmail />} />
                 <Route path="/movies" element={<MoviesPage />} />
+                <Route path="/browse" element={<Browse/>} />
                 <Route path="*" element={<Navigate to="/" />} />
               </>
             ) : (

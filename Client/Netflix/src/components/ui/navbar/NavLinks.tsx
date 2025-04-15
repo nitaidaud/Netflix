@@ -13,7 +13,7 @@ const links = [
   { name: "Movies", href: "/movies" },
   { name: "New & Popular", href: "/new-popular" },
   { name: "My List", href: "/mylist" },
-  { name: "Browse by languages", href: "/languages" },
+  { name: "Browse", href: "/browse" },
 ];
 
 const NavLinks = ({ isAuthenticated, isMobile = false }: NavLinksProps) => {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Typography from "../shared/Typography";
-import Select from "../ui/Browse/select";
+import Select from "../ui/browse/select";
 import SearchBar from "./SearchBar";
 
 const Filters = () => {

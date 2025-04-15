@@ -1,4 +1,4 @@
-import GetStartedSection from "@/components/ui/Landing/GetStartedSection";
+import GetStartedSection from "@/components/ui/landing/GetStartedSection";
 import { Link } from "react-router-dom";
 
 const LandingPage = () => {

@@ -1,5 +1,5 @@
 import Typography from "../../shared/Typography";
-import STRINGS from "../Landing/STRINGS";
+import STRINGS from "./STRINGS";
 
 const GetStartedTitle = () => {
   return (

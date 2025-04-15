@@ -10,7 +10,7 @@ const MoviesGrid = () => {
   useEffect(() => {
     const fetchPopular = async () => {
       try {
-        const { data } = await axios.get("http://localhost:3001/api/movies/popular"); 
+        const { data } = await axios.get("http://localhost:5000/api/movies/popular"); 
         setMovies(data);
       } catch (error) {
         console.error("Error fetching popular movies", error);

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { JWT_KEY } from "../env_exports";
-import IUserPayload from "../interfaces/IUserPayload";
+import IUserPayload from "../Interfaces/IUserPayload";
 
 export const sign = (data: IUserPayload): string => {
   return jwt.sign(data, JWT_KEY!, { expiresIn: "1h" });

@@ -37,7 +37,7 @@ userRouter.get("/get-user", (req: Request, res: Response) => {
   userController.getUser(req, res);
 });
 
-userRouter.post(
+userRouter.patch(
   "/update",
   validateUpdate(),
   handleValidationErrors,
@@ -56,7 +56,7 @@ userRouter.post("/verify-email/:tokenId", (req: Request, res: Response) => {
   userController.verifyEmail(req, res);
 });
 
-userRouter.post("/reset-password/:token", (req: Request, res: Response) => {
+userRouter.patch("/reset-password/:token", (req: Request, res: Response) => {
   userController.resetPassword(req, res);
 });
 

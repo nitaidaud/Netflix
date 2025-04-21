@@ -14,4 +14,4 @@ RUN npm run build
 
 EXPOSE 5173
 
-CMD [ "serve", "-s", "dist" ]
+CMD ["serve", "-s", "dist", "-l", "5173"]

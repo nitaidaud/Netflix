@@ -1,4 +1,4 @@
-import { PORT, validateEnv } from "../env_exports";
+import { PORT, validateEnv } from "./env_exports";
 import { app } from "./app";
 
 const start = async () => {

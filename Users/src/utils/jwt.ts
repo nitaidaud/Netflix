@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { JWT_KEY } from "../../env_exports";
+import { JWT_KEY } from "../env_exports";
 import IUserPayload from "../interfaces/IUserPayload";
 
 export const sign = (data: IUserPayload): string => {

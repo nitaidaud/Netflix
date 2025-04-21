@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SignupFormData, signupSchema } from "@/schemas/auth.schema";
 import { signup } from "@/store/slice/auth.slice";
-import { useAppDispatch, useAppSelector } from "@/store/Store";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LucideLoader } from "lucide-react";
 import { useState } from "react";

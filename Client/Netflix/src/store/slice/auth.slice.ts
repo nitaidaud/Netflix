@@ -109,6 +109,8 @@ export const checkAuth = createAsyncThunk(
 
       return authCheck;
     } catch (error) {
+      console.log("error in check auth", error);
+      
       const errorMessage: string = getErrorMessage(error);
       return rejectWithValue(errorMessage);
     }

@@ -111,7 +111,7 @@ export const checkAuthRequest = async () => {
 //TODO: set to gateway after implement the gateway
 export const getHomeContentRequest = async () => {
   const { data } = await axios.get<IHomeContent>(
-    `http://localhost:3001/api/movies/home`,
+    `http://localhost:5000/api/movies/home`,
   );
   return data;
 };

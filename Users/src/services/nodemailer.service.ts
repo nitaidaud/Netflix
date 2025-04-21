@@ -14,7 +14,7 @@ import {
   MAIL_PASSWORD,
   MAIL_USERNAME,
   CLIENT,
-} from "../../env_exports";
+} from "../env_exports";
 
 @injectable()
 export class NodemailerService implements INodemailerService {
@@ -62,7 +62,7 @@ export class NodemailerService implements INodemailerService {
             <p style="font-size: 18px;">Please verify your email by clicking the button below:</p>
             <a href="${confirmationLink}" style="background: #E50914; color: #fff; padding: 15px 25px; text-decoration: none; font-size: 16px; border-radius: 5px; display: inline-block;">Verify Email</a>
             <p style="font-size: 14px;">If you didn't request this, please ignore this email.</p>
-          </div>`
+          </div>`,
       };
       await this.sendMail(mail);
     } catch (error) {
@@ -87,7 +87,7 @@ export class NodemailerService implements INodemailerService {
             <p style="font-size: 18px;">Click the button below to reset your password:</p>
             <a href="${resetPasswordLink}" style="background: #E50914; color: #fff; padding: 15px 25px; text-decoration: none; font-size: 16px; border-radius: 5px; display: inline-block;">Reset Password</a>
             <p style="font-size: 14px;">If you didn't request this, please ignore this email.</p>
-          </div>`
+          </div>`,
       };
       await this.sendMail(mail);
       return { success: true, message: "Email sent successfully!" };
@@ -110,7 +110,7 @@ export class NodemailerService implements INodemailerService {
             <h1 style="color: #E50914;">Password Reset Successful</h1>
             <p style="font-size: 18px;">Your password has been reset successfully.</p>
             <a href="${dashboardLink}" style="background: #E50914; color: #fff; padding: 15px 25px; text-decoration: none; font-size: 16px; border-radius: 5px; display: inline-block;">Go to Dashboard</a>
-          </div>`
+          </div>`,
       };
       await this.sendMail(mail);
     } catch (error) {

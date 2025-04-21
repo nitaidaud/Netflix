@@ -22,6 +22,6 @@ RUN npm uninstall bcrypt
 # install the bcrypt modules for the machine
 RUN npm install bcrypt
 
-EXPOSE 3000/tcp
+EXPOSE 3000
 
 CMD ["npm", "run", "dev"]

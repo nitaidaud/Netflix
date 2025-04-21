@@ -47,6 +47,8 @@ model VerificationToken {
 
 model Profile {
   id                 String  @id @default(cuid())
+  name               String
+  image              String?
   User               User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId             String?
   moviesFavoriteList Movie[]
@@ -62,7 +64,7 @@ model Movie {
   adult         Boolean
   time          DateTime
   backdrop_path String
-  Profile       Profile? @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profile       Profile? @relation(fields: [profileId], references: [id], onDelete: Cascade)
   profileId     String?
   userId        String?
 

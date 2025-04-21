@@ -5,6 +5,7 @@ import ISendMailResponse from "./interfaces/IVerifyMailResponse";
 import IAuthResponse from "./interfaces/IAuthResponse";
 import IUser from "./interfaces/IUser";
 import IHomeContent from "@/api/interfaces/IHomeContent";
+import IBaseMovie from "./interfaces/IBaseMovie";
 
 const api = axios.create({
   baseURL: apiBaseUrl,
@@ -113,5 +114,10 @@ export const getHomeContentRequest = async () => {
   const { data } = await axios.get<IHomeContent>(
     `http://localhost:5000/api/movies/home`,
   );
+  return data;
+};
+
+export const getMoviesByCategoryRequest = async (category: string) => {
+  const { data } = await axios.get<IBaseMovie>(`${apiBaseUrl}/api/movies/${category.toLowerCase()}`);
   return data;
 };

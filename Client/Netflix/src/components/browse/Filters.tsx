@@ -1,13 +1,14 @@
-import Typography from "../shared/Typography";
-import Select from "../ui/browse/select";
 import SearchBar from "./SearchBar";
+import Typography from "../shared/Typography";
+import Select from "../ui/browse/Select";
 
 type FiltersProps = {
   selectedCategory: string | null;
   setSelectedCategory: (val: string) => void;
+  onSearch: (val: string) => void;
 };
 
-const Filters = ({ selectedCategory, setSelectedCategory }: FiltersProps) => {
+const Filters = ({ selectedCategory, setSelectedCategory, onSearch }: FiltersProps) => {
   return (
     <div className="mt-20 flex justify-between items-center flex-wrap gap-4">
       <div>
@@ -21,7 +22,7 @@ const Filters = ({ selectedCategory, setSelectedCategory }: FiltersProps) => {
           <Typography size="text-lg" weight="font-light">sort by</Typography>
           <Select onChange={setSelectedCategory} />
         </div>
-        <SearchBar />
+        <SearchBar onSearch={onSearch} />
       </div>
     </div>
   );

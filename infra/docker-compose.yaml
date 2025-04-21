@@ -55,6 +55,18 @@ services:
     depends_on:
       - gateway
 
+  profile:
+    build:
+      context: ../Profile
+    container_name: profile
+    ports:
+      - "3002:3002"
+    env_file:
+      - .env
+      - .env.profile
+    networks:
+      - app_network
+
 networks:
   app_network:
     driver: bridge

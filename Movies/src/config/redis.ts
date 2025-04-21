@@ -1,5 +1,10 @@
 import { createClient } from "redis";
-import { REDIS_PASSWORD, REDIS_SOCKET_HOST, REDIS_SOCKET_PORT, REDIS_USERNAME } from "../../env_exports";
+import {
+  REDIS_PASSWORD,
+  REDIS_SOCKET_HOST,
+  REDIS_SOCKET_PORT,
+  REDIS_USERNAME,
+} from "../env_exports";
 
 class RedisClient {
   private static instance: ReturnType<typeof createClient>;
@@ -15,7 +20,9 @@ class RedisClient {
         },
       });
 
-      RedisClient.instance.on("error", (err) => console.error("Redis Client Error", err));
+      RedisClient.instance.on("error", (err) =>
+        console.error("Redis Client Error", err),
+      );
 
       RedisClient.instance.connect();
     }

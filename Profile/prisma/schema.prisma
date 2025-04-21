@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                     String     @id @default(cuid())
+  name                   String
+  email                  String     @unique
+  password               String
+  emailVerified          Boolean?
+  image                  String?
+  createdAt              DateTime   @default(now())
+  updatedAt              DateTime
+  resetPasswordToken     String?    @unique
+  resetPasswordExpiresAt DateTime?
+  profiles               Profile[]
+  sessions               sessions[]
+
+  @@map("users")
+}
+
+model Movie {
+  id            String   @id @default(cuid())
+  name          String
+  image         String
+  genre         Genre[]
+  adult         Boolean
+  time          DateTime
+  backdrop_path String
+  profileId     String?
+  userId        String?
+  profile       Profile? @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@map("movies")
+}
+
+model Profile {
+  id                 String  @id @default(cuid())
+  userId             String?
+  image              String?
+  name               String
+  moviesFavoriteList Movie[]
+  User               User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("profiles")
+}
+
+model sessions {
+  id           String   @id
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime
+  users        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model verification_tokens {
+  id      String   @id
+  email   String
+  token   String   @unique
+  expires DateTime
+}
+
+enum Genre {
+  Action
+  Adventure
+  Animation
+  Comedy
+  Crime
+  Documentary
+  Drama
+  Family
+  Fantasy
+  History
+  Horror
+  Music
+  Mystery
+  Romance
+  Science_Fiction
+  Thriller
+  TV_Movie
+  War
+  Western
+}

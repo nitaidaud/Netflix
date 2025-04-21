@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 
 const categoriesValues = [
-  { value: Categories.TopRated, label: "Top Rated" },
+  { value: Categories.Top, label: "Top" },
   { value: Categories.Action, label: "Action" },
   { value: Categories.Animation, label: "Animation" },
   { value: Categories.Comedy, label: "Comedy" },

@@ -1,5 +1,5 @@
 enum Categories {
-    TopRated,
+    Top,
     Action,
     Animation,
     Comedy,

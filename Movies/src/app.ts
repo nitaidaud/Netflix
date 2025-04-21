@@ -1,6 +1,6 @@
 import cors from "cors";
 import express, { Application, Request, Response } from "express";
-import { ORIGIN } from "../env_exports";
+import { ORIGIN } from "./env_exports";
 import { movieRouter } from "./routes/movie.router";
 
 const app: Application = express();

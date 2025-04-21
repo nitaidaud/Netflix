@@ -5,6 +5,7 @@ import ISendMailResponse from "./interfaces/IVerifyMailResponse";
 import IAuthResponse from "./interfaces/IAuthResponse";
 import IUser from "./interfaces/IUser";
 import IHomeContent from "@/api/interfaces/IHomeContent";
+import IBaseMovie from "./interfaces/IBaseMovie";
 
 const api = axios.create({
   baseURL: apiBaseUrl,
@@ -108,10 +109,23 @@ export const checkAuthRequest = async () => {
   return data;
 };
 
-//TODO: set to gateway after implement the gateway
 export const getHomeContentRequest = async () => {
-  const { data } = await axios.get<IHomeContent>(
-    `http://localhost:3001/api/movies/home`,
+  const { data } = await api.get<IHomeContent>(
+    `/api/movies/home`,
   );
   return data;
 };
+
+export const getMoviesByCategoryRequest = async (category: string) => {
+  const categoryLower = category.toLowerCase();
+  const { data } = await api.get<IBaseMovie[]>(`/api/movies/${categoryLower}`);
+  return data;
+};
+
+export const searchMoviesRequest = async (query: string): Promise<IBaseMovie[]> => {
+  const { data } = await axios.get(`/api/movies/search`, {
+    params: { title: query },
+  });
+  return data;
+};
+

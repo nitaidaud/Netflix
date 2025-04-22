@@ -14,7 +14,7 @@ export class ProfileController {
     private readonly profileService: IProfileService,
   ) {}
   async getProfileById(req: Request, res: Response) {
-    try { 
+    try {
       const profileId: string = req.cookies.profileId;
       const profile = await this.profileService.getProfileById(profileId);
 
@@ -31,7 +31,22 @@ export class ProfileController {
   async createProfile(req: Request, res: Response) {
     try {
       const profileData: IProfilePayload = req.body;
-      const newProfile = await this.profileService.createProfile(profileData);
+      const token: string = req.cookies.Token;
+
+      if (!token) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      const userPayload = verify(token);
+
+      if (!userPayload) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      const newProfile = await this.profileService.createProfile(
+        profileData,
+        userPayload.id,
+      );
 
       //TODO: check if need jwt here
       res.cookie("profileId", newProfile.id, {
@@ -134,11 +149,7 @@ export class ProfileController {
         profileId,
       );
 
-      if (!favoritesList) {
-        return res.status(404).json({ message: "Profile not found" });
-      }
-
-      if (favoritesList.length <= 0) {
+      if (!favoritesList || favoritesList.length <= 0) {
         return res
           .status(200)
           .json({ message: "No favorite list", favoritesList });

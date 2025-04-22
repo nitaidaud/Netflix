@@ -19,7 +19,11 @@ const MoviesGrid = ({ movies, isLoading }: MoviesGridProps) => {
             <MovieCard
               key={movie.id}
               title={movie.title}
-              image={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
+              image={
+                movie.backdrop_path
+                  ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+                  : "/images/not-found-img.png"
+              }
             />
           ))}
         </div>

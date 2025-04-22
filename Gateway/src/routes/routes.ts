@@ -3,7 +3,7 @@ import { createProxyMiddleware } from "http-proxy-middleware";
 
 const USER_SERVICE_URL = "http://users:3000";
 const MOVIES_SERVICE_URL = "http://movies:3001";
-const PROFILES_SERVICE_URL = "http://profile:3001";
+const PROFILES_SERVICE_URL = "http://profile:3002";
 
 // Create router instances
 const userRoutes = Router();

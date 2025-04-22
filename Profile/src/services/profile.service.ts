@@ -5,6 +5,7 @@ import IProfilePayload from "../Interfaces/IProfilePayload";
 import IProfileService from "../Interfaces/IProfileService";
 import TOKENS from "../../tokens";
 import IProfileRepository from "../Interfaces/IProfileRepository";
+import { prisma } from "../../prisma/prisma";
 
 @injectable()
 export class ProfileService implements IProfileService {
@@ -24,11 +25,19 @@ export class ProfileService implements IProfileService {
     }
   }
 
-  async createProfile(profileData: IProfilePayload): Promise<IProfile> {
+  async createProfile(
+    profileData: IProfilePayload,
+    userId: string,
+  ): Promise<IProfile> {
     try {
       const newProfile = await this.profileRepository.createProfile(
         profileData,
+        userId,
       );
+
+      if (!newProfile) {
+        throw new Error("Error creating profile");
+      }
 
       return newProfile;
     } catch (error) {
@@ -101,9 +110,13 @@ export class ProfileService implements IProfileService {
       if (!profile) {
         throw new Error("Profile not found");
       }
-      const favoriteList = profile.moviesFavoriteList || [];
 
-      return favoriteList;
+      const favList = profile.moviesFavoriteList;
+      if (!favList) {
+        throw new Error("Favorite list not found");
+      }
+
+      return favList.movies;
     } catch (error) {
       console.error("Error fetching favorite list:", error);
       return null;

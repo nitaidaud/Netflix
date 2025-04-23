@@ -25,11 +25,7 @@ export class UserController {
 
       const token = await this.userService.signup(data);
 
-      // res.cookie(TOKENS.token, token, {
-      //   httpOnly: true,
-      // });
-
-      res.status(200).json({ message: "signup successfully", token });
+      res.status(201).json({ message: "signup successfully", token });
     } catch (error) {
       handleError(res, error);
     }
@@ -55,7 +51,7 @@ export class UserController {
   async logout(req: Request, res: Response) {
     try {
       res.clearCookie(TOKENS.token, { httpOnly: true });
-      res.status(200).json({ message: "Logout successful" });
+      res.status(201).json({ message: "Logout successful" });
     } catch (error) {
       handleError(res, error);
     }

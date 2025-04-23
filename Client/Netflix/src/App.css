@@ -27,3 +27,21 @@ body{
 html {
   height: 100%;
 }
+.trailer , .movie-actions{
+  display: none;
+  z-index: 10;
+  
+}
+.movie-card:hover .trailer ,.movie-card:hover .movie-actions{
+  display: block;
+  
+}
+
+.movie-poster{
+  display: block;
+}
+
+.movie-card:hover .movie-poster{
+  display: none;
+}
+

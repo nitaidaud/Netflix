@@ -5,7 +5,7 @@ import IProfilePayload from "./IProfilePayload";
 export default interface IProfileService {
   getProfileById(profileId: string): Promise<IProfile | null>;
 
-  createProfile(profileData: IProfilePayload): Promise<IProfile>;
+  createProfile(profileData: IProfilePayload, userId: string): Promise<IProfile>;
 
   updateProfile(
     profileId: string,

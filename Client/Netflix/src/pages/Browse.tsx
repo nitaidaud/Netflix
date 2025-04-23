@@ -1,12 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Filters from "@/components/browse/Filters";
 import MoviesGrid from "@/components/browse/MovieGrid";
 import { useCategoryMovies } from "@/hooks/useCategoryMovies";
 import { useSearchMovies } from "@/hooks/useSearchMovies";
+import { useSearchParams } from "react-router-dom";
 
 const Browse = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("new");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchParams] = useSearchParams();
+
+  const category = searchParams.get("category");
+
+  useEffect(() => {
+  if (category) {
+    setSelectedCategory(category);
+  }
+  }, [category]);
 
   const { data: categoryMovies = [], isLoading: loadingCategory } =
     useCategoryMovies(searchQuery ? null : selectedCategory);

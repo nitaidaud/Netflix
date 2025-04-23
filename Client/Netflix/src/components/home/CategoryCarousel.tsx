@@ -1,0 +1,60 @@
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+
+import { Link } from "react-router-dom";
+import HomeMovieCard from "./HomeMovieCard";
+import IBaseMovie from "@/api/interfaces/IBaseMovie";
+
+
+interface CategoryCarouselProps {
+  title: string;
+  movies: IBaseMovie[];
+  categoryLink: string;
+}
+
+const CategoryCarousel = ({
+  title,
+  movies,
+  categoryLink,
+}: CategoryCarouselProps) => {
+  return (
+    <div className="mt-10">
+      <div className="flex justify-between items-center px-2 mb-4">
+        <div className="group flex items-center gap-3 px-2 mb-4">
+          <h2 className="text-white text-2xl font-bold">{title}</h2>
+          <Link
+            to={categoryLink}
+            className="text-cyan-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:underline"
+          >
+            Show all &gt;
+          </Link>
+        </div>
+      </div>
+      <Carousel opts={{ align: "start", loop: true }}>
+        <CarouselContent>
+          {movies.slice(0, 10).map((movie) => (
+            <CarouselItem key={movie.id} className="md:basis-1/2 lg:basis-1/5 hover:scale-125 transition-transform duration-300">
+              <HomeMovieCard
+                title={movie.title}
+                image={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
+                id={movie.id}
+                onPlay={() => console.log("Play", movie.title)}
+                onMoreInfo={() => console.log("More Info", movie.title)} 
+
+              />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
+    </div>
+  );
+};
+
+export default CategoryCarousel;

@@ -4,7 +4,7 @@ import IMovie from "./IMovie";
 
 export default interface IProfileRepository {
   getProfileById(profileId: string): Promise<IProfile | null>;
-  createProfile(profileData: IProfilePayload): Promise<IProfile>;
+  createProfile(profileData: IProfilePayload, userId: string): Promise<IProfile>;
   updateProfile(
     profileId: string,
     profileData: IProfilePayload,

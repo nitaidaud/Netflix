@@ -7,4 +7,5 @@ export default interface IBaseMovie {
     backdrop_path: string | null;
     overview: string;
     popularity: number;
+    
 }

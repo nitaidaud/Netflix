@@ -48,7 +48,7 @@ export class ProfileController {
         userPayload.id,
       );
 
-      //TODO: check if need jwt here
+      //TODO: convert profileId to jwt
       res.cookie("profileId", newProfile.id, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",

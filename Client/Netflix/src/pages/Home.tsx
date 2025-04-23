@@ -8,21 +8,41 @@ const Home = () => {
 
   if (isLoading || !data) {
     return (
-      //todo: add loading animation
+      //TODO: add loading animation
       <Container>
         <div className="text-white">Loading...</div>
       </Container>
     );
   }
 
+  const heroMovie = data.newMovies[0];
   return (
-    <Container>
-      <HeroSection />
-      <CategoryCarousel title="Action Movies" movies={data.action} categoryLink="/browse?category=action" />
-      <CategoryCarousel title="Comedy Movies" movies={data.comedy} categoryLink="/browse?category=comedy" />
-      <CategoryCarousel title="Horror Movies" movies={data.horror} categoryLink="/browse?category=horror" />
-      {/* Add more */}
-    </Container>
+    <div className="w-full bg-black">
+      <HeroSection
+        title={heroMovie.title}
+        overview={heroMovie.overview}
+        backdropPath={heroMovie.backdrop_path ?? ""}
+      />
+
+      <div className="space-y-16 px-6 lg:px-12 py-10">
+        <CategoryCarousel
+          title="Action Movies"
+          movies={data.action}
+          categoryLink="/browse?category=action"
+        />
+        <CategoryCarousel
+          title="Comedy Movies"
+          movies={data.comedy}
+          categoryLink="/browse?category=comedy"
+        />
+        <CategoryCarousel
+          title="Horror Movies"
+          movies={data.horror}
+          categoryLink="/browse?category=horror"
+        />
+        {/*  add more  */}
+      </div>
+    </div>
   );
 };
 

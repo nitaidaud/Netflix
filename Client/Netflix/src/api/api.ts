@@ -6,6 +6,7 @@ import IAuthResponse from "./interfaces/IAuthResponse";
 import IUser from "./interfaces/IUser";
 import IHomeContent from "@/api/interfaces/IHomeContent";
 import IBaseMovie from "./interfaces/IBaseMovie";
+import ITrailerResponse from "./interfaces/ITrailerResponse";
 
 const api = axios.create({
   baseURL: apiBaseUrl,
@@ -126,6 +127,11 @@ export const searchMoviesRequest = async (query: string): Promise<IBaseMovie[]> 
   const { data } = await axios.get(`/api/movies/search`, {
     params: { title: query },
   });
+  return data;
+};
+
+export const getMovieTrailerRequest = async (id: number) => {
+  const { data } = await api.get<ITrailerResponse>(`/api/movies/${id}/trailer`);
   return data;
 };
 

@@ -1,30 +1,28 @@
-import { useState } from "react";
-import Typography from "../shared/Typography";
-import Select from "../ui/browse/select";
 import SearchBar from "./SearchBar";
+import Typography from "../shared/Typography";
+import Select from "../ui/browse/Select";
 
-const Filters = () => {
+type FiltersProps = {
+  selectedCategory: string | null;
+  setSelectedCategory: (val: string) => void;
+  onSearch: (val: string) => void;
+};
 
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
+const Filters = ({ selectedCategory, setSelectedCategory, onSearch }: FiltersProps) => {
   return (
     <div className="mt-20 flex justify-between items-center flex-wrap gap-4">
-      <div className="">
+      <div>
         <Typography size="text-2xl" weight="font-bold">
-        {`Browse${selectedCategory ? ` By ${selectedCategory}` : ""}`}
+          {`Browse${selectedCategory ? ` By ${selectedCategory}` : ""}`}
         </Typography>
       </div>
 
-      <div className="flex items-center gap-4 ">
-        <div className="flex items-center gap-2"></div>
-
+      <div className="flex items-center gap-4">
         <div className="flex items-center gap-2 h-10">
-          <Typography size="text-lg" weight="font-light">
-            sort by
-          </Typography>
-          <Select onChange={setSelectedCategory}/>
-          <SearchBar />
+          <Typography size="text-lg" weight="font-light">sort by</Typography>
+          <Select onChange={setSelectedCategory} />
         </div>
+        <SearchBar onSearch={onSearch} />
       </div>
     </div>
   );

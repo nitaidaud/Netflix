@@ -61,7 +61,7 @@ function App() {
                 <Route index element={<Home />} />
                 <Route path="/verify-email" element={<VerifyEmail />} />
                 <Route path="/movies" element={<MoviesPage />} />
-                <Route path="/browse" element={<Browse/>} />
+                <Route path="/browse"  element={<Browse/>} />
                 <Route path="*" element={<Navigate to="/" />} />
               </>
             ) : (

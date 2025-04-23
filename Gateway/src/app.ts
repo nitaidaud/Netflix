@@ -2,7 +2,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Application, Request, Response } from "express";
 import { ORIGIN } from "./env_exports";
-import { movieRoutes, userRoutes } from "./routes/routes";
+import { movieRoutes, profileRoutes, userRoutes } from "./routes/routes";
 
 const app: Application = express();
 
@@ -15,6 +15,7 @@ app.use(cookieParser());
 
 app.use("/api/users", userRoutes);
 app.use("/api/movies", movieRoutes);
+app.use("/api/profiles", profileRoutes);
 
 // Catch-all route (after all other routes)
 app.all("*", async (req: Request, res: Response) => {

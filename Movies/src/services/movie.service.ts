@@ -351,7 +351,7 @@ export class MovieService implements IMovieService {
       tmbd.get<IBaseResponse>(`/discover/movie?with_genres=27`),
       tmbd.get<IBaseResponse>(`/discover/movie?with_genres=28`),
       tmbd.get<IBaseResponse>(`/discover/movie?with_genres=10749`),
-      tmbd.get<IBaseResponse>(`/discover/movie?with_genres=10762`),
+      tmbd.get<IBaseResponse>(`/discover/movie?with_genres=10751`),
       tmbd.get<IBaseResponse>(`/discover/movie?with_genres=16`),
       tmbd.get<IBaseResponse>(`/discover/movie?with_genres=80`),
       tmbd.get<IBaseResponse>(`/discover/movie?with_genres=99`),

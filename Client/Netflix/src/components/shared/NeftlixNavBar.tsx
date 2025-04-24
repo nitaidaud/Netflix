@@ -6,6 +6,7 @@ import SigninButton from "../auth/SigninButton";
 import MobileMenu from "../ui/navbar/MobileMenu";
 import NavLinks from "../ui/navbar/NavLinks";
 import NavBar from "./NavBar";
+import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 const NetflixNavBar = () => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
@@ -52,7 +53,12 @@ const NetflixNavBar = () => {
 
         {/* Right Section */}
         <div className="flex items-center space-x-4">
-          {isAuthenticated ? <LogoutButton /> : <SigninButton />}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <img src="" />
+            </DropdownMenuTrigger>
+          </DropdownMenu>
+          {/* {isAuthenticated ? <LogoutButton /> : <SigninButton />} */}
         </div>
       </div>
 

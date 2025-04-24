@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useTrailerKey } from "@/hooks/useTrailerKey";
 import cleanYouTubeEmbedUrl from "@/utils/cleanTrailerUrl";
 import { InfoIcon, PlayIcon, Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import ReactPlayer from "react-player/youtube";
 
 type MovieCardProps = {
@@ -45,7 +45,7 @@ const HomeMovieCard = ({
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="movie-card relative rounded-md group aspect-video bg-neutral-800 shadow-md  overflow-hidden hover:z-30"
+      className="movie-card relative rounded-md group aspect-video bg-neutral-800 shadow-md overflow-hidden hover:z-30"
     >
       <img
         src={image}
@@ -58,7 +58,7 @@ const HomeMovieCard = ({
       {cleanUrl && isPlaying && (
         <ReactPlayer
           playing
-          muted //לשנות
+          volume={0.2}
           url={cleanUrl}
           width="100%"
           height="100%"

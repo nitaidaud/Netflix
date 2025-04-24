@@ -24,9 +24,7 @@ const HomeMovieCard = ({
   const { data } = useTrailerKey(id);
   const cleanUrl = cleanYouTubeEmbedUrl(data?.embedUrl);
   const [isPlaying, setIsPlaying] = useState(false);
-  const setPlayTrailer = () => {
-    setIsPlaying(!isPlaying);
-  };
+  
   return (
     <div onMouseEnter={() => setIsPlaying(true)} onMouseLeave={() => setIsPlaying(false)} className="movie-card relative rounded-md  group aspect-video bg-neutral-800 shadow-md hover:scale-105">
       {data?.embedUrl && (

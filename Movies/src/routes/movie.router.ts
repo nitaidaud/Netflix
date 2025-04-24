@@ -32,11 +32,11 @@ movieRouter.get("/:id/trailer", (req: Request, res: Response) => {
   movieController.getTrailer(req, res);
 })
 
-movieRouter.get("/movies/page/:page?", (req, res) =>
+movieRouter.get("/getMovies/page/:page?", (req, res) =>
   movieController.getMoviesByPage(req, res),
 );
 
-movieRouter.get("/movies", (req, res) =>
+movieRouter.get("/getMovies", (req, res) =>
   movieController.getMoviesByPage(req, res),
 );
 

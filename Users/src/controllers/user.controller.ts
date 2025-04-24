@@ -143,7 +143,7 @@ export class UserController {
       if (isVerified.success) {
         res.status(200).json({ success: true, message: isVerified.message });
       } else {
-        res.status(401).json({ success: true, message: isVerified.message });
+        res.status(401).json({ success: false, message: isVerified.message });
       }
     } catch (error) {
       handleError(res, error);

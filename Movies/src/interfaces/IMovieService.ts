@@ -1,5 +1,6 @@
 import IBaseMovie from "./IBaseMovie";
 import IHomeContent from "./IHomeContent";
+import IMoviesByPage from "./IMoviesByPage";
 
 export default interface IMovieService {
     getPopularMovies(): Promise<IBaseMovie[]>;
@@ -9,7 +10,7 @@ export default interface IMovieService {
     getTopMovies(): Promise<IBaseMovie[]>;
     getTrailerById(movieId: string): Promise<string | null>;
     //searchMovies(query: string): Promise<any>;
-    getMoviesByPage(page?: number): Promise<IBaseMovie[]>;
+    getMoviesByPage(page?: number): Promise<IMoviesByPage>;
     getNewMovies(): Promise<IBaseMovie[]>;
     getComedyMovies(): Promise<IBaseMovie[]>;
     getHorrorMovies(): Promise<IBaseMovie[]>;

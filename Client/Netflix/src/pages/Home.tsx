@@ -15,16 +15,16 @@ const Home = () => {
     );
   }
 
-  const heroMovie = data.newMovies[0];
+  const heroMovie = data.newMovies[10];
   return (
-    <div className="w-full bg-black">
+    <div className="w-full ">
       <HeroSection
         title={heroMovie.title}
         overview={heroMovie.overview}
         backdropPath={heroMovie.backdrop_path ?? ""}
       />
 
-      <div className="space-y-16 px-6 lg:px-12 py-10">
+      <div className="space-y-16 px-6 lg:px-12 py-10 bg-gradient-to-t from-zinc-900 via-zinc-900/90 to-transparent -mt-13 relative z-20">
         <CategoryCarousel
           title="Action Movies"
           movies={data.action}

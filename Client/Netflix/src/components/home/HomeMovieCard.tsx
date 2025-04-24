@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { useTrailerKey } from "@/hooks/useTrailerKey";
 import cleanYouTubeEmbedUrl from "@/utils/cleanTrailerUrl";
-import { InfoIcon, PlayIcon } from "lucide-react";
-import { useState, useEffect } from "react";
+import { PlayIcon, Plus } from "lucide-react";
+import { useEffect, useState } from "react";
 import ReactPlayer from "react-player/youtube";
 
 type MovieCardProps = {
@@ -47,7 +47,6 @@ const HomeMovieCard = ({
       onMouseLeave={() => setIsHovered(false)}
       className="movie-card relative rounded-md group aspect-video bg-neutral-800 shadow-md  overflow-hidden hover:z-30"
     >
-      
       <img
         src={image}
         alt={title}
@@ -59,8 +58,7 @@ const HomeMovieCard = ({
       {cleanUrl && isPlaying && (
         <ReactPlayer
           playing
-          
-          muted //לשנות 
+          muted //לשנות
           url={cleanUrl}
           width="100%"
           height="100%"
@@ -68,19 +66,25 @@ const HomeMovieCard = ({
         />
       )}
 
-     
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
         <h3 className="text-white text-lg font-bold line-clamp-1 mb-1">
           {title}
         </h3>
         <div className="flex gap-2 items-center">
-          <Button size="sm" onClick={onPlay}>
-            <PlayIcon className="w-4 h-4 mr-1" />
-            Play
+          <Button
+            size="icon"
+            className="bg-white text-black hover:bg-gray-400 rounded-full w-9 h-9"
+            onClick={onPlay}
+          >
+            <PlayIcon className="w-5 h-5" />
           </Button>
-          <Button size="sm" variant="ghost" className="bg-gray-500/30 text-white hover:bg-gray-500/40 rounded-sm" onClick={onMoreInfo}>
-            <InfoIcon className="w-4 h-4 mr-1" />
-            More Info
+
+          <Button
+            size="icon"
+            className="bg-zinc-500/90 text-white hover:bg-zinc-500/80 rounded-full w-9 h-9"
+            onClick={onMoreInfo}
+          >
+            <Plus className="w-5 h-5" />
           </Button>
         </div>
       </div>

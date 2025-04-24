@@ -27,7 +27,7 @@ const HeroSection = ({ title, overview, backdropPath }: HeroSectionProps) => {
           </Button>
           <Button
             variant="ghost"
-            className="bg-gray-500/30 text-white hover:bg-gray-500/40 hover:text-white rounded-sm h-10"
+            className="bg-gray-600/20 text-white hover:bg-gray-500/30 hover:text-white rounded-sm h-10"
           >
             <InfoIcon className="w-4 h-4" />
             More Info

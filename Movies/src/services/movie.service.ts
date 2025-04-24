@@ -8,11 +8,10 @@ import genres from "../utils/genres";
 import IHomeContent from "../interfaces/IHomeContent";
 import RedisClient from "../config/redis";
 import { TOKENS } from "../../tokens";
-
+import IMoviesByPage from "../interfaces/IMoviesByPage";
 
 @injectable()
 export class MovieService implements IMovieService {
-
   private cacheClient = RedisClient;
 
   async getPopularMovies() {
@@ -26,16 +25,15 @@ export class MovieService implements IMovieService {
       return data;
     }
     console.log("getting popular movies new data");
-    
 
     const res = await tmbd.get<IBaseResponse>("/movie/popular");
     const movies = res.data.results;
 
-    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour 
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
     return movies;
   }
 
-  async getMovieById(id: string) { 
+  async getMovieById(id: string) {
     const cacheKey = `movie_${id}`;
 
     const cachedMovies = await this.cacheClient.get(cacheKey);
@@ -70,11 +68,10 @@ export class MovieService implements IMovieService {
   }
 
   async getMoviesByGenre(genre: string) {
-    
     if (!genres.has(genre.toLowerCase())) {
       return [];
     }
-    
+
     const genreId = genres.get(genre.toLowerCase());
     if (!genreId) {
       return [];
@@ -85,7 +82,7 @@ export class MovieService implements IMovieService {
     if (cachedMovies) {
       console.log(`Returning movies by ${genre} cached data...`);
       const data = JSON.parse(cachedMovies) as IBaseMovie[];
-      
+
       return data;
     }
     console.log(`getting ${genre} movies new data`);
@@ -93,8 +90,12 @@ export class MovieService implements IMovieService {
     const res = await tmbd.get<IBaseResponse>(`/discover/movie`, {
       params: { with_genres: genreId },
     });
-    
-    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(res.data.results)); //1 hour
+
+    await this.cacheClient.setEx(
+      cacheKey,
+      60 * 60,
+      JSON.stringify(res.data.results),
+    ); //1 hour
     return res.data.results;
   }
 
@@ -107,7 +108,6 @@ export class MovieService implements IMovieService {
       return data;
     }
     console.log("getting top movies new data");
-
 
     const res = await tmbd.get<IBaseResponse>("/movie/top_rated");
     const movies = res.data.results.slice(0, 10);
@@ -132,7 +132,8 @@ export class MovieService implements IMovieService {
 
     const key = data?.results[0]?.key ?? null;
 
-    if (key) await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(key)); //1 hour
+    if (key)
+      await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(key)); //1 hour
     return key;
   }
 
@@ -141,17 +142,25 @@ export class MovieService implements IMovieService {
     const cachedMovies = await this.cacheClient.get(cacheKey);
     if (cachedMovies) {
       console.log(`Returning movies page ${page || 1} cached data...`);
-      const data = JSON.parse(cachedMovies) as IBaseMovie[];
+      const cachedData = JSON.parse(cachedMovies) as IMoviesByPage;
+      const data: IMoviesByPage = {
+        results: cachedData.results,
+        totalPages: cachedData.totalPages,
+      };
       return data;
     }
     console.log(`getting movies page ${page || 1} new data`);
     const res = await tmbd.get<IBaseResponse>(`/discover/movie`, {
       params: { page },
     });
-    
-    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(res.data.results)); //1 hour
 
-    return res.data.results;
+    const data: IMoviesByPage = {
+      results: res.data.results,
+      totalPages: res.data.total_pages,
+    };
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(data)); //1 hour
+
+    return data;
   }
 
   async getNewMovies(): Promise<IBaseMovie[]> {
@@ -166,14 +175,13 @@ export class MovieService implements IMovieService {
     console.log("getting new movies cached data");
 
     const res = await tmbd.get<IBaseResponse>(`/movie/now_playing`);
-    const movies = res.data.results
+    const movies = res.data.results;
 
     await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
     return movies;
   }
 
   async getComedyMovies(): Promise<IBaseMovie[]> {
-
     const cacheKey = TOKENS.ComedyMoviesCache;
     const cachedMovies = await this.cacheClient.get(cacheKey);
     if (cachedMovies) {
@@ -183,9 +191,8 @@ export class MovieService implements IMovieService {
     }
     console.log("getting comedy movies cached data");
 
-
     const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=35`);
-    const movies = res.data.results
+    const movies = res.data.results;
 
     await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
     return movies;
@@ -226,7 +233,6 @@ export class MovieService implements IMovieService {
   }
 
   async getRomanceMovies(): Promise<IBaseMovie[]> {
-
     const cacheKey = TOKENS.RomanceMoviesCache;
     const cachedMovies = await this.cacheClient.get(cacheKey);
     if (cachedMovies) {
@@ -235,7 +241,6 @@ export class MovieService implements IMovieService {
       return data;
     }
     console.log("getting romance movies cached data");
-
 
     const res = await tmbd.get<IBaseResponse>(
       `/discover/movie?with_genres=10749`,
@@ -247,7 +252,6 @@ export class MovieService implements IMovieService {
   }
 
   async getKidsMovies(): Promise<IBaseMovie[]> {
-
     const cacheKey = TOKENS.KidsMoviesCache;
     const cachedMovies = await this.cacheClient.get(cacheKey);
 
@@ -268,7 +272,6 @@ export class MovieService implements IMovieService {
   }
 
   async getAnimationMovies(): Promise<IBaseMovie[]> {
-
     const cacheKey = TOKENS.AnimationMoviesCache;
     const cachedMovies = await this.cacheClient.get(cacheKey);
 
@@ -287,7 +290,6 @@ export class MovieService implements IMovieService {
   }
 
   async getCrimeMovies(): Promise<IBaseMovie[]> {
-
     const cacheKey = TOKENS.CrimeMoviesCache;
     const cachedMovies = await this.cacheClient.get(cacheKey);
     if (cachedMovies) {
@@ -305,7 +307,6 @@ export class MovieService implements IMovieService {
   }
 
   async getDocumentaryMovies(): Promise<IBaseMovie[]> {
-
     const cacheKey = TOKENS.DocumentaryMoviesCache;
     const cachedMovies = await this.cacheClient.get(cacheKey);
 
@@ -324,7 +325,6 @@ export class MovieService implements IMovieService {
   }
 
   async getHomeContent(): Promise<IHomeContent> {
-
     const cacheKey = TOKENS.HomeContantCache;
     const cachedContent = await this.cacheClient.get(cacheKey);
 
@@ -334,7 +334,6 @@ export class MovieService implements IMovieService {
       return data;
     }
     console.log("getting home content cached data");
-
 
     const [
       newMovies,
@@ -372,6 +371,5 @@ export class MovieService implements IMovieService {
 
     await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(result)); //1 hour
     return result;
-    
   }
 }

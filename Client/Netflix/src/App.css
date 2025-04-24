@@ -29,12 +29,9 @@ html {
 }
 .trailer , .movie-actions{
   display: none;
-  z-index: 10;
-  
 }
 .movie-card:hover .trailer ,.movie-card:hover .movie-actions{
   display: block;
-  
 }
 
 .movie-poster{

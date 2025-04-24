@@ -46,27 +46,37 @@ model VerificationToken {
 }
 
 model Profile {
-  id                 String  @id @default(cuid())
+  id                 String             @id @default(cuid())
   name               String
   image              String?
-  User               User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId             String?
-  moviesFavoriteList Movie[]
+  User               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId             String
+  moviesFavoriteList MovieFavoriteList?
 
   @@map("profiles")
 }
 
+model MovieFavoriteList {
+  id        String  @id @default(cuid())
+  profileId String  @unique
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  movies    Movie[] @relation("FavoriteMovies")
+
+  @@map("movie_favorite_lists")
+}
+
 model Movie {
-  id            String   @id @default(cuid())
-  name          String
-  image         String
-  genre         Genre[]
-  adult         Boolean
-  time          DateTime
+  id            String  @id @default(cuid())
+  title         String
+  release_date  String
+  genre_ids     Int[]
+  poster_path   String
   backdrop_path String
-  profile       Profile? @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  profileId     String?
-  userId        String?
+  overview      String
+  popularity    Float
+  adult         Boolean
+
+  favoriteLists MovieFavoriteList[] @relation("FavoriteMovies")
 
   @@map("movies")
 }

@@ -325,7 +325,7 @@ export class MovieService implements IMovieService {
   }
 
   async getHomeContent(): Promise<IHomeContent> {
-    const cacheKey = TOKENS.HomeContantCache;
+    const cacheKey = TOKENS.HomeContentCache;
     const cachedContent = await this.cacheClient.get(cacheKey);
 
     if (cachedContent) {

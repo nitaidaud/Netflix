@@ -7,6 +7,7 @@ import IUser from "./interfaces/IUser";
 import IHomeContent from "@/api/interfaces/IHomeContent";
 import IBaseMovie from "./interfaces/IBaseMovie";
 import ITrailerResponse from "./interfaces/ITrailerResponse";
+import IProfileResponse from "./interfaces/IProfileResponse";
 
 const api = axios.create({
   baseURL: apiBaseUrl,
@@ -111,9 +112,7 @@ export const checkAuthRequest = async () => {
 };
 
 export const getHomeContentRequest = async () => {
-  const { data } = await api.get<IHomeContent>(
-    `/api/movies/home`,
-  );
+  const { data } = await api.get<IHomeContent>(`/api/movies/home`);
   return data;
 };
 
@@ -123,7 +122,9 @@ export const getMoviesByCategoryRequest = async (category: string) => {
   return data;
 };
 
-export const searchMoviesRequest = async (query: string): Promise<IBaseMovie[]> => {
+export const searchMoviesRequest = async (
+  query: string,
+): Promise<IBaseMovie[]> => {
   const { data } = await axios.get(`/api/movies/search`, {
     params: { title: query },
   });
@@ -135,3 +136,7 @@ export const getMovieTrailerRequest = async (id: number) => {
   return data;
 };
 
+export const getProfilesRequest = async () => {
+  const { data } = await api.get<IProfileResponse>(`/api/profiles/get-all-profiles`);
+  return data;
+};

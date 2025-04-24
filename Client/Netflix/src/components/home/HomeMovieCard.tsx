@@ -58,7 +58,7 @@ const HomeMovieCard = ({
       {cleanUrl && isPlaying && (
         <ReactPlayer
           playing
-          volume={0.1}
+          volume={0.2}
           url={cleanUrl}
           width="100%"
           height="100%"

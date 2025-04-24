@@ -45,9 +45,8 @@ const HomeMovieCard = ({
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="movie-card relative rounded-md group aspect-video bg-neutral-800 shadow-md  overflow-hidden hover:z-30"
+      className="movie-card relative rounded-md group aspect-video bg-neutral-800 shadow-md overflow-hidden hover:z-30"
     >
-      
       <img
         src={image}
         alt={title}
@@ -59,8 +58,7 @@ const HomeMovieCard = ({
       {cleanUrl && isPlaying && (
         <ReactPlayer
           playing
-          
-          muted //לשנות 
+          volume={0.1}
           url={cleanUrl}
           width="100%"
           height="100%"
@@ -68,7 +66,6 @@ const HomeMovieCard = ({
         />
       )}
 
-     
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
         <h3 className="text-white text-lg font-bold line-clamp-1 mb-1">
           {title}
@@ -78,7 +75,12 @@ const HomeMovieCard = ({
             <PlayIcon className="w-4 h-4 mr-1" />
             Play
           </Button>
-          <Button size="sm" variant="ghost" className="bg-gray-500/30 text-white hover:bg-gray-500/40 rounded-sm" onClick={onMoreInfo}>
+          <Button
+            size="sm"
+            variant="ghost"
+            className="bg-gray-500/30 text-white hover:bg-gray-500/40 rounded-sm"
+            onClick={onMoreInfo}
+          >
             <InfoIcon className="w-4 h-4 mr-1" />
             More Info
           </Button>

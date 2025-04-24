@@ -34,8 +34,8 @@ const CategoryCarousel = ({
           </Link>
         </div>
       </div>
-      <Carousel className="relative px-20" opts={{ align: "start", loop: false }}>
-        <CarouselContent className=" overflow-visible z-10">
+      <Carousel className="relative px-20 overflow-x-clip" opts={{ align: "start", loop: false }}>
+        <CarouselContent className="overflow-visible z-10">
           {movies.slice(0, 10).map((movie) => (
             <CarouselItem
               key={movie.id}

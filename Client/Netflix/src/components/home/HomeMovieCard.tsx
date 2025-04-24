@@ -45,7 +45,7 @@ const HomeMovieCard = ({
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="movie-card relative rounded-md group aspect-video bg-neutral-800 shadow-md hover:scale-135 duration-300 overflow-hidden hover:z-30"
+      className="movie-card relative rounded-md group aspect-video bg-neutral-800 shadow-md  overflow-hidden hover:z-30"
     >
       
       <img

@@ -34,12 +34,12 @@ const CategoryCarousel = ({
           </Link>
         </div>
       </div>
-      <Carousel opts={{ align: "start", loop: true }}>
-        <CarouselContent className="overflow-visible z-10">
+      <Carousel className="relative px-20" opts={{ align: "start", loop: false }}>
+        <CarouselContent className=" overflow-visible z-10">
           {movies.slice(0, 10).map((movie) => (
             <CarouselItem
               key={movie.id}
-              className="relative md:basis-1/2 lg:basis-1/5 transition-transform duration-300 hover:z-30 hover:scale-125"
+              className="relative md:basis-1/2 lg:basis-1/5 transition-transform duration-300 hover:z-30 hover:scale-130"
             >
               <HomeMovieCard
                 title={movie.title}
@@ -51,8 +51,8 @@ const CategoryCarousel = ({
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="left-10 z-50"/>
+        <CarouselNext className="right-10 z-50"/>
       </Carousel>
     </div>
   );

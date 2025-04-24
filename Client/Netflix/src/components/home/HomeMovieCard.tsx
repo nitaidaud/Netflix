@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useTrailerKey } from "@/hooks/useTrailerKey";
 import cleanYouTubeEmbedUrl from "@/utils/cleanTrailerUrl";
-import { InfoIcon, PlayIcon } from "lucide-react";
+import { InfoIcon, PlayIcon, Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 import ReactPlayer from "react-player/youtube";
 
@@ -71,10 +71,22 @@ const HomeMovieCard = ({
           {title}
         </h3>
         <div className="flex gap-2 items-center">
-          <Button size="sm" onClick={onPlay}>
-            <PlayIcon className="w-4 h-4 mr-1" />
-            Play
+          <Button
+            size="icon"
+            className="bg-white text-black hover:bg-gray-400 rounded-full w-9 h-9"
+            onClick={onPlay}
+          >
+            <PlayIcon className="w-5 h-5" />
           </Button>
+
+          <Button
+            size="icon"
+            className="bg-zinc-500/90 text-white hover:bg-zinc-500/80 rounded-full w-9 h-9"
+            onClick={onMoreInfo}
+          >
+            <Plus className="w-5 h-5" />
+          </Button>
+
           <Button
             size="sm"
             variant="ghost"

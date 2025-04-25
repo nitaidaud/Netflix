@@ -3,6 +3,7 @@ import cors from "cors";
 import profileRouter from "./routes/profile.routes";
 import { CLIENT, ORIGIN } from "./env_exports";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 const app: Application = express();
 
@@ -11,14 +12,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: [ORIGIN!, CLIENT!], credentials: true }));
 app.use(cookieParser());
 
+app.use("/api/profile/uploads", express.static(path.join(__dirname, "../uploads")));
+
 app.get("/api/profile/test", (req: Request, res: Response) => {
   res.send("Profile service is working!");
 });
 
-app.use("/api/profile", profileRouter)
+app.use("/api/profile", profileRouter);
 
 app.all("*", (req: Request, res: Response) => {
-    res.status(404).json({ message: "Route not found" });
-  });
+  res.status(404).json({ message: "Route not found" });
+});
 
 export { app };

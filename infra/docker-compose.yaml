@@ -13,7 +13,7 @@ services:
     networks:
       - app_network
     restart: always
-  
+
   movies:
     build:
       context: ../Movies
@@ -64,6 +64,8 @@ services:
     env_file:
       - .env
       - .env.profile
+    volumes:
+      - ../Profile/uploads:/app/uploads
     networks:
       - app_network
 

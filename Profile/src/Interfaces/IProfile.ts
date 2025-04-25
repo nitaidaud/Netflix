@@ -1,7 +1,7 @@
 import IFavoriteList from "./IFavoriteList";
-import IProfilePayload from "./IProfilePayload";
+import IProfileData from "./IProfilePayload";
 
-export default interface IProfile extends IProfilePayload {
+export default interface IProfile extends IProfileData {
   id: string;
   moviesFavoriteList: IFavoriteList | null;
 }

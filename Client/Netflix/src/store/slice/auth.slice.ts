@@ -4,7 +4,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   AuthResponse,
   checkAuthRequest,
-  logoutRequest,
+  logoutUserRequest,
   signinRequest,
   signupRequest,
   verifyEmailRequest,
@@ -70,11 +70,11 @@ export const signup = createAsyncThunk(
   },
 );
 
-export const logout = createAsyncThunk(
+export const logoutUser = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
-      await logoutRequest();
+      await logoutUserRequest();
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
       return rejectWithValue(errorMessage);
@@ -110,7 +110,7 @@ export const checkAuth = createAsyncThunk(
       return authCheck;
     } catch (error) {
       console.log("error in check auth", error);
-      
+
       const errorMessage: string = getErrorMessage(error);
       return rejectWithValue(errorMessage);
     }
@@ -154,7 +154,7 @@ const authSlice = createSlice({
         state.success = null;
         state.error = action.payload as string;
       })
-      .addCase(logout.fulfilled, (state) => {
+      .addCase(logoutUser.fulfilled, (state) => {
         state.token = "";
         state.email = "";
         state.name = "";
@@ -162,7 +162,7 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
         state.error = null;
       })
-      .addCase(logout.rejected, (state, action) => {
+      .addCase(logoutUser.rejected, (state, action) => {
         state.error = action.payload as string;
       })
       .addCase(checkAuth.fulfilled, (state, action) => {

@@ -1,13 +1,14 @@
 import { injectable } from "inversify";
-import IProfile from "../Interfaces/IProfile";
-import IProfilePayload from "../Interfaces/IProfilePayload";
-import IProfileRepository from "../Interfaces/IProfileRepository";
 import { prisma } from "../../prisma/prisma";
 import IMovie from "../Interfaces/IMovie";
+import IProfile from "../Interfaces/IProfile";
+import IProfileData from "../Interfaces/IProfilePayload";
+import IProfileRepository from "../Interfaces/IProfileRepository";
+import ProfileDTO from "../DTOs/profile.dto";
 
 @injectable()
 export class ProfileRepository implements IProfileRepository {
-  async getProfileById(profileId: string): Promise<IProfile | null> {
+  async getProfileById(profileId: string): Promise<ProfileDTO | null> {
     const profile = await prisma.profile.findUnique({
       where: { id: profileId },
       include: {
@@ -23,7 +24,7 @@ export class ProfileRepository implements IProfileRepository {
   }
 
   async createProfile(
-    profileData: IProfilePayload,
+    profileData: IProfileData,
     userId: string,
   ): Promise<IProfile> {
     const newProfile = await prisma.profile.create({
@@ -42,8 +43,8 @@ export class ProfileRepository implements IProfileRepository {
 
   async updateProfile(
     profileId: string,
-    profileData: IProfilePayload,
-  ): Promise<IProfile | null> {
+    profileData: IProfileData,
+  ): Promise<ProfileDTO | null> {
     const updatedProfile = await prisma.profile.update({
       where: { id: profileId },
       data: profileData,
@@ -111,7 +112,7 @@ export class ProfileRepository implements IProfileRepository {
     return !!deletedProfile;
   }
 
-  async getAllProfiles(userId: string): Promise<IProfile[]> {
+  async getAllProfiles(userId: string): Promise<ProfileDTO[]> {
     const profiles = await prisma.profile.findMany({
       include: {
         moviesFavoriteList: {

@@ -21,6 +21,9 @@ import { useAppDispatch, useAppSelector } from "./store/store";
 import { checkAuth } from "./store/slice/auth.slice";
 import MoviesPage from "./pages/MoviesPage";
 import Browse from "./pages/Browse";
+import ProfileChoicePage from "./pages/ProfileChoicePage";
+import CreateProfilePage from "./pages/CreateProfilePage";
+import { checkLoggedInProfile } from "./store/slice/profile.slice";
 
 // Layouts
 
@@ -29,9 +32,15 @@ function App() {
   const dispatch = useAppDispatch();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
 
+  const isProfileLoggedIn = useAppSelector(
+    (state) => state.profile.isProfileLoggedIn,
+  );
+
   useEffect(() => {
     startTransition(async () => {
       await dispatch(checkAuth());
+      await dispatch(checkLoggedInProfile());
+      console.log("checkLoggedInProfile");
     });
   }, [dispatch]);
 
@@ -57,13 +66,30 @@ function App() {
         <Routes>
           <Route element={<AppLayout />}>
             {isAuthenticated ? (
-              <>
-                <Route index element={<Home />} />
-                <Route path="/verify-email" element={<VerifyEmail />} />
-                <Route path="/movies" element={<MoviesPage />} />
-                <Route path="/browse"  element={<Browse/>} />
-                <Route path="*" element={<Navigate to="/" />} />
-              </>
+              isProfileLoggedIn ? (
+                <>
+                  <Route index element={<Home />} />
+                  <Route path="/verify-email" element={<VerifyEmail />} />
+                  <Route path="/profiles" element={<ProfileChoicePage />} />
+                  <Route
+                    path="/profile/create"
+                    element={<CreateProfilePage />}
+                  />
+                  <Route path="/movies" element={<MoviesPage />} />
+                  <Route path="/browse" element={<Browse />} />
+                  <Route path="*" element={<Navigate to="/" />} />
+                </>
+              ) : (
+                <>
+                  <Route index element={<ProfileChoicePage />} />
+                  <Route path="/verify-email" element={<VerifyEmail />} />
+                  <Route
+                    path="/profile/create"
+                    element={<CreateProfilePage />}
+                  />
+                  <Route path="*" element={<Navigate to="/" />} />
+                </>
+              )
             ) : (
               <>
                 <Route index element={<Landing />} />

@@ -1,19 +1,22 @@
-import { logout } from "@/store/slice/auth.slice";
+import { logoutUser } from "@/store/slice/auth.slice";
+import { logoutProfile } from "@/store/slice/profile.slice";
 import { useAppDispatch } from "@/store/store";
+import { Button } from "../ui/button";
 
 const LogoutButton = () => {
   const dispatch = useAppDispatch();
   const handleClick = async () => {
-    await dispatch(logout());
+    await dispatch(logoutUser());
+    await dispatch(logoutProfile());
   };
 
   return (
-    <button
+    <Button
       onClick={handleClick}
-      className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-4xl"
+      className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md w-[90%] mx-auto flex items-center justify-center my-2"
     >
       Logout
-    </button>
+    </Button>
   );
 };
 

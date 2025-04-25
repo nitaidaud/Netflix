@@ -1,4 +1,4 @@
-export default interface IProfilePayload {
+export default interface IProfileData {
   name: string;
   image: string | null;
 }

@@ -1,9 +1,8 @@
-
-body{
+body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background-color: #000; 
+  background-color: #000;
   color: #fff;
   font-family: Arial, sans-serif;
 }
@@ -12,8 +11,6 @@ body{
   height: 100%;
   display: flex;
   justify-content: center;
-  
-
 }
 
 .app-container {
@@ -27,18 +24,20 @@ body{
 html {
   height: 100%;
 }
-.trailer , .movie-actions{
+.trailer,
+.movie-actions {
   display: none;
 }
-.movie-card:hover .trailer ,.movie-card:hover .movie-actions{
+.movie-card:hover .trailer,
+.movie-card:hover .movie-actions {
   display: block;
 }
 
-.movie-poster{
+.movie-poster {
   display: block;
 }
 
-.movie-card:hover .movie-poster{
+.movie-card:hover .movie-poster {
   display: none;
 }
 

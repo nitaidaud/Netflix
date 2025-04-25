@@ -70,27 +70,31 @@ const HomeMovieCard = ({
         <h3 className="text-white text-lg font-bold line-clamp-1 mb-1">
           {title}
         </h3>
-        <div className="flex gap-2 items-center">
-          <Button
-            size="icon"
-            className="bg-white text-black hover:bg-gray-400 rounded-full w-9 h-9"
-            onClick={onPlay}
-          >
-            <PlayIcon className="w-5 h-5" />
-          </Button>
+        <div className="flex justify-between items-center w-full">
+          {/* Left: Play + Plus */}
+          <div className="flex gap-2">
+            <Button
+              size="icon"
+              className="bg-white text-black hover:bg-zinc-400 rounded-full w-9 h-9"
+              onClick={onPlay}
+            >
+              <img src="/icons/play_icon.png" alt="Play" className="w-4 h-4" />
+            </Button>
 
-          <Button
-            size="icon"
-            className="bg-zinc-500/90 text-white hover:bg-zinc-500/80 rounded-full w-9 h-9"
-            onClick={onMoreInfo}
-          >
-            <Plus className="w-5 h-5" />
-          </Button>
+            <Button //adding to list
+              size="icon"
+              className="bg-zinc-500/90 text-white hover:bg-zinc-700/80 rounded-full w-9 h-9"
+              onClick={onMoreInfo}
+            >
+              <Plus className="w-5 h-5" />
+            </Button>
+          </div>
 
+          {/* Right: More Info */}
           <Button
             size="sm"
             variant="ghost"
-            className="bg-gray-500/30 text-white hover:bg-gray-500/40 rounded-sm"
+            className="bg-gray-500/30 text-white hover:bg-zinc-600/80 hover:text-white rounded-sm"
             onClick={onMoreInfo}
           >
             <InfoIcon className="w-4 h-4 mr-1" />

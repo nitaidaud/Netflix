@@ -21,9 +21,13 @@ const HeroSection = ({ title, overview, backdropPath }: HeroSectionProps) => {
           {overview}
         </p>
         <div className="flex gap-3">
-          <Button className="bg-white text-black font-semibold hover:bg-gray-400 h-9.5">
-            {" "}
-            <PlayIcon className="w-4 h-4"/>Play
+          <Button className="bg-white text-black font-semibold hover:bg-zinc-400 h-9.5">
+            <img
+              src="/icons/play_icon.png"
+              alt="Play"
+              className="w-4 h-4 mr-0.5"
+            />
+            Play
           </Button>
           <Button
             variant="ghost"

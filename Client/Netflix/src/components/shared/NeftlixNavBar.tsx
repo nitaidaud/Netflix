@@ -1,12 +1,10 @@
 import { useAppSelector } from "@/store/store";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import LogoutButton from "../auth/LogoutButton";
-import SigninButton from "../auth/SigninButton";
+import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import MobileMenu from "../ui/navbar/MobileMenu";
 import NavLinks from "../ui/navbar/NavLinks";
 import NavBar from "./NavBar";
-import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 const NetflixNavBar = () => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);

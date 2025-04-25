@@ -1,7 +1,6 @@
-import IFavoriteList from "./IFavoriteList";
+import IBaseMovie from "./IBaseMovie";
+import IProfileData from "./IProfileData";
 
-export default interface IProfile {
-  name: string;
-  image: string | null;
-  moviesFavoriteList: IFavoriteList | null;
+export default interface IProfile extends IProfileData {
+  moviesFavoriteList: IBaseMovie[] | null;
 }

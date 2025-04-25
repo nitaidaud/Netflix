@@ -14,7 +14,6 @@ const links = [
   { name: "New & Popular", href: "/new-popular" },
   { name: "My List", href: "/mylist" },
   { name: "Browse", href: "/browse" },
-  {name: "profiles", href: "/profiles"},
 ];
 
 const NavLinks = ({ isAuthenticated, isMobile = false }: NavLinksProps) => {

@@ -1,11 +1,13 @@
 import { inject, injectable } from "inversify";
+import TOKENS from "../../tokens";
 import IMovie from "../Interfaces/IMovie";
 import IProfile from "../Interfaces/IProfile";
-import IProfilePayload from "../Interfaces/IProfilePayload";
-import IProfileService from "../Interfaces/IProfileService";
-import TOKENS from "../../tokens";
+import IProfileData from "../Interfaces/IProfilePayload";
 import IProfileRepository from "../Interfaces/IProfileRepository";
-import { prisma } from "../../prisma/prisma";
+import IProfileService from "../Interfaces/IProfileService";
+import ProfileDTO from "../DTOs/profile.dto";
+import { sign, verify } from "../utils/jwt";
+import IProfilePayload from "../Interfaces/IUserPayload";
 
 @injectable()
 export class ProfileService implements IProfileService {
@@ -14,9 +16,15 @@ export class ProfileService implements IProfileService {
     private profileRepository: IProfileRepository,
   ) {}
 
-  async getProfileById(profileId: string): Promise<IProfile | null> {
+  async getProfileByToken(profileToken: string): Promise<ProfileDTO | null> {
     try {
-      const profile = await this.profileRepository.getProfileById(profileId);
+      const profilePayload = verify(profileToken);
+      if (!profilePayload) {
+        throw new Error("Invalid token");
+      }
+
+      const { id } = profilePayload;
+      const profile = await this.profileRepository.getProfileById(id);
 
       return profile;
     } catch (error) {
@@ -26,7 +34,7 @@ export class ProfileService implements IProfileService {
   }
 
   async createProfile(
-    profileData: IProfilePayload,
+    profileData: IProfileData,
     userId: string,
   ): Promise<IProfile> {
     try {
@@ -46,10 +54,25 @@ export class ProfileService implements IProfileService {
     }
   }
 
+  async login(profileData: IProfile): Promise<string | null> {
+    try {
+      const { id } = profileData;
+      console.log("profileData", profileData);
+      console.log("profileId", id);
+
+      const profileToken = sign({ id });
+
+      return profileToken;
+    } catch (error) {
+      console.error("Error logging in:", error);
+      return null;
+    }
+  }
+
   async updateProfile(
     profileId: string,
-    profileData: IProfilePayload,
-  ): Promise<IProfile | null> {
+    profileData: IProfileData,
+  ): Promise<ProfileDTO | null> {
     try {
       const updatedProfile = await this.profileRepository.updateProfile(
         profileId,
@@ -138,7 +161,7 @@ export class ProfileService implements IProfileService {
     }
   }
 
-  async getAllProfiles(userId: string): Promise<IProfile[] | null> {
+  async getAllProfiles(userId: string): Promise<ProfileDTO[] | null> {
     try {
       const profiles = await this.profileRepository.getAllProfiles(userId);
       return profiles;

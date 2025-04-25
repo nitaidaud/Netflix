@@ -1,31 +1,91 @@
-import { useProfile } from "@/hooks/useProfiles";
-import { Fragment } from "react/jsx-runtime";
+import IProfile from "@/api/interfaces/IProfile";
+import { Button } from "@/components/ui/button";
+import { useProfiles } from "@/hooks/useProfiles";
+import { loginProfile } from "@/store/slice/profile.slice";
+import { useAppDispatch } from "@/store/store";
+import { PlusCircle } from "lucide-react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const ProfileChoicePage = () => {
-  const { data, isLoading } = useProfile();
+  const { data, isLoading, isFetching } = useProfiles();
+  const [isLogging, setIsLogging] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  console.log("data", data);
+
+  const handleLogin = async (profile: IProfile) => {
+    try {
+      setIsLogging(true);
+      await dispatch(loginProfile(profile));
+      navigate("/");
+    } catch (error) {
+      console.error("Error logging in:", error);
+    } finally {
+      setIsLogging(false);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center size-full">
       <h1 className="text-3xl font-bold mb-4">Choose Your Profile</h1>
-      {isLoading ? (
+      {isLoading || isFetching ? (
         <p>Loading...</p>
       ) : data && data.profiles.length > 0 ? (
-        <ul className="space-y-4">
-          {data.profiles.map((profile) => (
-            <Fragment key={profile.image}>
-              <li
-                className={`${
-                  profile.image
-                    ? `bg-[url(${profile.image})]`
-                    : "bg-[url(/images/default-profile.jpg)]"
-                } bg-contain bg-center bg-no-repeat min-w-[200px] min-h-[200px] p-4 rounded shadow hover:scale-105 transition-transform duration-300 cursor-pointer`}
-              ></li>
-              <h2 className="text-xl text-center">{profile.name}</h2>
-            </Fragment>
-          ))}
-        </ul>
+        <div className="flex justify-center items-center gap-10">
+          {data.profiles.map((profile) => {
+            const imgUrl = profile.image;
+            return (
+              <div
+                className="flex flex-col items-center justify-center"
+                key={profile.image}
+              >
+                <Button
+                  onClick={() => {
+                    handleLogin(profile);
+                  }}
+                  style={{
+                    backgroundImage: `${
+                      imgUrl
+                        ? `url(${imgUrl})`
+                        : "url(/images/default-profile.jpg)"
+                    }`,
+                  }}
+                  className={`bg-cover bg-center bg-no-repeat min-w-[200px] min-h-[200px] p-4 rounded shadow hover:scale-105 transition-transform duration-300 cursor-pointer`}
+                ></Button>
+                <h2 className="text-xl text-center">{profile.name}</h2>
+              </div>
+            );
+          })}
+          <Link
+            to="/profile/create"
+            className="bg-white/10 size-full min-w-[200px] max-h-[200px] p-4 rounded shadow hover:scale-105 transition-transform duration-300 cursor-pointer flex items-center justify-center mb-auto"
+          >
+            <PlusCircle
+              size={80}
+              fill="transparent"
+              className="text-gray-400"
+            />
+          </Link>
+        </div>
       ) : (
-        <p>No profiles available. Please create a profile.</p>
+        <div className="flex justify-center items-center">
+          <Link
+            to="/profile/create"
+            className="bg-white/10 size-full min-w-[200px] min-h-[200px] p-4 rounded shadow hover:scale-105 transition-transform duration-300 cursor-pointer flex items-center justify-center mb-auto"
+          >
+            <PlusCircle
+              size={80}
+              fill="transparent"
+              className="text-gray-400"
+            />
+          </Link>
+        </div>
+      )}
+      {isLogging && (
+        <div className="absolute top-0 left0 size-full flex items-center justify-center bg-black/40 z-50">
+          Logging please wait...
+        </div>
       )}
     </div>
   );

@@ -7,7 +7,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 function Input({ className, type, error, ...props }: InputProps) {
   return (
-    <div>
+    <>
       <input
         type={type}
         data-slot="input"
@@ -21,7 +21,7 @@ function Input({ className, type, error, ...props }: InputProps) {
         {...props}
       />
       {error && <p className="text-red-400 text-sm mt-1 px-2">{error}</p>}
-    </div>
+    </>
   );
 }
 

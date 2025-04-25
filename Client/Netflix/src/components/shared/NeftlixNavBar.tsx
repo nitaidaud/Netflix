@@ -1,15 +1,23 @@
 import { useAppSelector } from "@/store/store";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import LogoutButton from "../auth/LogoutButton";
 import SigninButton from "../auth/SigninButton";
+import { Button } from "../ui/button";
+import DropdownProfile from "../ui/navbar/DropdownProfile";
 import MobileMenu from "../ui/navbar/MobileMenu";
 import NavLinks from "../ui/navbar/NavLinks";
 import NavBar from "./NavBar";
-import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 const NetflixNavBar = () => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+
+  const isProfileLoggedIn = useAppSelector(
+    (state) => state.profile.isProfileLoggedIn,
+  );
+
+  const profile = useAppSelector((state) => state.profile.profile);
+  console.log("profile", profile);
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -34,7 +42,7 @@ const NetflixNavBar = () => {
       <div className="flex justify-between items-center max-w-7xl mx-auto px-4 py-2">
         {/* Left Section */}
         <div className="flex items-center">
-          <button
+          <Button
             className="md:hidden text-white focus:outline-none"
             onClick={toggleMobileMenu}
             aria-label="Toggle menu"
@@ -44,7 +52,7 @@ const NetflixNavBar = () => {
             ) : (
               <Menu className="h-6 w-6 transition-transform duration-300 hover:scale-110" />
             )}
-          </button>
+          </Button>
 
           <div className="hidden md:block">
             <NavLinks isAuthenticated={isAuthenticated} />
@@ -52,13 +60,14 @@ const NetflixNavBar = () => {
         </div>
 
         {/* Right Section */}
-        <div className="flex items-center space-x-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <img src="" />
-            </DropdownMenuTrigger>
-          </DropdownMenu>
-          {/* {isAuthenticated ? <LogoutButton /> : <SigninButton />} */}
+        <div className="">
+          {isAuthenticated ? (
+            isProfileLoggedIn ? (
+              <DropdownProfile currentProfile={profile} />
+            ) : null
+          ) : (
+            <SigninButton />
+          )}
         </div>
       </div>
 

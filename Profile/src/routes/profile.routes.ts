@@ -2,6 +2,7 @@ import { Router } from "express";
 import { container } from "../config/inversify";
 import { ProfileController } from "../controllers/profile.controller";
 import TOKENS from "../../tokens";
+import { upload } from "../middleware/multer";
 
 const profileRouter = Router();
 
@@ -9,11 +10,23 @@ const profileController = container.get<ProfileController>(
   TOKENS.ProfileController,
 );
 
+profileRouter.post("/login", (req, res) => {
+  profileController.login(req, res);
+});
+
+profileRouter.post("/logout", (req, res) => {
+  profileController.logout(req, res);
+});
+
+profileRouter.get("/check-logged-in", (req, res) => {
+  profileController.checkLoggedProfile(req, res);
+});
+
 profileRouter.get("/get-profile", (req, res) => {
   profileController.getProfileById(req, res);
 });
 
-profileRouter.post("/create-profile", (req, res) => {
+profileRouter.post("/create-profile", upload.single("image"), (req, res) => {
   profileController.createProfile(req, res);
 });
 

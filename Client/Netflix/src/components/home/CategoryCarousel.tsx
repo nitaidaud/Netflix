@@ -42,9 +42,8 @@ const CategoryCarousel = ({
               className="relative md:basis-1/2 lg:basis-1/5 transition-transform duration-300 hover:z-30 hover:scale-130"
             >
               <HomeMovieCard
-                title={movie.title}
+                movie={movie}
                 image={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
-                id={movie.id}
                 onPlay={() => console.log("Play", movie.title)}
                 onMoreInfo={() => console.log("More Info", movie.title)}
               />

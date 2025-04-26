@@ -22,7 +22,7 @@ export default interface IProfileService {
 
   removeMovieFromFavoriteList(
     profileId: string,
-    movieId: string,
+    movieId: number,
   ): Promise<boolean>;
 
   getFavoritesList(profileId: string): Promise<IMovie[] | null>;

@@ -164,6 +164,13 @@ export class ProfileController {
       const profileToken: string = req.cookies.profileToken;
       const movieData: IMovie = req.body;
 
+      console.log("movieData", movieData);
+      
+
+      if (!profileToken) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
       const profilePayload = verify(profileToken);
 
       if (!profilePayload) {
@@ -188,7 +195,7 @@ export class ProfileController {
   async removeMovieFromFavoriteList(req: Request, res: Response) {
     try {
       const profileToken: string = req.cookies.profileToken;
-      const movieId: string = req.body.movieId;
+      const movieId: number = req.body.movieId;
 
       const profilePayload = verify(profileToken);
       if (!profilePayload) {

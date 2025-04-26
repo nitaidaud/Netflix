@@ -187,11 +187,8 @@ export const updateProfileRequest = async (profileData: IProfileData) => {
   return data;
 };
 
-export const addMovieToFavoriteListRequest = async (movieId: number) => {
-  const { data } = await api.patch<IProfile>(
-    `/api/profiles/add-movie`,
-    movieId,
-  );
+export const addMovieToFavoriteListRequest = async (movie: IBaseMovie) => {
+  const { data } = await api.patch<IProfile>(`/api/profiles/add-movie`, movie);
   return data;
 };
 

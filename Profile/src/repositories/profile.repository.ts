@@ -90,7 +90,7 @@ export class ProfileRepository implements IProfileRepository {
 
   async removeMovieFromFavoriteList(
     profileId: string,
-    movieId: string,
+    movieId: number,
   ): Promise<boolean> {
     const deletedMovie = await prisma.movieFavoriteList.update({
       where: { profileId },

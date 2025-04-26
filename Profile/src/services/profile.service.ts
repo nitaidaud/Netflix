@@ -108,7 +108,7 @@ export class ProfileService implements IProfileService {
 
   async removeMovieFromFavoriteList(
     profileId: string,
-    movieId: string,
+    movieId: number,
   ): Promise<boolean> {
     try {
       const isRemoved =

@@ -16,7 +16,7 @@ export default interface IProfileRepository {
   ): Promise<boolean>;
   removeMovieFromFavoriteList(
     profileId: string,
-    movieId: string,
+    movieId: number,
   ): Promise<boolean>;
   deleteProfile(profileId: string): Promise<boolean>;
   getAllProfiles(userId: string): Promise<ProfileDTO[] | null>;

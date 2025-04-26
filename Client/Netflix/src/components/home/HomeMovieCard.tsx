@@ -1,26 +1,27 @@
+import IBaseMovie from "@/api/interfaces/IBaseMovie";
 import { Button } from "@/components/ui/button";
+import AddToListButton from "@/features/home/AddToListButton";
 import { useTrailerKey } from "@/hooks/useTrailerKey";
 import cleanYouTubeEmbedUrl from "@/utils/cleanTrailerUrl";
-import { InfoIcon, PlayIcon, Plus } from "lucide-react";
-import { useState, useEffect } from "react";
+import { InfoIcon, PlayIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import ReactPlayer from "react-player/youtube";
 
 type MovieCardProps = {
-  id: number;
-  title: string;
+  movie: IBaseMovie;
   image: string;
-  trailerKey?: string;
   onPlay?: () => void;
   onMoreInfo?: () => void;
 };
 
 const HomeMovieCard = ({
-  title,
   image,
   onPlay,
-  id,
+  movie,
   onMoreInfo,
 }: MovieCardProps) => {
+  const { title, id } = movie;
+
   const { data } = useTrailerKey(id);
   const cleanUrl = cleanYouTubeEmbedUrl(data?.embedUrl);
 
@@ -79,13 +80,7 @@ const HomeMovieCard = ({
             <PlayIcon className="w-5 h-5" />
           </Button>
 
-          <Button
-            size="icon"
-            className="bg-zinc-500/90 text-white hover:bg-zinc-500/80 rounded-full w-9 h-9"
-            onClick={onMoreInfo}
-          >
-            <Plus className="w-5 h-5" />
-          </Button>
+          <AddToListButton movie={movie} />
 
           <Button
             size="sm"

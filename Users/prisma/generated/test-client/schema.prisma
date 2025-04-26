@@ -67,7 +67,7 @@ model MovieFavoriteList {
 }
 
 model Movie {
-  id            String  @id @default(cuid())
+  id            Int     @id @default(dbgenerated())
   title         String
   release_date  String
   genre_ids     Int[]

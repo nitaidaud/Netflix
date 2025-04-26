@@ -14,15 +14,12 @@ interface CategoryCarouselProps {
   title: string;
   movies: IBaseMovie[];
   categoryLink: string;
+  onMoreInfo: (id: number) => void;
 }
 
-const CategoryCarousel = ({
-  title,
-  movies,
-  categoryLink,
-}: CategoryCarouselProps) => {
+const CategoryCarousel = ({ title, movies, categoryLink, onMoreInfo }: CategoryCarouselProps) => {
   return (
-    <div className="mt-10 ">
+    <div className="mt-6">
       <div className="flex justify-between items-center px-2 mb-4">
         <div className="group flex items-center gap-3 px-2 mb-4">
           <h2 className="text-white text-2xl font-bold">{title}</h2>
@@ -35,24 +32,24 @@ const CategoryCarousel = ({
         </div>
       </div>
       <Carousel className="relative px-20 overflow-x-clip" opts={{ align: "start", loop: false }}>
-        <CarouselContent className="overflow-visible z-10">
+        <CarouselContent className="overflow-visible z-10 hover:shadow-2xlִִִ hover:shadow-black">
           {movies.slice(0, 10).map((movie) => (
             <CarouselItem
               key={movie.id}
-              className="relative md:basis-1/2 lg:basis-1/5 transition-transform duration-300 hover:z-30 hover:scale-130"
+              className="relative md:basis-1/2 lg:basis-1/5 transition-transform duration-300 hover:z-30 hover:scale-130 "
             >
               <HomeMovieCard
                 title={movie.title}
                 image={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
                 id={movie.id}
                 onPlay={() => console.log("Play", movie.title)}
-                onMoreInfo={() => console.log("More Info", movie.title)}
+                onMoreInfo={() => onMoreInfo(movie.id)}
               />
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-10 z-50"/>
-        <CarouselNext className="right-10 z-50"/>
+        <CarouselPrevious className="left-10 z-50" />
+        <CarouselNext className="right-10 z-50" />
       </Carousel>
     </div>
   );

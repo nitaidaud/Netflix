@@ -5,6 +5,7 @@ import { useCategoryMovies } from "@/hooks/useCategoryMovies";
 import { useSearchMovies } from "@/hooks/useSearchMovies";
 import { useSearchParams } from "react-router-dom";
 import Footer from "@/components/shared/Footer";
+import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation";
 
 const Browse = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("new");
@@ -43,16 +44,17 @@ const Browse = () => {
       />
 
       {isLoading ? (
-        <p className="text-white text-center my-10 text-lg">Loading...</p>
+        <div className="p-4 mt-6">
+          <LoadingContentAnimation />
+        </div>
       ) : movies.length === 0 && searchQuery ? (
         <p className="text-white text-center my-10 text-lg">
-          No results found for "
-          <span className="font-semibold">{searchQuery}</span>"
+          No results found for "<span className="font-semibold">{searchQuery}</span>"
         </p>
       ) : (
-        <MoviesGrid movies={movies} isLoading={isLoading} />
+        <MoviesGrid movies={movies} isLoading={false} />
       )}
-      
+
       <Footer />
     </div>
   );

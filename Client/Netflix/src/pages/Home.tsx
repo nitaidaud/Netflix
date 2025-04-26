@@ -3,10 +3,14 @@ import CategoryCarousel from "@/components/home/CategoryCarousel";
 import { useHomeContent } from "@/hooks/useHomeContent";
 import Container from "@/components/shared/Container";
 import Footer from "@/components/shared/Footer";
-import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation"; // ודא שבנתיב הנכון
+import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation";
+import MovieModal from "@/components/home/MovieModal"; // נוסיף מודל
+
+import { useState } from "react";
 
 const Home = () => {
   const { data, isLoading } = useHomeContent();
+  const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
 
   if (isLoading || !data) {
     return (
@@ -24,17 +28,9 @@ const Home = () => {
     { key: "comedy", title: "Comedy Movies", link: "/browse?category=comedy" },
     { key: "horror", title: "Horror Movies", link: "/browse?category=horror" },
     { key: "action", title: "Action Movies", link: "/browse?category=action" },
-    {
-      key: "romance",
-      title: "Romance Movies",
-      link: "/browse?category=romance",
-    },
+    { key: "romance", title: "Romance Movies", link: "/browse?category=romance" },
     { key: "kids", title: "Kids Movies", link: "/browse?category=kids" },
-    {
-      key: "documentary",
-      title: "Documentaries",
-      link: "/browse?category=documentary",
-    },
+    { key: "documentary", title: "Documentaries", link: "/browse?category=documentary" },
   ];
 
   return (
@@ -52,9 +48,14 @@ const Home = () => {
             title={title}
             movies={data[key as keyof typeof data]}
             categoryLink={link}
+            onMoreInfo={setSelectedMovieId}
           />
         ))}
       </div>
+
+      {selectedMovieId && (
+        <MovieModal movieId={selectedMovieId} onClose={() => setSelectedMovieId(null)} />
+      )}
 
       <Footer />
     </div>

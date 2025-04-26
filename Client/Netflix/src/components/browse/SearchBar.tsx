@@ -10,6 +10,7 @@ const SearchBar = ({ onSearch }: Props) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("searching for", query);
     onSearch(query.trim());
   };
 

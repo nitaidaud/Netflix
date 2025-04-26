@@ -221,3 +221,14 @@ export const getProfilesRequest = async () => {
   );
   return data;
 };
+
+export const getMoviesByPageRequest = async ({ pageParam = 1 }) => {
+  const { data } = await api.get<IBaseMovie[]>(`/api/movies/page/${pageParam}`);
+  return data;
+}
+
+export const getMovieByIdRequest = async (id: number) => {
+  const { data } = await api.get<IBaseMovie>(`/api/movies/getMovieById/${id}`);
+  return data;
+};
+

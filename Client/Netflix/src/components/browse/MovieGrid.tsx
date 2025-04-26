@@ -8,6 +8,7 @@ type MoviesGridProps = {
 };
 
 const MoviesGrid = ({ movies, isLoading }: MoviesGridProps) => {
+  console.log("MoviesGrid", movies);
   return (
     <div className="p-4 mt-6">
       {isLoading ? (

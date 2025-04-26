@@ -1,4 +1,4 @@
-import { InfoIcon, PlayIcon } from "lucide-react";
+import { InfoIcon } from "lucide-react";
 import { Button } from "../ui/button";
 
 type HeroSectionProps = {
@@ -10,12 +10,12 @@ type HeroSectionProps = {
 const HeroSection = ({ title, overview, backdropPath }: HeroSectionProps) => {
   return (
     <div
-      className="relative w-full h-[75vh] bg-cover bg-center"
+      className="relative w-full h-[80vh] bg-cover bg-center md:bg-top"
       style={{
         backgroundImage: `url(https://image.tmdb.org/t/p/original${backdropPath})`,
       }}
     >
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent px-8 py-10 flex flex-col justify-end">
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent px-10 py-15 flex flex-col justify-end">
         <h1 className="text-white text-4xl font-bold mb-2">{title}</h1>
         <p className="text-white text-sm max-w-xl mb-4 line-clamp-3">
           {overview}

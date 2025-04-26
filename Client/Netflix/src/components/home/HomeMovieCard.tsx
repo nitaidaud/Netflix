@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { useTrailerKey } from "@/hooks/useTrailerKey";
 import cleanYouTubeEmbedUrl from "@/utils/cleanTrailerUrl";
-import { InfoIcon, PlayIcon, Plus } from "lucide-react";
-import { useState, useEffect } from "react";
+import { InfoIcon, Plus } from "lucide-react";
+import { useEffect, useState } from "react";
 import ReactPlayer from "react-player/youtube";
 
 type MovieCardProps = {

@@ -17,7 +17,12 @@ interface CategoryCarouselProps {
   onMoreInfo: (id: number) => void;
 }
 
-const CategoryCarousel = ({ title, movies, categoryLink, onMoreInfo }: CategoryCarouselProps) => {
+const CategoryCarousel = ({
+  title,
+  movies,
+  categoryLink,
+  onMoreInfo,
+}: CategoryCarouselProps) => {
   return (
     <div className="mt-6">
       <div className="flex justify-between items-center px-2 mb-4">
@@ -31,7 +36,10 @@ const CategoryCarousel = ({ title, movies, categoryLink, onMoreInfo }: CategoryC
           </Link>
         </div>
       </div>
-      <Carousel className="relative px-20 overflow-x-clip" opts={{ align: "start", loop: false }}>
+      <Carousel
+        className="relative px-20 overflow-x-clip"
+        opts={{ align: "start", loop: false }}
+      >
         <CarouselContent className="overflow-visible z-10 hover:shadow-2xlִִִ hover:shadow-black">
           {movies.slice(0, 10).map((movie) => (
             <CarouselItem
@@ -48,8 +56,8 @@ const CategoryCarousel = ({ title, movies, categoryLink, onMoreInfo }: CategoryC
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-10 z-50" />
-        <CarouselNext className="right-10 z-50" />
+        <CarouselPrevious className="left-0 z-50" />
+        <CarouselNext className="right-0 z-50" />
       </Carousel>
     </div>
   );

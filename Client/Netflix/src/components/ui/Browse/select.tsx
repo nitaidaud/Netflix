@@ -26,7 +26,7 @@ type SelectDemoProps={
 
 const Selectdemo = ({ onChange }: SelectDemoProps) => {
   return (
-    <Select onValueChange={(value) => onChange?.(value)}>
+    <Select onValueChange={(value) => onChange?.(value)} >
       <SelectTrigger className="border-2 border-gray-300  h-full rounded-none w-[150px]">
         <SelectValue placeholder="Select" />
       </SelectTrigger>

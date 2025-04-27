@@ -81,18 +81,23 @@ export class MovieController {
   async getMoviesByPage(req: Request, res: Response): Promise<void> {
     try {
       // const page = parseInt(req.params.page);
-      const { page } = req.params;
-      const { category } = req.query;
+      const page = Number(req.params.page);
+      const category: string = req.query.category;
 
-      const pageAsNumber = page ?  Number(page):1 ;
+      console.log("page", page);
+      console.log("category", category);
 
-      if(pageAsNumber < 1 || isNaN(pageAsNumber)) {
+      const pageAsNumber = page ? Number(page) : 1;
+
+      if (pageAsNumber < 1 || isNaN(pageAsNumber)) {
         throw new Error("Invalid page number");
       }
 
-      const movies = await this.movieService.getMoviesByPage(pageAsNumber, category as string);
+      const movies = await this.movieService.getMoviesByPage(
+        pageAsNumber,
+        category as string,
+      );
       res.json(movies);
-      
 
       // if (!page) {
       //   const movies = await this.movieService.getMoviesByPage();

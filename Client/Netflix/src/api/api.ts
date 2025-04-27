@@ -14,6 +14,7 @@ import { ProfileFormData } from "@/schemas/profile.schema";
 import IProfileResponse from "./interfaces/IProfileResponse";
 import IBaseResponse from "./interfaces/IBaseRespone";
 import IMyListResponse from "./interfaces/IMyListResponse";
+import IMoviesByPage from "./interfaces/IMoviesByPage";
 
 const api = axios.create({
   baseURL: apiBaseUrl,
@@ -189,14 +190,17 @@ export const updateProfileRequest = async (profileData: IProfileData) => {
 };
 
 export const addMovieToFavoriteListRequest = async (movie: IBaseMovie) => {
-  const { data } = await api.patch<IMyListResponse>(`/api/profiles/add-movie`, movie);
+  const { data } = await api.patch<IMyListResponse>(
+    `/api/profiles/add-movie`,
+    movie,
+  );
   return data;
 };
 
 export const removeMovieFromFavoriteListRequest = async (movieId: number) => {
   const { data } = await api.patch<IMyListResponse>(
     `/api/profiles/remove-movie`,
-    {movieId: movieId},
+    { movieId: movieId },
   );
   return data;
 };
@@ -220,17 +224,15 @@ export const getProfilesRequest = async () => {
   return data;
 };
 
-type GetMoviesByPageParams = {
-  pageParam?: number;
-  category?: string;
-};
-
-export const getMoviesByPageRequest = async ({ pageParam = 1, category }: GetMoviesByPageParams) => {
+export const getMoviesByPageRequest = async ({
+  pageParam = 1,
+  category,
+}: IMoviesByPage) => {
   const { data } = await api.get<{
     results: IBaseMovie[];
     totalPages: number;
-  }>("/api/movies/getMovies/page/" + pageParam, {
-    params: category ? { category } : {},
+  }>(`/api/movies/getMovies/page/${pageParam}`, {
+    params: category ? { category } : { category: "" },
   });
 
   return data;
@@ -240,4 +242,3 @@ export const getMovieByIdRequest = async (id: number) => {
   const { data } = await api.get<IBaseMovie>(`/api/movies/getMovieById/${id}`);
   return data;
 };
-

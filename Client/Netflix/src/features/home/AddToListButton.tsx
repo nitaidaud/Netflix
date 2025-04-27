@@ -50,7 +50,7 @@ const AddToListButton = ({ movie }: AddToListButtonProps) => {
   const removeFromList = async () => {
     try {
       console.log("movie", movie.id);
-      
+
       setIsLoading(true);
       await dispatch(removeMovieFromFavoriteList(movie.id));
     } catch (error) {
@@ -60,10 +60,10 @@ const AddToListButton = ({ movie }: AddToListButtonProps) => {
     }
   };
 
-  return isMovieAdded ? (
-    <RemoveFromList removeFromList={removeFromList} />
-  ) : isLoading ? (
+  return isLoading ? (
     <LucideLoader className="animate-spin my-auto" />
+  ) : isMovieAdded ? (
+    <RemoveFromList removeFromList={removeFromList} />
   ) : (
     <AddToList addToList={addToList} />
   );

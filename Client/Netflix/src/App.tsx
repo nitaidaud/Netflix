@@ -16,7 +16,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import Landing from "./pages/Landing";
 import MoviesPage from "./pages/MoviesPage";
-import MyList from "./pages/MyList";
+import MyListPage from "./pages/MyListPage";
 import ProfileChoicePage from "./pages/ProfileChoicePage";
 import ResetPassword from "./pages/ResetPassword";
 import SignInPage from "./pages/Signin";
@@ -71,7 +71,7 @@ function App() {
                 <Route path="/verify-email" element={<VerifyEmail />} />
                 <Route path="/profiles" element={<ProfileChoicePage />} />
                 <Route path="/profile/create" element={<CreateProfilePage />} />
-                <Route path="/my-list" element={<MyList />} />
+                <Route path="/my-list" element={<MyListPage />} />
                 <Route path="/movies" element={<MoviesPage />} />
                 <Route path="/browse" element={<Browse />} />
                 <Route path="*" element={<Navigate to="/" />} />

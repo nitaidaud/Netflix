@@ -10,7 +10,7 @@ export default interface IMovieService {
     getTopMovies(): Promise<IBaseMovie[]>;
     getTrailerById(movieId: string): Promise<string | null>;
     //searchMovies(query: string): Promise<any>;
-    getMoviesByPage(page?: number): Promise<IMoviesByPage>;
+    getMoviesByPage(page?: number, category?: string): Promise<IMoviesByPage>;
     getNewMovies(): Promise<IBaseMovie[]>;
     getComedyMovies(): Promise<IBaseMovie[]>;
     getHorrorMovies(): Promise<IBaseMovie[]>;

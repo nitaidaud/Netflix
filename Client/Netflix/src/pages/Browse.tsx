@@ -1,15 +1,10 @@
 import Filters from "@/components/browse/Filters";
 import MoviesGrid from "@/components/browse/MovieGrid";
-import { useCategoryMovies } from "@/hooks/useCategoryMovies";
-import { useSearchMovies } from "@/hooks/useSearchMovies";
-import { useSearchParams } from "react-router-dom";
-import Footer from "@/components/shared/Footer";
 import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation";
-import MoviesGrid from "@/components/browse/MovieGrid";
 import { useInfiniteMovies } from "@/hooks/useInfiniteMovies";
-import { useInView } from "react-intersection-observer";
-import Filters from "@/components/browse/Filters";
 import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
+import { useSearchParams } from "react-router-dom";
 
 const Browse = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("new");

@@ -9,6 +9,7 @@ import {
   removeMovieFromFavoriteListRequest,
   updateProfileRequest,
 } from "@/api/api";
+import IBaseMovie from "@/api/interfaces/IBaseMovie";
 import IProfile from "@/api/interfaces/IProfile";
 import IProfileData from "@/api/interfaces/IProfileData";
 import { ProfileFormData } from "@/schemas/profile.schema";
@@ -138,13 +139,11 @@ export const updateProfile = createAsyncThunk(
 
 export const addMovieToFavoriteList = createAsyncThunk(
   "profile/addMovieToFavoriteList",
-  async (movieId: number, { rejectWithValue }) => {
+  async (movie: IBaseMovie, { rejectWithValue }) => {
     try {
-      const res = await addMovieToFavoriteListRequest(movieId);
+      const res = await addMovieToFavoriteListRequest(movie);
       return {
-        name: res.name,
-        image: res.image,
-        moviesFavoriteList: res.moviesFavoriteList,
+        moviesFavoriteList: res.myList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
@@ -158,10 +157,9 @@ export const removeMovieFromFavoriteList = createAsyncThunk(
   async (movieId: number, { rejectWithValue }) => {
     try {
       const res = await removeMovieFromFavoriteListRequest(movieId);
+
       return {
-        name: res.name,
-        image: res.image,
-        moviesFavoriteList: res.moviesFavoriteList,
+        moviesFavoriteList: res.myList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);

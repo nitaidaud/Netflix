@@ -5,12 +5,13 @@ body {
   background-color: #000;
   color: #fff;
   font-family: Arial, sans-serif;
+  
 }
 
 #root {
   height: 100%;
-  display: flex;
-  justify-content: center;
+  /* display: flex;
+  justify-content: center; */
 }
 
 .app-container {

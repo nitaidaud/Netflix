@@ -8,6 +8,8 @@ import IProfileService from "../Interfaces/IProfileService";
 import ProfileDTO from "../DTOs/profile.dto";
 import { sign, verify } from "../utils/jwt";
 import IProfilePayload from "../Interfaces/IUserPayload";
+import IMyListRemoveMovie from "../Interfaces/IMylistRemoveMovie";
+import IFavoriteList from "../Interfaces/IFavoriteList";
 
 @injectable()
 export class ProfileService implements IProfileService {
@@ -88,42 +90,53 @@ export class ProfileService implements IProfileService {
   async addMovieToFavoriteList(
     profileId: string,
     movieData: IMovie,
-  ): Promise<boolean> {
+  ): Promise<IFavoriteList> {
     try {
-      const isAdded = await this.profileRepository.addMovieToFavoriteList(
+      const myList = await this.profileRepository.addMovieToFavoriteList(
         profileId,
         movieData,
       );
 
-      if (!isAdded) {
+      if (!myList) {
         throw new Error("Error adding movie to favorite list");
       }
 
-      return isAdded;
+      return myList;
     } catch (error) {
       console.error("Error adding movie to favorite list:", error);
-      return false;
+      const myList = await this.profileRepository.getMyList(profileId);
+
+      if (!myList) {
+        throw new Error("Error removing movie from favorite list");
+      }
+      
+      return myList;
     }
   }
 
   async removeMovieFromFavoriteList(
     profileId: string,
-    movieId: string,
-  ): Promise<boolean> {
+    movieId: number,
+  ): Promise<IFavoriteList> {
     try {
-      const isRemoved =
-        await this.profileRepository.removeMovieFromFavoriteList(
-          profileId,
-          movieId,
-        );
+      const myList = await this.profileRepository.removeMovieFromFavoriteList(
+        profileId,
+        movieId,
+      );
 
-      if (!isRemoved) {
+      if (!myList) {
         throw new Error("Error removing movie from favorite list");
       }
-      return isRemoved;
+      return myList;
     } catch (error) {
       console.error("Error removing movie from favorite list:", error);
-      return false;
+      const myList = await this.profileRepository.getMyList(profileId);
+
+      if (!myList) {
+        throw new Error("Error removing movie from favorite list");
+      }
+
+      return myList;
     }
   }
 

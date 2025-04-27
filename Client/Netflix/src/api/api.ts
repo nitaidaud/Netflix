@@ -13,6 +13,7 @@ import ISendMailResponse from "./interfaces/IVerifyMailResponse";
 import { ProfileFormData } from "@/schemas/profile.schema";
 import IProfileResponse from "./interfaces/IProfileResponse";
 import IBaseResponse from "./interfaces/IBaseRespone";
+import IMyListResponse from "./interfaces/IMyListResponse";
 
 const api = axios.create({
   baseURL: apiBaseUrl,
@@ -188,14 +189,14 @@ export const updateProfileRequest = async (profileData: IProfileData) => {
 };
 
 export const addMovieToFavoriteListRequest = async (movie: IBaseMovie) => {
-  const { data } = await api.patch<IProfile>(`/api/profiles/add-movie`, movie);
+  const { data } = await api.patch<IMyListResponse>(`/api/profiles/add-movie`, movie);
   return data;
 };
 
 export const removeMovieFromFavoriteListRequest = async (movieId: number) => {
-  const { data } = await api.patch<IProfile>(
+  const { data } = await api.patch<IMyListResponse>(
     `/api/profiles/remove-movie`,
-    movieId,
+    {movieId: movieId},
   );
   return data;
 };

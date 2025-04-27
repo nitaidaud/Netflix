@@ -143,9 +143,7 @@ export const addMovieToFavoriteList = createAsyncThunk(
     try {
       const res = await addMovieToFavoriteListRequest(movie);
       return {
-        name: res.name,
-        image: res.image,
-        moviesFavoriteList: res.moviesFavoriteList,
+        moviesFavoriteList: res.myList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
@@ -159,10 +157,9 @@ export const removeMovieFromFavoriteList = createAsyncThunk(
   async (movieId: number, { rejectWithValue }) => {
     try {
       const res = await removeMovieFromFavoriteListRequest(movieId);
+
       return {
-        name: res.name,
-        image: res.image,
-        moviesFavoriteList: res.moviesFavoriteList,
+        moviesFavoriteList: res.myList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);

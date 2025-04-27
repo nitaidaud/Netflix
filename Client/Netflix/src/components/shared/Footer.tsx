@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 const Footer = () => {
   return (
-    <footer className="bg-[#111] text-zinc-400 px-8 py-12 text-sm">
+    <footer className="bg-[#111] text-zinc-400 px-8 py-12 text-sm static bottom-0 w-full">
       <div className="max-w-6xl mx-auto space-y-8">
 
         {/* Social Icons */}

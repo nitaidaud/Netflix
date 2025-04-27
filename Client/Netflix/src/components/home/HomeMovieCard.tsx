@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import AddToListButton from "@/features/home/AddToListButton";
 import { useTrailerKey } from "@/hooks/useTrailerKey";
 import cleanYouTubeEmbedUrl from "@/utils/cleanTrailerUrl";
-import { InfoIcon, PlayIcon } from "lucide-react";
+import { InfoIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import ReactPlayer from "react-player/youtube";
 
@@ -82,7 +82,8 @@ const HomeMovieCard = ({
               <img src="/icons/play_icon.png" alt="Play" className="w-4 h-4" />
             </Button>
 
-          <AddToListButton movie={movie} />
+            <AddToListButton movie={movie} />
+          </div>
 
           {/* Right: More Info */}
           <Button

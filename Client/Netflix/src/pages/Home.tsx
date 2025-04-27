@@ -1,12 +1,25 @@
-import HeroSection from "@/components/home/HeroSection";
 import CategoryCarousel from "@/components/home/CategoryCarousel";
-import { useHomeContent } from "@/hooks/useHomeContent";
-import Container from "@/components/shared/Container";
-import Footer from "@/components/shared/Footer";
-import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation";
+import HeroSection from "@/components/home/HeroSection";
 import MovieModal from "@/components/home/MovieModal"; // נוסיף מודל
+import Container from "@/components/shared/Container";
+import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation";
+import { useHomeContent } from "@/hooks/useHomeContent";
 
 import { useState } from "react";
+
+const categories = [
+  { key: "newMovies", title: "New Releases", link: "/browse?category=new" },
+  { key: "comedy", title: "Comedy Movies", link: "/browse?category=comedy" },
+  { key: "horror", title: "Horror Movies", link: "/browse?category=horror" },
+  { key: "action", title: "Action Movies", link: "/browse?category=action" },
+  { key: "romance", title: "Romance Movies", link: "/browse?category=romance" },
+  { key: "kids", title: "Kids Movies", link: "/browse?category=kids" },
+  {
+    key: "documentary",
+    title: "Documentaries",
+    link: "/browse?category=documentary",
+  },
+];
 
 const Home = () => {
   const { data, isLoading } = useHomeContent();
@@ -23,15 +36,6 @@ const Home = () => {
   }
 
   const heroMovie = data.newMovies[8];
-  const categories = [
-    { key: "newMovies", title: "New Releases", link: "/browse?category=new" },
-    { key: "comedy", title: "Comedy Movies", link: "/browse?category=comedy" },
-    { key: "horror", title: "Horror Movies", link: "/browse?category=horror" },
-    { key: "action", title: "Action Movies", link: "/browse?category=action" },
-    { key: "romance", title: "Romance Movies", link: "/browse?category=romance" },
-    { key: "kids", title: "Kids Movies", link: "/browse?category=kids" },
-    { key: "documentary", title: "Documentaries", link: "/browse?category=documentary" },
-  ];
 
   return (
     <div className="w-full">
@@ -54,10 +58,12 @@ const Home = () => {
       </div>
 
       {selectedMovieId && (
-        <MovieModal movieId={selectedMovieId} onClose={() => setSelectedMovieId(null)} />
+        <MovieModal
+          movieId={selectedMovieId}
+          onClose={() => setSelectedMovieId(null)}
+        />
       )}
 
-      <Footer />
     </div>
   );
 };

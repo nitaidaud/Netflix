@@ -5,6 +5,8 @@ import IProfile from "../Interfaces/IProfile";
 import IProfileData from "../Interfaces/IProfilePayload";
 import IProfileRepository from "../Interfaces/IProfileRepository";
 import ProfileDTO from "../DTOs/profile.dto";
+import IMyListRemoveMovie from "../Interfaces/IMylistRemoveMovie";
+import IFavoriteList from "../Interfaces/IFavoriteList";
 
 @injectable()
 export class ProfileRepository implements IProfileRepository {
@@ -63,7 +65,7 @@ export class ProfileRepository implements IProfileRepository {
   async addMovieToFavoriteList(
     profileId: string,
     movieData: IMovie,
-  ): Promise<boolean> {
+  ): Promise<IFavoriteList> {
     const favList = await prisma.movieFavoriteList.upsert({
       where: { profileId },
       update: {
@@ -83,15 +85,18 @@ export class ProfileRepository implements IProfileRepository {
           },
         },
       },
+      include: {
+        movies: true,
+      },
     });
 
-    return !!favList;
+    return favList;
   }
 
   async removeMovieFromFavoriteList(
     profileId: string,
     movieId: number,
-  ): Promise<boolean> {
+  ): Promise<IFavoriteList> {
     const deletedMovie = await prisma.movieFavoriteList.update({
       where: { profileId },
       data: {
@@ -99,9 +104,23 @@ export class ProfileRepository implements IProfileRepository {
           disconnect: { id: movieId },
         },
       },
+      include: {
+        movies: true,
+      },
     });
 
-    return !!deletedMovie;
+    return deletedMovie;
+  }
+
+  async getMyList(profileId: string): Promise<IFavoriteList | null> {
+    const myList = await prisma.movieFavoriteList.findUnique({
+      where: { profileId },
+      include: {
+        movies: true,
+      },
+    });
+
+    return myList;
   }
 
   async deleteProfile(profileId: string): Promise<boolean> {

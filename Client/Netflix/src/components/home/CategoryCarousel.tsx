@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/carousel";
 
 import { Link } from "react-router-dom";
-import HomeMovieCard from "./HomeMovieCard";
 import IBaseMovie from "@/api/interfaces/IBaseMovie";
+import HomeMovieCard from "./HomeMovieCard";
 
 interface CategoryCarouselProps {
   title: string;

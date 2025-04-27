@@ -2,6 +2,8 @@ import IProfileData from "./IProfilePayload";
 import IProfile from "./IProfile";
 import IMovie from "./IMovie";
 import ProfileDTO from "../DTOs/profile.dto";
+import IMyListRemoveMovie from "./IMylistRemoveMovie";
+import IFavoriteList from "./IFavoriteList";
 
 export default interface IProfileRepository {
   getProfileById(profileId: string): Promise<ProfileDTO | null>;
@@ -13,11 +15,12 @@ export default interface IProfileRepository {
   addMovieToFavoriteList(
     profileId: string,
     movieData: IMovie,
-  ): Promise<boolean>;
+  ): Promise<IFavoriteList>;
   removeMovieFromFavoriteList(
     profileId: string,
     movieId: number,
-  ): Promise<boolean>;
+  ): Promise<IFavoriteList>;
+  getMyList(profileId: string): Promise<IFavoriteList | null>;
   deleteProfile(profileId: string): Promise<boolean>;
   getAllProfiles(userId: string): Promise<ProfileDTO[] | null>;
 }

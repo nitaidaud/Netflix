@@ -12,7 +12,7 @@ const links = [
   { name: "TV Shows", href: "/tv" },
   { name: "Movies", href: "/movies" },
   { name: "New & Popular", href: "/new-popular" },
-  { name: "My List", href: "/mylist" },
+  { name: "My List", href: "/my-list" },
   { name: "Browse", href: "/browse" },
 ];
 

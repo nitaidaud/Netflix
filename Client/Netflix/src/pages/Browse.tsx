@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
 import Filters from "@/components/browse/Filters";
 import MoviesGrid from "@/components/browse/MovieGrid";
+import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation";
 import { useCategoryMovies } from "@/hooks/useCategoryMovies";
 import { useSearchMovies } from "@/hooks/useSearchMovies";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import Footer from "@/components/shared/Footer";
-import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation";
 
 const Browse = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("new");
@@ -55,7 +54,6 @@ const Browse = () => {
         <MoviesGrid movies={movies} isLoading={false} />
       )}
 
-      <Footer />
     </div>
   );
 };

@@ -165,7 +165,6 @@ export class ProfileController {
       const movieData: IMovie = req.body;
 
       console.log("movieData", movieData);
-      
 
       if (!profileToken) {
         return res.status(401).json({ message: "Unauthorized" });
@@ -177,16 +176,20 @@ export class ProfileController {
         return res.status(401).json({ message: "Unauthorized" });
       }
 
-      const isAdded = await this.profileService.addMovieToFavoriteList(
+      const myList = await this.profileService.addMovieToFavoriteList(
         profilePayload.id,
         movieData,
       );
 
-      if (!isAdded) {
-        return res.status(404).json({ message: "Profile not found" });
+      if (!myList) {
+        return res
+          .status(404)
+          .json({ message: "Profile not found", myList: [] });
       }
 
-      return res.status(200).json({ message: "Movie added to favorites" });
+      return res
+        .status(200)
+        .json({ message: "Movie added to favorites", myList });
     } catch (error) {
       handleError(res, error);
     }
@@ -202,16 +205,20 @@ export class ProfileController {
         return res.status(401).json({ message: "Unauthorized" });
       }
 
-      const isRemoved = await this.profileService.removeMovieFromFavoriteList(
+      const myList = await this.profileService.removeMovieFromFavoriteList(
         profilePayload.id,
         movieId,
       );
 
-      if (!isRemoved) {
-        return res.status(404).json({ message: "Profile not found" });
+      if (!myList) {
+        return res
+          .status(404)
+          .json({ message: "Profile not found", myList: [] });
       }
 
-      return res.status(200).json({ message: "Movie removed from favorites" });
+      return res
+        .status(200)
+        .json({ message: "Movie removed from favorites", myList });
     } catch (error) {
       handleError(res, error);
     }

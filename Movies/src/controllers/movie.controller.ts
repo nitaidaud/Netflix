@@ -82,19 +82,31 @@ export class MovieController {
     try {
       // const page = parseInt(req.params.page);
       const { page } = req.params;
-      if (!page) {
-        const movies = await this.movieService.getMoviesByPage();
-        res.json(movies);
-      } else {
-        const pageAsNumber = Number(page);
+      const { category } = req.query;
 
-        if (pageAsNumber >= 1) {
-          const movies = await this.movieService.getMoviesByPage(pageAsNumber);
-          res.json(movies);
-        } else {
-          throw new Error("Invalid page number");
-        }
+      const pageAsNumber = page ?  Number(page):1 ;
+
+      if(pageAsNumber < 1 || isNaN(pageAsNumber)) {
+        throw new Error("Invalid page number");
       }
+
+      const movies = await this.movieService.getMoviesByPage(pageAsNumber, category as string);
+      res.json(movies);
+      
+
+      // if (!page) {
+      //   const movies = await this.movieService.getMoviesByPage();
+      //   res.json(movies);
+      // } else {
+      //   const pageAsNumber = Number(page);
+
+      //   if (pageAsNumber >= 1) {
+      //     const movies = await this.movieService.getMoviesByPage(pageAsNumber);
+      //     res.json(movies);
+      //   } else {
+      //     throw new Error("Invalid page number");
+      //   }
+      // }
     } catch (err) {
       handleError(res, err);
     }

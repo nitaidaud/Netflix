@@ -1,58 +1,68 @@
 import { useEffect, useState } from "react";
 import Filters from "@/components/browse/Filters";
 import MoviesGrid from "@/components/browse/MovieGrid";
-import { useCategoryMovies } from "@/hooks/useCategoryMovies";
-import { useSearchMovies } from "@/hooks/useSearchMovies";
+import { useInfiniteMovies } from "@/hooks/useInfiniteMovies";
 import { useSearchParams } from "react-router-dom";
 import Footer from "@/components/shared/Footer";
 import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation";
+import { useInView } from "react-intersection-observer";
 
 const Browse = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("new");
-  const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchParams] = useSearchParams();
+  const { ref, inView } = useInView(); 
 
-  const category = searchParams.get("category");
-
-  useEffect(() => {
-    if (category) {
-      setSelectedCategory(category);
-    }
-  }, [category]);
+  const categoryFromUrl = searchParams.get("category");
 
   useEffect(() => {
-    if (!searchQuery && category) {
-      setSelectedCategory(category);
+    if (categoryFromUrl) {
+      setSelectedCategory(categoryFromUrl);
     }
-  }, [searchQuery, category]);
+  }, [categoryFromUrl]);
 
-  const { data: categoryMovies = [], isLoading: loadingCategory } =
-    useCategoryMovies(searchQuery ? null : selectedCategory);
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useInfiniteMovies(selectedCategory);
 
-  const { data: searchResults = [], isLoading: loadingSearch } =
-    useSearchMovies(searchQuery);
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
 
-  const isLoading = searchQuery ? loadingSearch : loadingCategory;
-  const movies = searchQuery ? searchResults : categoryMovies;
+  const movies = data?.pages.flatMap(page => page.results) ?? [];
 
   return (
     <div className="relative w-full h-full max-w-7xl mx-auto">
       <Filters
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
-        onSearch={setSearchQuery}
+        onSearch={() => {}} // אין חיפוש כאן באינפיניט
       />
 
       {isLoading ? (
         <div className="p-4 mt-6">
           <LoadingContentAnimation />
         </div>
-      ) : movies.length === 0 && searchQuery ? (
+      ) : movies.length === 0 ? (
         <p className="text-white text-center my-10 text-lg">
-          No results found for "<span className="font-semibold">{searchQuery}</span>"
+          No movies found for "<span className="font-semibold">{selectedCategory}</span>"
         </p>
       ) : (
-        <MoviesGrid movies={movies} isLoading={false} />
+        <>
+          <MoviesGrid movies={movies} isLoading={false} />
+          <div ref={ref} className="h-10" />
+        </>
+      )}
+
+      {isFetchingNextPage && (
+        <div className="p-4">
+          <LoadingContentAnimation />
+        </div>
       )}
 
       <Footer />

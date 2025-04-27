@@ -137,11 +137,13 @@ export class MovieService implements IMovieService {
     return key;
   }
 
-  async getMoviesByPage(page?: number) {
-    const cacheKey = `movies_page_${page || 1}`;
+  async getMoviesByPage(page?: number, category?: string) {
+
+    const cacheKey = `movies_page_${page}_${category}`;
     const cachedMovies = await this.cacheClient.get(cacheKey);
+
     if (cachedMovies) {
-      console.log(`Returning movies page ${page || 1} cached data...`);
+      console.log(`Returning movies page ${page} category ${category} cached data...`);
       const cachedData = JSON.parse(cachedMovies) as IMoviesByPage;
       const data: IMoviesByPage = {
         results: cachedData.results,
@@ -149,7 +151,7 @@ export class MovieService implements IMovieService {
       };
       return data;
     }
-    console.log(`getting movies page ${page || 1} new data`);
+    console.log(`getting movies page ${page} category ${category} new data`);
     const res = await tmbd.get<IBaseResponse>(`/discover/movie`, {
       params: { page },
     });

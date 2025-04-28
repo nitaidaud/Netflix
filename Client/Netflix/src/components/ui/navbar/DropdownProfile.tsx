@@ -74,7 +74,7 @@ const DropdownProfile = ({ currentProfile }: DropdownProfileProps) => {
             size={13}
             fill="#fff"
             className={`profile-arrow duration-300 ${
-              isOpen ? "rotate-180" : ""
+              !isOpen ? "-rotate-180" : ""
             }`}
           />
         </div>

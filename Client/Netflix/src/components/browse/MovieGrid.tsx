@@ -8,6 +8,7 @@ type MoviesGridProps = {
 };
 
 const MoviesGrid = ({ movies, isLoading }: MoviesGridProps) => {
+  console.log("MoviesGrid", movies);
   return (
     <div className="p-4 mt-6">
       {isLoading ? (
@@ -18,12 +19,13 @@ const MoviesGrid = ({ movies, isLoading }: MoviesGridProps) => {
           {movies.map((movie) => (
             <MovieCard
               key={movie.id}
-              title={movie.title}
-              image={
-                movie.backdrop_path
-                  ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
-                  : "/images/not-found-img.png"
-              }
+              movie={movie}
+              // title={movie.title}
+              // image={
+              //   movie.backdrop_path
+              //     ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+              //     : "/images/not-found-img.png"
+              // }
             />
           ))}
         </div>

@@ -1,26 +1,27 @@
+import IBaseMovie from "@/api/interfaces/IBaseMovie";
 import { Button } from "@/components/ui/button";
+import AddToListButton from "@/features/home/AddToListButton";
 import { useTrailerKey } from "@/hooks/useTrailerKey";
 import cleanYouTubeEmbedUrl from "@/utils/cleanTrailerUrl";
-import { InfoIcon, PlayIcon } from "lucide-react";
-import { useState, useEffect } from "react";
+import { InfoIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import ReactPlayer from "react-player/youtube";
 
 type MovieCardProps = {
-  id: number;
-  title: string;
+  movie: IBaseMovie;
   image: string;
-  trailerKey?: string;
   onPlay?: () => void;
   onMoreInfo?: () => void;
 };
 
 const HomeMovieCard = ({
-  title,
   image,
   onPlay,
-  id,
+  movie,
   onMoreInfo,
 }: MovieCardProps) => {
+  const { title, id } = movie;
+
   const { data } = useTrailerKey(id);
   const cleanUrl = cleanYouTubeEmbedUrl(data?.embedUrl);
 
@@ -45,9 +46,8 @@ const HomeMovieCard = ({
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="movie-card relative rounded-md group aspect-video bg-neutral-800 shadow-md  overflow-hidden hover:z-30"
+      className="movie-card relative rounded-md group aspect-video bg-neutral-800 shadow-md overflow-hidden hover:z-30"
     >
-      
       <img
         src={image}
         alt={title}
@@ -59,8 +59,7 @@ const HomeMovieCard = ({
       {cleanUrl && isPlaying && (
         <ReactPlayer
           playing
-          
-          muted //לשנות 
+          volume={0.2}
           url={cleanUrl}
           width="100%"
           height="100%"
@@ -68,17 +67,31 @@ const HomeMovieCard = ({
         />
       )}
 
-     
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
         <h3 className="text-white text-lg font-bold line-clamp-1 mb-1">
           {title}
         </h3>
-        <div className="flex gap-2 items-center">
-          <Button size="sm" onClick={onPlay}>
-            <PlayIcon className="w-4 h-4 mr-1" />
-            Play
-          </Button>
-          <Button size="sm" variant="ghost" className="bg-gray-500/30 text-white hover:bg-gray-500/40 rounded-sm" onClick={onMoreInfo}>
+        <div className="flex justify-between items-center w-full">
+          {/* Left: Play + Plus */}
+          <div className="flex gap-2">
+            <Button
+              size="icon"
+              className="bg-white text-black hover:bg-zinc-400 rounded-full w-9 h-9"
+              onClick={onPlay}
+            >
+              <img src="/icons/play_icon.png" alt="Play" className="w-4 h-4" />
+            </Button>
+
+            <AddToListButton movie={movie} />
+          </div>
+
+          {/* Right: More Info */}
+          <Button
+            size="sm"
+            variant="ghost"
+            className="bg-gray-500/30 text-white hover:bg-zinc-600/80 hover:text-white rounded-sm"
+            onClick={onMoreInfo}
+          >
             <InfoIcon className="w-4 h-4 mr-1" />
             More Info
           </Button>

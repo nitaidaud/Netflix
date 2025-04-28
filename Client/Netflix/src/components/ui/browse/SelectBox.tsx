@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 
 const categoriesValues = [
-  { value: Categories.Top, label: "Top" },
+  // { value: Categories.Top, label: "Top" },
   { value: Categories.Action, label: "Action" },
   { value: Categories.Animation, label: "Animation" },
   { value: Categories.Comedy, label: "Comedy" },
@@ -20,15 +20,16 @@ const categoriesValues = [
   { value: Categories.Romance, label: "Romance" },
 ];
 
-type SelectDemoProps={
+type SelectDemoProps = {
   onChange: (value: string) => void;
-}
+  selectedValue?: string;
+};
 
-const Selectdemo = ({ onChange }: SelectDemoProps) => {
+const SelectBox = ({ onChange, selectedValue }: SelectDemoProps) => {
   return (
-    <Select onValueChange={(value) => onChange?.(value)}>
-      <SelectTrigger className="border-2 border-gray-300  h-full rounded-none w-[150px]">
-        <SelectValue placeholder="Select" />
+    <Select onValueChange={onChange} value={selectedValue ?? ""}>
+      <SelectTrigger className="border-2 border-gray-300 h-full rounded-none w-[150px]">
+        <SelectValue placeholder="Select"/>
       </SelectTrigger>
       <SelectContent className="bg-zinc-900">
         <SelectGroup className="bg-zinc-900">
@@ -43,4 +44,4 @@ const Selectdemo = ({ onChange }: SelectDemoProps) => {
   );
 };
 
-export default Selectdemo;
+export default SelectBox;

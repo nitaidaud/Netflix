@@ -1,13 +1,16 @@
 import { injectable } from "inversify";
-import IProfile from "../Interfaces/IProfile";
-import IProfilePayload from "../Interfaces/IProfilePayload";
-import IProfileRepository from "../Interfaces/IProfileRepository";
 import { prisma } from "../../prisma/prisma";
 import IMovie from "../Interfaces/IMovie";
+import IProfile from "../Interfaces/IProfile";
+import IProfileData from "../Interfaces/IProfilePayload";
+import IProfileRepository from "../Interfaces/IProfileRepository";
+import ProfileDTO from "../DTOs/profile.dto";
+import IMyListRemoveMovie from "../Interfaces/IMylistRemoveMovie";
+import IFavoriteList from "../Interfaces/IFavoriteList";
 
 @injectable()
 export class ProfileRepository implements IProfileRepository {
-  async getProfileById(profileId: string): Promise<IProfile | null> {
+  async getProfileById(profileId: string): Promise<ProfileDTO | null> {
     const profile = await prisma.profile.findUnique({
       where: { id: profileId },
       include: {
@@ -23,7 +26,7 @@ export class ProfileRepository implements IProfileRepository {
   }
 
   async createProfile(
-    profileData: IProfilePayload,
+    profileData: IProfileData,
     userId: string,
   ): Promise<IProfile> {
     const newProfile = await prisma.profile.create({
@@ -42,8 +45,8 @@ export class ProfileRepository implements IProfileRepository {
 
   async updateProfile(
     profileId: string,
-    profileData: IProfilePayload,
-  ): Promise<IProfile | null> {
+    profileData: IProfileData,
+  ): Promise<ProfileDTO | null> {
     const updatedProfile = await prisma.profile.update({
       where: { id: profileId },
       data: profileData,
@@ -62,7 +65,7 @@ export class ProfileRepository implements IProfileRepository {
   async addMovieToFavoriteList(
     profileId: string,
     movieData: IMovie,
-  ): Promise<boolean> {
+  ): Promise<IFavoriteList> {
     const favList = await prisma.movieFavoriteList.upsert({
       where: { profileId },
       update: {
@@ -82,15 +85,18 @@ export class ProfileRepository implements IProfileRepository {
           },
         },
       },
+      include: {
+        movies: true,
+      },
     });
 
-    return !!favList;
+    return favList;
   }
 
   async removeMovieFromFavoriteList(
     profileId: string,
-    movieId: string,
-  ): Promise<boolean> {
+    movieId: number,
+  ): Promise<IFavoriteList> {
     const deletedMovie = await prisma.movieFavoriteList.update({
       where: { profileId },
       data: {
@@ -98,9 +104,23 @@ export class ProfileRepository implements IProfileRepository {
           disconnect: { id: movieId },
         },
       },
+      include: {
+        movies: true,
+      },
     });
 
-    return !!deletedMovie;
+    return deletedMovie;
+  }
+
+  async getMyList(profileId: string): Promise<IFavoriteList | null> {
+    const myList = await prisma.movieFavoriteList.findUnique({
+      where: { profileId },
+      include: {
+        movies: true,
+      },
+    });
+
+    return myList;
   }
 
   async deleteProfile(profileId: string): Promise<boolean> {
@@ -111,7 +131,7 @@ export class ProfileRepository implements IProfileRepository {
     return !!deletedProfile;
   }
 
-  async getAllProfiles(userId: string): Promise<IProfile[]> {
+  async getAllProfiles(userId: string): Promise<ProfileDTO[]> {
     const profiles = await prisma.profile.findMany({
       include: {
         moviesFavoriteList: {

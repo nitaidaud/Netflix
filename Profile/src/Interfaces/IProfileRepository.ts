@@ -1,22 +1,26 @@
-import IProfilePayload from "./IProfilePayload";
+import IProfileData from "./IProfilePayload";
 import IProfile from "./IProfile";
 import IMovie from "./IMovie";
+import ProfileDTO from "../DTOs/profile.dto";
+import IMyListRemoveMovie from "./IMylistRemoveMovie";
+import IFavoriteList from "./IFavoriteList";
 
 export default interface IProfileRepository {
-  getProfileById(profileId: string): Promise<IProfile | null>;
-  createProfile(profileData: IProfilePayload, userId: string): Promise<IProfile>;
+  getProfileById(profileId: string): Promise<ProfileDTO | null>;
+  createProfile(profileData: IProfileData, userId: string): Promise<IProfile>;
   updateProfile(
     profileId: string,
-    profileData: IProfilePayload,
-  ): Promise<IProfile | null>;
+    profileData: IProfileData,
+  ): Promise<ProfileDTO | null>;
   addMovieToFavoriteList(
     profileId: string,
     movieData: IMovie,
-  ): Promise<boolean>;
+  ): Promise<IFavoriteList>;
   removeMovieFromFavoriteList(
     profileId: string,
-    movieId: string,
-  ): Promise<boolean>;
+    movieId: number,
+  ): Promise<IFavoriteList>;
+  getMyList(profileId: string): Promise<IFavoriteList | null>;
   deleteProfile(profileId: string): Promise<boolean>;
-  getAllProfiles(userId: string): Promise<IProfile[] | null>;
+  getAllProfiles(userId: string): Promise<ProfileDTO[] | null>;
 }

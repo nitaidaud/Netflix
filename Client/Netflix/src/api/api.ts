@@ -1,12 +1,19 @@
-import axios from "axios";
+import IHomeContent from "@/api/interfaces/IHomeContent";
 import { apiBaseUrl } from "@/config/config";
 import { SigninFormData, SignupFormData } from "@/schemas/auth.schema";
-import ISendMailResponse from "./interfaces/IVerifyMailResponse";
+import { ProfileFormData } from "@/schemas/profile.schema";
+import axios from "axios";
 import IAuthResponse from "./interfaces/IAuthResponse";
-import IUser from "./interfaces/IUser";
-import IHomeContent from "@/api/interfaces/IHomeContent";
 import IBaseMovie from "./interfaces/IBaseMovie";
+import IBaseResponse from "./interfaces/IBaseRespone";
+import IMyListResponse from "./interfaces/IMyListResponse";
+import IProfile from "./interfaces/IProfile";
+import IProfileData from "./interfaces/IProfileData";
+import IProfileResponse from "./interfaces/IProfileResponse";
+import IProfilesResponse from "./interfaces/IProfilesResponse";
 import ITrailerResponse from "./interfaces/ITrailerResponse";
+import IUser from "./interfaces/IUser";
+import ISendMailResponse from "./interfaces/IVerifyMailResponse";
 
 const api = axios.create({
   baseURL: apiBaseUrl,
@@ -100,7 +107,7 @@ export const resetPassword = async (
   return data;
 };
 
-export const logoutRequest = async () => {
+export const logoutUserRequest = async () => {
   await api.post("/api/users/logout");
 };
 
@@ -111,22 +118,33 @@ export const checkAuthRequest = async () => {
 };
 
 export const getHomeContentRequest = async () => {
-  const { data } = await api.get<IHomeContent>(
-    `/api/movies/home`,
+  const { data } = await api.get<IHomeContent>(`/api/movies/home`);
+  return data;
+};
+
+export const getMoviesByCategoryRequest = async (
+  category: string,
+  page: number,
+) => {
+  const categoryLower = category.toLowerCase();
+  const { data } = await api.get<IBaseMovie[]>(
+    `/api/movies/genre/${categoryLower}`,
+    {
+      params: { page },
+    },
   );
   return data;
 };
 
-export const getMoviesByCategoryRequest = async (category: string) => {
-  const categoryLower = category.toLowerCase();
-  const { data } = await api.get<IBaseMovie[]>(`/api/movies/${categoryLower}`);
-  return data;
-};
-
-export const searchMoviesRequest = async (query: string): Promise<IBaseMovie[]> => {
-  const { data } = await axios.get(`/api/movies/search`, {
-    params: { title: query },
+export const searchMoviesRequest = async (
+  query: string,
+  page: number = 1,
+): Promise<IBaseMovie[]> => {
+  const { data } = await api.get<IBaseMovie[]>(`/api/movies/search`, {
+    params: { title: query, page },
   });
+  console.log("data", data);
+
   return data;
 };
 
@@ -135,3 +153,96 @@ export const getMovieTrailerRequest = async (id: number) => {
   return data;
 };
 
+export const createProfileRequest = async (profileData: ProfileFormData) => {
+  const { data } = await api.post<IProfileResponse>(
+    `/api/profiles/create-profile`,
+    profileData,
+    {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
+  return data;
+};
+
+export const loginProfileRequest = async (profile: IProfile) => {
+  const { data } = await api.post<IBaseResponse>(`/api/profiles/login`, {
+    ...profile,
+  });
+  return data;
+};
+
+export const logoutProfileRequest = async () => {
+  const { data } = await api.post<IBaseResponse>(`/api/profiles/logout`);
+  return data;
+};
+
+export const checkLoggedInProfileRequest = async () => {
+  const { data } = await api.get<IProfileResponse>(
+    `/api/profiles/check-logged-in`,
+  );
+  return data;
+};
+
+export const getProfileByIdRequest = async () => {
+  const { data } = await api.get<IProfileResponse>(`/api/profiles/get-profile`);
+  return data;
+};
+
+export const updateProfileRequest = async (profileData: IProfileData) => {
+  const { data } = await api.put<IProfile>(
+    `/api/profiles/update-profile`,
+    profileData,
+  );
+  return data;
+};
+
+export const addMovieToFavoriteListRequest = async (movie: IBaseMovie) => {
+  const { data } = await api.patch<IMyListResponse>(
+    `/api/profiles/add-movie`,
+    movie,
+  );
+  return data;
+};
+
+export const removeMovieFromFavoriteListRequest = async (movieId: number) => {
+  const { data } = await api.patch<IMyListResponse>(
+    `/api/profiles/remove-movie`,
+    { movieId: movieId },
+  );
+  return data;
+};
+
+export const deleteProfileRequest = async () => {
+  const { data } = await api.delete<IProfile>(`/api/profiles/delete-profile`);
+  return data;
+};
+
+export const getFavoriteListRequest = async () => {
+  const { data } = await api.get<IBaseMovie[]>(
+    `/api/profiles/get-favorites-list`,
+  );
+  return data;
+};
+
+export const getProfilesRequest = async () => {
+  const { data } = await api.get<IProfilesResponse>(
+    `/api/profiles/get-all-profiles`,
+  );
+  return data;
+};
+
+export const getMoviesByPageRequest = async (pageParam: number = 1) => {
+  const { data } = await api.get<IBaseMovie[]>(
+    `/api/movies/getMovies/page/${pageParam}`,
+  );
+
+  return data;
+};
+
+export const getMovieByIdRequest = async (id: number) => {
+  const { data } = await api.get<IBaseMovie>(`/api/movies/getMovieById/${id}`);
+  return data;
+};

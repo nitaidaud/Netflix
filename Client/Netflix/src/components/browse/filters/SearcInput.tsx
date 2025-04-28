@@ -1,4 +1,4 @@
-import { setSearchQuery } from "@/store/slice/movies.slice";
+import { setCategory, setSearchQuery } from "@/store/slice/movies.slice";
 import { useAppSelector } from "@/store/store";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -19,6 +19,7 @@ const SearchInput = () => {
     e.preventDefault();
     const trimmedQuery = query.trim();
     console.log("searching for", trimmedQuery);
+    dispatch(setCategory(undefined));
     dispatch(setSearchQuery(trimmedQuery || undefined));
   };
 

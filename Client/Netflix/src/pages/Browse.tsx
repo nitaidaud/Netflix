@@ -3,6 +3,7 @@ import Filters from "@/components/browse/filters/Filters";
 import MoviesGrid from "@/components/browse/MovieGrid";
 import MovieModal from "@/components/home/movieModal/MovieModal";
 import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation";
+import ScrollToTopButton from "@/components/shared/ScrollToTopButton";
 import { useBrowseMovies } from "@/hooks/useCategoryMovies";
 import { openModal } from "@/store/slice/modal.slice";
 import { setCategory } from "@/store/slice/movies.slice";
@@ -63,6 +64,7 @@ const Browse = () => {
   return (
     <div className="relative w-full h-full max-w-7xl mx-auto">
       <Filters />
+      <div className="h-20" />
       {isLoading ? (
         <div className="p-4 mt-6">
           <LoadingContentAnimation />
@@ -84,7 +86,7 @@ const Browse = () => {
           <LoadingContentAnimation />
         </div>
       )}
-      
+      <ScrollToTopButton/>
       <MovieModal />
     </div>
   );

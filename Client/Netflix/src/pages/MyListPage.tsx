@@ -1,6 +1,7 @@
 import MoviesGrid from "@/components/browse/MovieGrid";
 import MovieModal from "@/components/home/movieModal/MovieModal";
 import Container from "@/components/shared/Container";
+import Typography from "@/components/shared/Typography";
 import { openModal } from "@/store/slice/modal.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 
@@ -18,7 +19,9 @@ const MyListPage = () => {
       <div className="text-start w-full py-20">
         {myList && myList.movies.length > 0 ? (
           <div className="w-full h-full">
-            <h2 className="text-lg font-semibold">My List</h2>
+            <Typography size="text-2xl" weight="font-bold">
+              My List
+            </Typography>
             <MoviesGrid
               onMoreInfo={handleMoreInfo}
               movies={myList.movies}

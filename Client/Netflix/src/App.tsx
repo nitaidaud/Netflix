@@ -67,6 +67,10 @@ function App() {
                 <Route path="/my-list" element={<MyListPage />} />
                 <Route path="/movies" element={<MoviesPage />} />
                 <Route path="/browse" element={<Browse />} />
+                <Route
+                  path="/reset-password"
+                  element={<ResetPassword />}
+                />
                 <Route path="*" element={<Navigate to="/" />} />
               </>
             ) : (
@@ -74,6 +78,10 @@ function App() {
                 <Route index element={<ProfileChoicePage />} />
                 <Route path="/verify-email" element={<VerifyEmail />} />
                 <Route path="/profile/create" element={<CreateProfilePage />} />
+                <Route
+                  path="/reset-password"
+                  element={<ResetPassword />}
+                />
                 <Route path="*" element={<Navigate to="/" />} />
               </>
             )
@@ -85,7 +93,7 @@ function App() {
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route
-                path="/reset-password/:token"
+                path="/reset-password"
                 element={<ResetPassword />}
               />
               <Route path="*" element={<Navigate to="/" />} />

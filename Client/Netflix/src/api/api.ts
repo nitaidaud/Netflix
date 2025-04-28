@@ -98,7 +98,7 @@ export const resetPassword = async (
   token: string,
   password: string,
 ): Promise<ISendMailResponse> => {
-  const { data } = await api.post<ISendMailResponse>(
+  const { data } = await api.patch<ISendMailResponse>(
     `/api/users/reset-password/${token}`,
     {
       password,

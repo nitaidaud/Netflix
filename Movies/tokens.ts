@@ -1,0 +1,17 @@
+export const TOKENS = {
+  MovieController: "MovieController",
+  IMovieService: "IMovieService",
+  MovieService: "MovieService",
+  PopularCacheName: "popular_movies",
+  TopMoviesCache: "top_movies",
+  NewMoviesCache: "new_movies",
+  ComedyMoviesCache: "comedy_movies",
+  HorrorMoviesCache: "horror_movies",
+  ActionMoviesCache: "action_movies",
+  RomanceMoviesCache: "romance_movies",
+  KidsMoviesCache: "kids_movies",
+  AnimationMoviesCache: "animation_movies",
+  CrimeMoviesCache: "crime_movies",
+  DocumentaryMoviesCache: "documentary_movies",
+  HomeContantCache: "home_contant",
+};

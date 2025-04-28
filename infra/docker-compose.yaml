@@ -1,0 +1,72 @@
+version: "3.9"
+
+services:
+  gateway:
+    build:
+      context: ../Gateway
+    container_name: gateway
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+      - .env.gateway
+    networks:
+      - app_network
+    restart: always
+  
+  movies:
+    build:
+      context: ../Movies
+    container_name: movies
+    ports:
+      - "3001:3001"
+    env_file:
+      - .env
+      - .env.movies
+    networks:
+      - app_network
+    restart: always
+
+  users:
+    build:
+      context: ../Users
+    container_name: users
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+      - .env.users
+    networks:
+      - app_network
+    restart: always
+
+  client:
+    build:
+      context: ../Client/Netflix
+    container_name: client
+    ports:
+      - "5173:5173"
+    env_file:
+      - .env
+      - .env.client
+    networks:
+      - app_network
+    restart: always
+    depends_on:
+      - gateway
+
+  profile:
+    build:
+      context: ../Profile
+    container_name: profile
+    ports:
+      - "3002:3002"
+    env_file:
+      - .env
+      - .env.profile
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge

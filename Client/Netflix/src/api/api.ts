@@ -1,20 +1,19 @@
 import IHomeContent from "@/api/interfaces/IHomeContent";
 import { apiBaseUrl } from "@/config/config";
 import { SigninFormData, SignupFormData } from "@/schemas/auth.schema";
+import { ProfileFormData } from "@/schemas/profile.schema";
 import axios from "axios";
 import IAuthResponse from "./interfaces/IAuthResponse";
 import IBaseMovie from "./interfaces/IBaseMovie";
+import IBaseResponse from "./interfaces/IBaseRespone";
+import IMyListResponse from "./interfaces/IMyListResponse";
 import IProfile from "./interfaces/IProfile";
 import IProfileData from "./interfaces/IProfileData";
+import IProfileResponse from "./interfaces/IProfileResponse";
 import IProfilesResponse from "./interfaces/IProfilesResponse";
 import ITrailerResponse from "./interfaces/ITrailerResponse";
 import IUser from "./interfaces/IUser";
 import ISendMailResponse from "./interfaces/IVerifyMailResponse";
-import { ProfileFormData } from "@/schemas/profile.schema";
-import IProfileResponse from "./interfaces/IProfileResponse";
-import IBaseResponse from "./interfaces/IBaseRespone";
-import IMyListResponse from "./interfaces/IMyListResponse";
-import IMoviesByPage from "./interfaces/IMoviesByPage";
 
 const api = axios.create({
   baseURL: apiBaseUrl,
@@ -123,18 +122,29 @@ export const getHomeContentRequest = async () => {
   return data;
 };
 
-export const getMoviesByCategoryRequest = async (category: string) => {
+export const getMoviesByCategoryRequest = async (
+  category: string,
+  page: number,
+) => {
   const categoryLower = category.toLowerCase();
-  const { data } = await api.get<IBaseMovie[]>(`/api/movies/${categoryLower}`);
+  const { data } = await api.get<IBaseMovie[]>(
+    `/api/movies/genre/${categoryLower}`,
+    {
+      params: { page },
+    },
+  );
   return data;
 };
 
 export const searchMoviesRequest = async (
   query: string,
+  page: number = 1,
 ): Promise<IBaseMovie[]> => {
-  const { data } = await axios.get(`/api/movies/search`, {
-    params: { title: query },
+  const { data } = await api.get<IBaseMovie[]>(`/api/movies/search`, {
+    params: { title: query, page },
   });
+  console.log("data", data);
+
   return data;
 };
 
@@ -224,16 +234,10 @@ export const getProfilesRequest = async () => {
   return data;
 };
 
-export const getMoviesByPageRequest = async ({
-  pageParam = 1,
-  category,
-}: IMoviesByPage) => {
-  const { data } = await api.get<{
-    results: IBaseMovie[];
-    totalPages: number;
-  }>(`/api/movies/getMovies/page/${pageParam}`, {
-    params: category ? { category } : { category: "" },
-  });
+export const getMoviesByPageRequest = async (pageParam: number = 1) => {
+  const { data } = await api.get<IBaseMovie[]>(
+    `/api/movies/getMovies/page/${pageParam}`,
+  );
 
   return data;
 };

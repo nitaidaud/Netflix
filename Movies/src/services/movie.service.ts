@@ -51,23 +51,28 @@ export class MovieService implements IMovieService {
     return movie;
   }
 
-  async search(title: string) {
-    const cacheKey = `search_${title}`;
+  async search(title: string, page: number) {
+    const cacheKey = `search_${title}_page${page}`;
     const cachedMovies = await this.cacheClient.get(cacheKey);
     if (cachedMovies) {
-      console.log(`Returning search results for ${title} cached data...`);
+      console.log(
+        `Returning search results for ${title} page ${page} cached data...`,
+      );
       const data = JSON.parse(cachedMovies) as IBaseMovie[];
       return data;
     }
     console.log(`getting search results for ${title} new data`);
-    const res = await tmbd.get<IBaseResponse>(`/search/movie?query=${title}`);
+    const res = await tmbd.get<IBaseResponse>(`/search/movie?query=${title}`, {
+      params: { page },
+    });
     const movies = res.data.results;
 
     await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
+    
     return movies;
   }
 
-  async getMoviesByGenre(genre: string) {
+  async getMoviesByGenre(genre: string, page: number) {
     if (!genres.has(genre.toLowerCase())) {
       return [];
     }
@@ -76,7 +81,9 @@ export class MovieService implements IMovieService {
     if (!genreId) {
       return [];
     }
-    const cacheKey = genre;
+    const cacheKey = genre + page;
+    console.log("cacheKey", cacheKey);
+
     const cachedMovies = await this.cacheClient.get(cacheKey);
 
     if (cachedMovies) {
@@ -88,7 +95,7 @@ export class MovieService implements IMovieService {
     console.log(`getting ${genre} movies new data`);
 
     const res = await tmbd.get<IBaseResponse>(`/discover/movie`, {
-      params: { with_genres: genreId },
+      params: { with_genres: genreId, page },
     });
 
     await this.cacheClient.setEx(
@@ -138,17 +145,19 @@ export class MovieService implements IMovieService {
   }
 
   async getMoviesByPage(page?: number, category?: string) {
-
-    const cacheKey = `movies_page_${page}_${category}`;
+    const cacheKey = `movies_page_${page}_${category ?? "browse"}`;
     const cachedMovies = await this.cacheClient.get(cacheKey);
 
     if (cachedMovies) {
-      console.log(`Returning movies page ${page} category ${category} cached data...`);
-      const cachedData = JSON.parse(cachedMovies) as IMoviesByPage;
-      const data: IMoviesByPage = {
-        results: cachedData.results,
-        totalPages: cachedData.totalPages,
-      };
+      console.log(
+        `Returning movies page ${page} category ${
+          category ?? "browse"
+        } cached data...`,
+      );
+      const cachedData = JSON.parse(cachedMovies) as IBaseMovie[];
+
+      const data = cachedData;
+
       return data;
     }
     console.log(`getting movies page ${page} category ${category} new data`);
@@ -156,10 +165,8 @@ export class MovieService implements IMovieService {
       params: { page },
     });
 
-    const data: IMoviesByPage = {
-      results: res.data.results,
-      totalPages: res.data.total_pages,
-    };
+    const data = res.data.results;
+
     await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(data)); //1 hour
 
     return data;

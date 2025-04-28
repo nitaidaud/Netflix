@@ -1,69 +1,77 @@
-import Filters from "@/components/browse/Filters";
+import EmptyState from "@/components/browse/EmptyState";
+import Filters from "@/components/browse/filters/Filters";
 import MoviesGrid from "@/components/browse/MovieGrid";
 import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation";
-import { useInfiniteMovies } from "@/hooks/useInfiniteMovies";
-import { useEffect, useState } from "react";
+import { useBrowseMovies } from "@/hooks/useCategoryMovies";
+import { setCategory } from "@/store/slice/movies.slice";
+import { useAppSelector } from "@/store/store";
+import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
+import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
 const Browse = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string>("new");
+  const dispatch = useDispatch();
+  const selectedCategory = useAppSelector(
+    (state) => state.movies.selectedCategory,
+  );
+  const searchQuery = useAppSelector((state) => state.movies.searchQuery);
   const [searchParams] = useSearchParams();
-  const { ref, inView } = useInView(); 
+  const { ref, inView } = useInView();
 
-  const categoryFromUrl = searchParams.get("category");
-
+  // Get category from URL if present
   useEffect(() => {
+    const categoryFromUrl = searchParams.get("category");
     if (categoryFromUrl) {
-      setSelectedCategory(categoryFromUrl);
+      dispatch(setCategory(categoryFromUrl));
     }
-  }, [categoryFromUrl]);
+  }, [searchParams, dispatch]);
 
+  // Fetch movies using the query hook with both category and search params
   const {
     data,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    isFetching,
     isLoading,
-  } = useInfiniteMovies(selectedCategory);
+  } = useBrowseMovies({
+    category: selectedCategory,
+    searchQuery,
+  });
 
+  // Load more movies when scrolling to the bottom
   useEffect(() => {
     if (inView && hasNextPage) {
       fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  const movies = data?.pages.flatMap(page => page.results) ?? [];
+  // Flatten movie data from all pages
+  const movies = data?.pages.flatMap((page) => page) ?? [];
 
   return (
     <div className="relative w-full h-full max-w-7xl mx-auto">
-      <Filters
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-        onSearch={() => {}} // אין חיפוש כאן באינפיניט
-      />
+      <Filters />
 
       {isLoading ? (
         <div className="p-4 mt-6">
           <LoadingContentAnimation />
         </div>
       ) : movies.length === 0 ? (
-        <p className="text-white text-center my-10 text-lg">
-          No movies found for "<span className="font-semibold">{selectedCategory}</span>"
-        </p>
+        <EmptyState category={selectedCategory} searchQuery={searchQuery} />
       ) : (
         <>
-          <MoviesGrid movies={movies} isLoading={false} />
-          <div ref={ref} className="h-10" />
+          <MoviesGrid isLoading={false} movies={movies} />
+          <div ref={ref} className="h-[100px]" />
         </>
       )}
 
-      {isFetchingNextPage && (
+      {(isFetchingNextPage || isFetching) && (
         <div className="p-4">
           <LoadingContentAnimation />
         </div>
       )}
-
     </div>
   );
 };

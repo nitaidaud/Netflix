@@ -2,11 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import authReducer from "./slice/auth.slice";
 import profileReducer from "./slice/profile.slice";
+import browseReducer from "./slice/movies.slice";
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
     profile: profileReducer,
+    movies: browseReducer,
   },
 });
 

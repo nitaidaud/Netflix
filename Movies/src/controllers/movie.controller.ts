@@ -31,8 +31,10 @@ export class MovieController {
 
   async search(req: Request, res: Response) {
     try {
-      const title: string = req.params.title;
-      const movies = await this.movieService.search(title);
+      const title: string = req.query.title ? req.query.title.toString() : "";
+      const page = req.query.page ? Number(req.query.page) : 1;
+
+      const movies = await this.movieService.search(title, page);
       res.json(movies);
     } catch (error) {
       handleError(res, error);
@@ -42,7 +44,11 @@ export class MovieController {
   async getMoviesByGenre(req: Request, res: Response) {
     try {
       const { genre } = req.params;
-      const movies = await this.movieService.getMoviesByGenre(genre);
+      const page = req.query.page ? Number(req.query.page) : 1;
+
+      console.log("page in movies", page);
+
+      const movies = await this.movieService.getMoviesByGenre(genre, page);
       res.json(movies);
     } catch (error) {
       handleError(res, error);
@@ -80,38 +86,22 @@ export class MovieController {
 
   async getMoviesByPage(req: Request, res: Response): Promise<void> {
     try {
-      // const page = parseInt(req.params.page);
-      const page = Number(req.params.page);
-      const category: string = req.query.category;
+      const { page } = req.params;
+      console.log("page in movies", page);
 
-      console.log("page", page);
-      console.log("category", category);
+      if (!page) {
+        const movies = await this.movieService.getMoviesByPage();
+        res.json(movies);
+      } else {
+        const pageAsNumber = Number(page);
 
-      const pageAsNumber = page ? Number(page) : 1;
-
-      if (pageAsNumber < 1 || isNaN(pageAsNumber)) {
-        throw new Error("Invalid page number");
+        if (pageAsNumber >= 1) {
+          const movies = await this.movieService.getMoviesByPage(pageAsNumber);
+          res.json(movies);
+        } else {
+          throw new Error("Invalid page number");
+        }
       }
-
-      const movies = await this.movieService.getMoviesByPage(
-        pageAsNumber,
-        category as string,
-      );
-      res.json(movies);
-
-      // if (!page) {
-      //   const movies = await this.movieService.getMoviesByPage();
-      //   res.json(movies);
-      // } else {
-      //   const pageAsNumber = Number(page);
-
-      //   if (pageAsNumber >= 1) {
-      //     const movies = await this.movieService.getMoviesByPage(pageAsNumber);
-      //     res.json(movies);
-      //   } else {
-      //     throw new Error("Invalid page number");
-      //   }
-      // }
     } catch (err) {
       handleError(res, err);
     }

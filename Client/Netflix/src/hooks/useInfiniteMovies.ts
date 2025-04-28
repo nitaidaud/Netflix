@@ -1,14 +1,13 @@
 import { getMoviesByPageRequest } from "@/api/api";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-export const useInfiniteMovies = (category: string) => {
+export const useInfiniteMovies = () => {
   return useInfiniteQuery({
-    queryKey: ["infinite-movies", category], 
-    queryFn: ({ pageParam = 1 }) =>
-      getMoviesByPageRequest({ pageParam, category }),
+    queryKey: ["infinite-movies"],
+    queryFn: ({ pageParam = 1 }) => getMoviesByPageRequest(pageParam),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.results.length === 0) return undefined;
+      if (lastPage.length === 0) return undefined;
       return allPages.length + 1;
     },
   });

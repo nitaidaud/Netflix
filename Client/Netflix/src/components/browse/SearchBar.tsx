@@ -1,11 +1,11 @@
 import { useState } from "react";
 import SearchButton from "./SearchButton";
 
-type Props = {
-  onSearch: (val: string) => void;
+type SearchBarProps = {
+  onSearch: (val?: string) => void;
 };
 
-const SearchBar = ({ onSearch }: Props) => {
+const SearchBar = ({ onSearch }: SearchBarProps) => {
   const [query, setQuery] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {

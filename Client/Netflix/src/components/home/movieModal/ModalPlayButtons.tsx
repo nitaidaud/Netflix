@@ -1,17 +1,20 @@
+import IBaseMovie from "@/api/interfaces/IBaseMovie";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import AddToListButton from "@/features/home/AddToListButton";
 
-const ModalPlayButtons = () => {
+interface ModalInfoProps {
+  movie: IBaseMovie;
+}
+
+const ModalPlayButtons = ({movie}: ModalInfoProps) => {
   return (
-    <div className="absolute bottom-24 left-6 flex gap-3 items-center">
+    <div className="absolute bottom-32 left-5 flex gap-3 items-center">
       <Button className="bg-white text-black hover:bg-gray-300 rounded-sm h-10">
         <img src="/icons/play_icon.png" alt="Play" className="w-5 h-5 mr-2" />
         Play
       </Button>
 
-      <Button className="bg-zinc-600 text-white hover:bg-zinc-500 rounded-full w-10 h-10 flex items-center justify-center">
-        <Plus className="w-5 h-5" />
-      </Button>
+      <AddToListButton movie={movie}/>
     </div>
   );
 };

@@ -40,7 +40,7 @@ const MovieModalContent = ({ movieId, onClose }: MovieModalContentProps) => {
           setMuted={setMuted}
           onClose={onClose}
         />
-        <ModalPlayButtons />
+        <ModalPlayButtons movie={movie} />
         <ModalInfo movie={movie} />
       </div>
     </div>

@@ -6,7 +6,7 @@ type ContainerProps = {
 
 const Container: React.FC<ContainerProps> = ({ children }) => {
   return (
-    <div className="flex items-center justify-center p-4 bg-black max-w-6xl size-full mx-auto">
+    <div className="flex items-center justify-center p-4 bg-black max-w-7xl size-full mx-auto">
       {children}
     </div>
   );

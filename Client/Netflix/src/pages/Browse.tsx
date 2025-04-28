@@ -18,7 +18,12 @@ const Browse = () => {
   );
   const searchQuery = useAppSelector((state) => state.movies.searchQuery);
   const [searchParams] = useSearchParams();
-  const { ref, inView } = useInView();
+  
+  // Configure the intersection observer with a threshold
+  const { ref, inView } = useInView({
+    threshold: 0.1, // Trigger when at least 10% of the element is visible
+    triggerOnce: false // Make sure it triggers every time it comes into view
+  });
 
   // Get category from URL if present
   useEffect(() => {
@@ -43,10 +48,10 @@ const Browse = () => {
 
   // Load more movies when scrolling to the bottom
   useEffect(() => {
-    if (inView && hasNextPage) {
+    if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
-  }, [inView, hasNextPage, fetchNextPage]);
+  }, [inView, hasNextPage, fetchNextPage, isFetchingNextPage]);
 
   // Flatten movie data from all pages
   const movies = data?.pages.flatMap((page) => page) ?? [];
@@ -58,7 +63,6 @@ const Browse = () => {
   return (
     <div className="relative w-full h-full max-w-7xl mx-auto">
       <Filters />
-
       {isLoading ? (
         <div className="p-4 mt-6">
           <LoadingContentAnimation />
@@ -66,22 +70,21 @@ const Browse = () => {
       ) : movies.length === 0 ? (
         <EmptyState category={selectedCategory} searchQuery={searchQuery} />
       ) : (
-        <>
-          <MoviesGrid
-            isLoading={false}
-            movies={movies}
-            onMoreInfo={handleMoreInfo} // 👈 Pass here
-          />
-          <div ref={ref} className="h-[100px]" />
-        </>
+        <MoviesGrid
+          isLoading={false}
+          movies={movies}
+          onMoreInfo={handleMoreInfo}
+          lastMovieRef={ref}
+        />
       )}
-
-      {(isFetchingNextPage || isFetching) && (
+      
+      {/* Loading indicator at the bottom */}
+      {(isFetchingNextPage || (isFetching && !isLoading)) && (
         <div className="p-4">
           <LoadingContentAnimation />
         </div>
       )}
-
+      
       <MovieModal />
     </div>
   );

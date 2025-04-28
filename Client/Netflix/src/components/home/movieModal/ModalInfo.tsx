@@ -1,7 +1,7 @@
 import IBaseMovie from "@/api/interfaces/IBaseMovie";
 
 interface ModalInfoProps {
-  movie: IBaseMovie; // Stronger typing possible if you want
+  movie: IBaseMovie;
 }
 
 const ModalInfo = ({ movie }: ModalInfoProps) => {

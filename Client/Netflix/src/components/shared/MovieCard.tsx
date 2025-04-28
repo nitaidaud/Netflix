@@ -48,7 +48,7 @@ const MovieCard = ({
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="movie-card relative rounded-md group aspect-video bg-neutral-800 shadow-md overflow-hidden hover:z-30"
+      className="movie-card relative rounded-md group aspect-video bg-neutral-800 shadow-md overflow-hidden"
     >
       <img
         src={image}
@@ -69,7 +69,7 @@ const MovieCard = ({
         />
       )}
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
+      <div className="absolute inset-0 mt-auto h-full bg-gradient-to-t from-black/80 via-black/50 to-transparent w-full opacity-0 group-hover:opacity-100 flex transition-opacity duration-300  flex-col justify-end p-3">
         <h3 className="text-white text-lg font-bold line-clamp-1 mb-1">
           {title}
         </h3>

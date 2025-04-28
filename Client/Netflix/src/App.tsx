@@ -55,13 +55,6 @@ function App() {
 
   return (
     <Router>
-      {/* <Suspense
-        fallback={
-          <div className="flex justify-center items-center h-screen">
-            <LucideLoader className="animate-spin" />
-          </div>
-        }
-      > */}
       <Routes>
         <Route element={<AppLayout />}>
           {isAuthenticated ? (
@@ -100,7 +93,6 @@ function App() {
           )}
         </Route>
       </Routes>
-      {/* </Suspense> */}
     </Router>
   );
 }

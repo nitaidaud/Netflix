@@ -29,6 +29,7 @@ const ModalHeader = ({
       <AnimatePresence mode="wait">
         {!showTrailer || !cleanUrl ? (
           <motion.img
+          
             key="poster"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -36,7 +37,7 @@ const ModalHeader = ({
             transition={{ duration: 1 }}
             src={
               backdrop_path
-                ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+                ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
                 : "/images/not-found-img.png"
             }
             alt={title}

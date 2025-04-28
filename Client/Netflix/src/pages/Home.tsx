@@ -1,11 +1,12 @@
 import CategoryCarousel from "@/components/home/CategoryCarousel";
 import HeroSection from "@/components/home/HeroSection";
-import MovieModal from "@/components/home/MovieModal"; // נוסיף מודל
+import MovieModal from "@/components/home/movieModal/MovieModal";
 import Container from "@/components/shared/Container";
 import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation";
-import { useHomeContent } from "@/hooks/useHomeContent";
 
-import { useState } from "react";
+import { useHomeContent } from "@/hooks/useHomeContent";
+import { openModal } from "@/store/slice/modal.slice";
+import { useAppDispatch } from "@/store/store";
 
 const categories = [
   { key: "newMovies", title: "New Releases", link: "/browse?category=new" },
@@ -23,8 +24,7 @@ const categories = [
 
 const Home = () => {
   const { data, isLoading } = useHomeContent();
-  const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
-
+  const dispatch = useAppDispatch();
   if (isLoading || !data) {
     return (
       <Container>
@@ -35,35 +35,32 @@ const Home = () => {
     );
   }
 
-  const heroMovie = data.newMovies[8];
+  const heroMovie = data.newMovies[8]; // Display movie for Hero section
 
   return (
     <div className="w-full">
+      {/* Hero Section */}
       <HeroSection
         title={heroMovie.title}
         overview={heroMovie.overview}
         backdropPath={heroMovie.backdrop_path ?? ""}
       />
 
+      {/* Movie Categories */}
       <div className="space-y-16 px-6 lg:px-12 py-10 bg-gradient-to-t from-black via-black/90 to-transparent -mt-13 relative z-20">
         {categories.map(({ key, title, link }) => (
           <CategoryCarousel
+            onMoreInfo={(id) => dispatch(openModal(id))} // Open modal on movie click
             key={key}
             title={title}
             movies={data[key as keyof typeof data]}
             categoryLink={link}
-            onMoreInfo={setSelectedMovieId}
           />
         ))}
       </div>
 
-      {selectedMovieId && (
-        <MovieModal
-          movieId={selectedMovieId}
-          onClose={() => setSelectedMovieId(null)}
-        />
-      )}
-
+      {/* Movie Modal */}
+      <MovieModal />
     </div>
   );
 };

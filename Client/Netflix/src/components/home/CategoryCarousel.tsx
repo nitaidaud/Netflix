@@ -6,9 +6,9 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-import { Link } from "react-router-dom";
 import IBaseMovie from "@/api/interfaces/IBaseMovie";
-import HomeMovieCard from "./HomeMovieCard";
+import { Link } from "react-router-dom";
+import MovieCard from "../shared/MovieCard";
 
 interface CategoryCarouselProps {
   title: string;
@@ -46,7 +46,7 @@ const CategoryCarousel = ({
               key={movie.id}
               className="relative md:basis-1/2 lg:basis-1/5 transition-transform duration-300 hover:z-30 hover:scale-130 "
             >
-              <HomeMovieCard
+              <MovieCard
                 movie={movie}
                 image={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
                 onPlay={() => console.log("Play", movie.title)}

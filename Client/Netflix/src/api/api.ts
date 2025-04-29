@@ -222,7 +222,7 @@ export const removeMovieFromFavoriteListRequest = async (movieId: number) => {
 };
 
 export const deleteProfileRequest = async () => {
-  const { data } = await api.delete<IProfile>(`/api/profiles/delete-profile`);
+  const { data } = await api.delete<IBaseResponse>(`/api/profiles/delete-profile`);
   return data;
 };
 

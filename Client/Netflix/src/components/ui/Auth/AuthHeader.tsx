@@ -1,20 +1,36 @@
+import Typography from "@/components/shared/Typography";
+
 interface HeaderProps {
     label: string;
     title: string;
 }
 
-const AuthHeader = ({
-    title,
-    label
-}: HeaderProps) => {
+const AuthHeader = ({ title, label }: HeaderProps) => {
   return (
-    <div className="w-full flex flex-col gap-y-4 items-center justify-center text-muted-foreground">
-       <h1 className="text-3xl font-semibold">{title}</h1>
-       <p className="text-muted-foreground text-sm">
-        {label}
-       </p>
+    <div className="w-full flex flex-col items-center justify-center text-center mb-4">
+      <Typography
+        size="text-2xl"
+        weight="font-bold"
+        color="text-white"
+        
+      >
+        {title}
+      </Typography>
+
+      {label && (
+        <Typography
+          size="text-sm"
+          weight="font-normal"
+          color="text-gray-500"
+          spacing="tracking-normal"
+          className="mt-1 leading-snug"
+        >
+          {label}
+        </Typography>
+      )}
     </div>
-  )
-}
+  );
+};
+
 
 export default AuthHeader;

@@ -54,19 +54,21 @@ const ForgotPasswordForm = () => {
       title="Forgot password"
       backButtonHref="/signin"
       backButtonLabel="Back to login page"
+      
     >
       <Form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Input
           {...register("email")}
           error={errors.email?.message}
-          className="w-full bg-transparent border border-gray-500 focus:border-white focus:outline-none text-white px-4 py-3 rounded placeholder-gray-400"
+          placeholder="Enter your email address"
+          className="w-full bg-neutral-900 border-gray-500 focus:border-red-600 focus:outline-none text-white px-4 py-3 rounded placeholder:text-gray-500 text-sm"
           disabled={isPending}
         />
         {success && <FormSuccess message={success} />}
         {error && <FormError message={error} />}
         <Button
           type="submit"
-          className="bg-red-500/40 w-20"
+          className="w-full bg-red-600 hover:bg-red-800 font-bold text-lg py-3 rounded"
           disabled={isPending}
         >
           {isPending ? (

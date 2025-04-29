@@ -2,7 +2,6 @@ import { useMovieById } from "@/hooks/useMovieById";
 import { useTrailerKey } from "@/hooks/useTrailerKey";
 import { useEffect, useState } from "react";
 
-import ModalPlayButtons from "./ModalPlayButtons";
 import ModalHeader from "./ModalHeader";
 import ModalInfo from "./ModalInfo";
 

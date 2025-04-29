@@ -1,12 +1,11 @@
 import { injectable } from "inversify";
 import { prisma } from "../../prisma/prisma";
+import ProfileDTO from "../DTOs/profile.dto";
+import IFavoriteList from "../Interfaces/IFavoriteList";
 import IMovie from "../Interfaces/IMovie";
 import IProfile from "../Interfaces/IProfile";
 import IProfileData from "../Interfaces/IProfilePayload";
 import IProfileRepository from "../Interfaces/IProfileRepository";
-import ProfileDTO from "../DTOs/profile.dto";
-import IMyListRemoveMovie from "../Interfaces/IMylistRemoveMovie";
-import IFavoriteList from "../Interfaces/IFavoriteList";
 
 @injectable()
 export class ProfileRepository implements IProfileRepository {

@@ -1,8 +1,12 @@
 import fs from "fs";
-import HLSServer from "hls-server";
 import { server } from "..";
-import { TEMP_DIR } from "../env_exports";
-
+import AWS from "aws-sdk";
+import {
+  AWS_ACCESS_KEY_ID,
+  AWS_REGION,
+  AWS_SECRET_ACCESS_KEY,
+  TEMP_DIR,
+} from "../env_exports";
 
 export const createTempDir = () => {
   const tempDir = TEMP_DIR || "./temp";
@@ -12,9 +16,12 @@ export const createTempDir = () => {
   }
 };
 
-export const createHLSServer = () => {
-    new HLSServer(server, {
-        path: "/streams",
-        dir: TEMP_DIR,
-      });
-}
+export const configAWS = () => {
+  AWS.config.update({
+    accessKeyId: AWS_ACCESS_KEY_ID,
+    secretAccessKey: AWS_SECRET_ACCESS_KEY,
+    region: AWS_REGION,
+  });
+  
+  return new AWS.S3();
+};

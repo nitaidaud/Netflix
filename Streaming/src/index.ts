@@ -1,6 +1,6 @@
 import http from "http";
 import { app } from "./app";
-import { createTempDir } from "./config/config";
+import { configAWS, createTempDir } from "./config/config";
 import { PORT, validateEnv } from "./env_exports";
 
 // Start the server

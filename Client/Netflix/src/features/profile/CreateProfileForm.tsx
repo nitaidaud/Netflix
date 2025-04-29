@@ -1,4 +1,3 @@
-// src/pages/CreateProfile.tsx
 import Form from "@/components/shared/Form";
 import Typography from "@/components/shared/Typography";
 import { Button } from "@/components/ui/button";
@@ -48,7 +47,7 @@ const CreateProfileForm = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // This is key: we need to set the value in the form
+      
       setValue("image", file, {
         shouldValidate: true,
         shouldDirty: true,

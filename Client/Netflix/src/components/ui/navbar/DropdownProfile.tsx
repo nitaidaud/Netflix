@@ -1,5 +1,6 @@
 import IProfile from "@/api/interfaces/IProfile";
 import LogoutButton from "@/components/auth/LogoutButton";
+import Typography from "@/components/shared/Typography";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -108,16 +109,20 @@ const DropdownProfile = ({ currentProfile }: DropdownProfileProps) => {
         )}
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="font-semibold text-md">
-            Settings
+          <DropdownMenuItem asChild>
+            <Typography size="text-md" weight="font-semibold">
+              Settings
+            </Typography>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link to="/profiles" className="flex items-center gap-2">
               <Pencil className="size-[25px]" fill="#fff" /> Manage Profiles
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <User2 className="size-[25px]" fill="#fff" /> Account
+          <DropdownMenuItem asChild>
+            <Link to="/profile/update" className="flex items-center gap-2">
+              <User2 className="size-[25px]" fill="#fff" /> Account
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link to="/profile/create" className="flex items-center gap-2">

@@ -8,7 +8,6 @@ import IBaseMovie from "./interfaces/IBaseMovie";
 import IBaseResponse from "./interfaces/IBaseRespone";
 import IMyListResponse from "./interfaces/IMyListResponse";
 import IProfile from "./interfaces/IProfile";
-import IProfileData from "./interfaces/IProfileData";
 import IProfileResponse from "./interfaces/IProfileResponse";
 import IProfilesResponse from "./interfaces/IProfilesResponse";
 import ITrailerResponse from "./interfaces/ITrailerResponse";
@@ -191,10 +190,17 @@ export const getProfileByIdRequest = async () => {
   return data;
 };
 
-export const updateProfileRequest = async (profileData: IProfileData) => {
-  const { data } = await api.put<IProfile>(
+export const updateProfileRequest = async (profileData: ProfileFormData) => {
+  const { data } = await api.patch<IProfileResponse>(
     `/api/profiles/update-profile`,
     profileData,
+    {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
+
   );
   return data;
 };

@@ -11,7 +11,6 @@ import {
 } from "@/api/api";
 import IBaseMovie from "@/api/interfaces/IBaseMovie";
 import IProfile from "@/api/interfaces/IProfile";
-import IProfileData from "@/api/interfaces/IProfileData";
 import { ProfileFormData } from "@/schemas/profile.schema";
 import { getErrorMessage } from "@/utils/axios.error.handler";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
@@ -122,13 +121,14 @@ export const getProfileById = createAsyncThunk(
 
 export const updateProfile = createAsyncThunk(
   "profile/updateProfile",
-  async (profileData: IProfileData, { rejectWithValue }) => {
+  async (profileData: ProfileFormData, { rejectWithValue }) => {
     try {
-      const res = await updateProfileRequest(profileData);
+      const { profile } = await updateProfileRequest(profileData);
+
       return {
-        name: res.name,
-        image: res.image,
-        moviesFavoriteList: res.moviesFavoriteList,
+        name: profile.name,
+        image: profile.image,
+        moviesFavoriteList: profile.moviesFavoriteList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);

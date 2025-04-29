@@ -1,9 +1,10 @@
 import IProfile from "@/api/interfaces/IProfile";
+import Typography from "@/components/shared/Typography";
 import { Button } from "@/components/ui/button";
 import { useProfiles } from "@/hooks/useProfiles";
 import { loginProfile } from "@/store/slice/profile.slice";
 import { useAppDispatch } from "@/store/store";
-import { PlusCircle } from "lucide-react";
+import { MinusCircle, PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -30,15 +31,15 @@ const ProfileChoicePage = () => {
     <div className="flex flex-col items-center justify-center size-full">
       <h1 className="text-3xl font-bold mb-4">Choose Your Profile</h1>
       {isLoading || isFetching ? (
-        <p>Loading...</p>
+        <Typography>Loading...</Typography>
       ) : data && data.profiles.length > 0 ? (
         <div className="flex justify-center items-center gap-10">
-          {data.profiles.map((profile) => {
-            const imgUrl = profile.image;
+          {data.profiles.map((profile, index) => {
+            const { image, name } = profile;
             return (
               <div
-                className="flex flex-col items-center justify-center"
-                key={profile.image}
+                className="flex flex-col items-center justify-center relative profile-choose"
+                key={image! + index}
               >
                 <Button
                   onClick={() => {
@@ -46,14 +47,18 @@ const ProfileChoicePage = () => {
                   }}
                   style={{
                     backgroundImage: `${
-                      imgUrl
-                        ? `url(${imgUrl})`
+                      image
+                        ? `url(${image})`
                         : "url(/images/default-profile.jpg)"
                     }`,
                   }}
                   className={`bg-cover bg-center bg-no-repeat min-w-[200px] min-h-[200px] p-4 rounded shadow hover:scale-105 transition-transform duration-300 cursor-pointer`}
                 ></Button>
-                <h2 className="text-xl text-center">{profile.name}</h2>
+                <MinusCircle
+                  className="size-[30px] absolute delete-profile-btn -top-4 -right-5 bg-transparent opacity-0 duration-300"
+                  color="red"
+                />
+                <h2 className="text-xl text-center">{name}</h2>
               </div>
             );
           })}

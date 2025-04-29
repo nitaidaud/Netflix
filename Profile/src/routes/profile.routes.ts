@@ -30,7 +30,7 @@ profileRouter.post("/create-profile", upload.single("image"), (req, res) => {
   profileController.createProfile(req, res);
 });
 
-profileRouter.patch("/update-profile", (req, res) => {
+profileRouter.patch("/update-profile", upload.single("image"), (req, res) => {
   profileController.updateProfile(req, res);
 });
 

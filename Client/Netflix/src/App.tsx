@@ -25,6 +25,7 @@ import VerifyEmail from "./pages/VerifyEmail";
 import { checkAuth } from "./store/slice/auth.slice";
 import { checkLoggedInProfile } from "./store/slice/profile.slice";
 import { useAppDispatch, useAppSelector } from "./store/store";
+import UpdateProfilePage from "./pages/UpdateProfile";
 
 // Layouts
 
@@ -64,13 +65,11 @@ function App() {
                 <Route path="/verify-email" element={<VerifyEmail />} />
                 <Route path="/profiles" element={<ProfileChoicePage />} />
                 <Route path="/profile/create" element={<CreateProfilePage />} />
+                <Route path="/profile/update" element={<UpdateProfilePage />} />
                 <Route path="/my-list" element={<MyListPage />} />
                 <Route path="/movies" element={<MoviesPage />} />
                 <Route path="/browse" element={<Browse />} />
-                <Route
-                  path="/reset-password"
-                  element={<ResetPassword />}
-                />
+                <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </>
             ) : (
@@ -78,10 +77,7 @@ function App() {
                 <Route index element={<ProfileChoicePage />} />
                 <Route path="/verify-email" element={<VerifyEmail />} />
                 <Route path="/profile/create" element={<CreateProfilePage />} />
-                <Route
-                  path="/reset-password"
-                  element={<ResetPassword />}
-                />
+                <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </>
             )
@@ -92,10 +88,7 @@ function App() {
               <Route path="/signin" element={<SignInPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route
-                path="/reset-password"
-                element={<ResetPassword />}
-              />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="*" element={<Navigate to="/" />} />
             </>
           )}

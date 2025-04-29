@@ -102,16 +102,11 @@ export class ProfileController {
       const file = req.file;
       const token: string = req.cookies.Token;
 
-      console.log("Text fields:", profileData);
-      console.log("File info:", file);
-
-      if (!token) return res.status(401).json({ message: "Unauthorized" });
-
       const userPayload = verify(token);
       if (!userPayload)
         return res.status(401).json({ message: "Unauthorized" });
 
-      let imageUrl = chooseProfileImage(req.file);
+      const imageUrl = chooseProfileImage(file, null);
 
       const newProfile = await this.profileService.createProfile(
         { ...profileData, image: imageUrl },
@@ -135,16 +130,29 @@ export class ProfileController {
   async updateProfile(req: Request, res: Response) {
     try {
       const profileToken: string = req.cookies.profileToken;
+      const file = req.file;
       const profileData: IProfileData = req.body;
+
+      console.log("file", file);
 
       const ProfilePayload = verify(profileToken);
       if (!ProfilePayload) {
         return res.status(401).json({ message: "Unauthorized" });
       }
 
+      const currentProfile = await this.profileService.getProfileByToken(
+        profileToken,
+      );
+
+      if (!currentProfile) {
+        return res.status(404).json({ message: "Profile not found" });
+      }
+
+      const imageUrl = chooseProfileImage(file, currentProfile.image);
+
       const updatedProfile = await this.profileService.updateProfile(
         ProfilePayload.id,
-        profileData,
+        { name: profileData.name, image: imageUrl },
       );
 
       if (!updatedProfile) {
@@ -153,7 +161,7 @@ export class ProfileController {
 
       return res
         .status(200)
-        .json({ message: "Profile updated", updatedProfile });
+        .json({ message: "Profile updated", profile: updatedProfile });
     } catch (error) {
       handleError(res, error);
     }

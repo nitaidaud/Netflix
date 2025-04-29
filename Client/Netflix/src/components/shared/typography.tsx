@@ -10,7 +10,7 @@ type TypographyProps = {
     | "text-xl"
     | "text-2xl"
     | "text-4xl";
-  weight?: "font-light" | "font-normal" | "font-bold";
+  weight?: "font-light" | "font-normal" | "font-bold" | "font-semibold";
   color?:
     | "text-white"
     | "text-gray-300"

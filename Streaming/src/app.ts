@@ -7,14 +7,12 @@ import streamerRouter from "./routes/streamer.routes";
 
 const app = express();
 
-// Middleware
 app.use(morgan("dev"));
 app.use(express.json());
 
-app.use(cors({ origin: [ORIGIN!, CLIENT!], credentials: true }));
+app.use(cors({ origin: [ORIGIN!, CLIENT!] }));
 app.use(cookieParser());
 
-// Routes
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });

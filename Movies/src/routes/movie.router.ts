@@ -14,81 +14,70 @@ movieRouter.get("/popular", (req: Request, res: Response) => {
 
 movieRouter.get("/top", (req: Request, res: Response) => {
   movieController.getTopMovies(req, res);
-})
+});
 
 movieRouter.get("/search", (req: Request, res: Response) => {
   movieController.search(req, res);
-})
+});
 
 movieRouter.get("/genre/:genre", (req: Request, res: Response) => {
   movieController.getMoviesByGenre(req, res);
-})
+});
 
 movieRouter.get("/getMovieById/:id", (req: Request, res: Response) => {
   movieController.getMovieById(req, res);
-})
+});
 
 movieRouter.get("/:id/trailer", (req: Request, res: Response) => {
   movieController.getTrailer(req, res);
-})
+});
 
-movieRouter.get("/getMovies/page/:page?", (req, res) =>
+movieRouter.get("/getMovies/page/:page?", (req: Request, res: Response) =>
   movieController.getMoviesByPage(req, res),
 );
 
-movieRouter.get("/getMovies", (req, res) =>
+movieRouter.get("/getMovies", (req: Request, res: Response) =>
   movieController.getMoviesByPage(req, res),
 );
 
-movieRouter.get("/new", (req, res) =>{
+movieRouter.get("/new", (req: Request, res: Response) => {
+  movieController.getNewMovies(req, res);
+});
 
-  movieController.getNewMovies(req, res)
-}
-);
+movieRouter.get("/comedy", (req: Request, res: Response) => {
+  movieController.getComedyMovies(req, res);
+});
 
-movieRouter.get("/comedy", (req, res) =>{
-  movieController.getComedyMovies(req, res)
-}
-);
+movieRouter.get("/horror", (req: Request, res: Response) => {
+  movieController.getHorrorMovies(req, res);
+});
 
-movieRouter.get("/horror", (req, res) =>{
-  movieController.getHorrorMovies(req, res)
-}
-);
+movieRouter.get("/action", (req: Request, res: Response) => {
+  movieController.getActionMovies(req, res);
+});
 
-movieRouter.get("/action", (req, res) =>{
-  movieController.getActionMovies(req, res)
-}
-);
+movieRouter.get("/romance", (req: Request, res: Response) => {
+  movieController.getRomanceMovies(req, res);
+});
 
-movieRouter.get("/romance", (req, res) =>{
-  movieController.getRomanceMovies(req, res)
-}
-);
+movieRouter.get("/kids", (req: Request, res: Response) => {
+  movieController.getKidsMovies(req, res);
+});
 
-movieRouter.get("/kids", (req: Request, res: Response) =>{
-  movieController.getKidsMovies(req, res)
-}
-);
+movieRouter.get("/animation", (req: Request, res: Response) => {
+  movieController.getAnimationMovies(req, res);
+});
 
-movieRouter.get("/animation", (req, res) =>{
-  movieController.getAnimationMovies(req, res)
-}
-);
+movieRouter.get("/crime", (req: Request, res: Response) => {
+  movieController.getCrimeMovies(req, res);
+});
 
-movieRouter.get("/crime", (req, res) =>{
-  movieController.getCrimeMovies(req, res)
-}
-);
+movieRouter.get("/documentary", (req: Request, res: Response) => {
+  movieController.getDocumentaryMovies(req, res);
+});
 
-movieRouter.get("/documentary", (req, res) =>{
-  movieController.getDocumentaryMovies(req, res)
-}
-);
-
-movieRouter.get("/home", (req, res) =>{
-  movieController.getHomeContent(req, res)
-}
-);
+movieRouter.get("/home", (req: Request, res: Response) => {
+  movieController.getHomeContent(req, res);
+});
 
 export { movieRouter };

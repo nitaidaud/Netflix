@@ -1,47 +1,70 @@
 import AWS from "aws-sdk";
-import fs from "fs";
-import { config } from "../config/config";
+import { PutObjectRequest } from "aws-sdk/clients/s3";
+import { injectable } from "inversify";
+import path from "path";
+import { configAWS } from "../config/config";
+import { S3_BUCKET } from "../env_exports";
+import IAwsService from "../interfaces/IAwsService";
 
-AWS.config.update({
-  accessKeyId: config.aws.accessKeyId,
-  secretAccessKey: config.aws.secretAccessKey,
-  region: config.aws.region,
-});
+@injectable()
+export class AwsService implements IAwsService {
+  private s3 = configAWS();
 
-const s3 = new AWS.S3();
+  private directoryPath = "C:/netflix_movie";
 
-export async function uploadToS3(
-  filePath: string,
-  destinationKey: string,
-): Promise<string> {
-  const fileContent = fs.readFileSync(filePath);
-
-  const params = {
-    Bucket: config.aws.s3Bucket!,
-    Key: destinationKey,
-    Body: fileContent,
-    ACL: "public-read",
+  private getContentTypeByExtension = (extension: string): string => {
+    switch (extension) {
+      case ".m3u8":
+        return "application/vnd.apple.mpegurl";
+      case ".ts":
+        return "video/MP2T";
+      default:
+        return "application/octet-stream";
+    }
   };
 
-  const uploadResult = await s3.upload(params).promise();
-  return uploadResult.Location;
-}
+  async uploadToS3(filePath: string, fileContent: Buffer<ArrayBufferLike>) {
+    const key = `Madagascar/${path.basename(filePath)}`;
 
-export async function deleteFromS3(key: string): Promise<void> {
-  const params = {
-    Bucket: config.aws.s3Bucket!,
-    Key: key,
-  };
+    const params: PutObjectRequest = {
+      Bucket: S3_BUCKET!,
+      Key: key,
+      Body: fileContent,
+      // ACL: "public-read",
+      ContentType: this.getContentTypeByExtension(path.extname(filePath)),
+    };
 
-  await s3.deleteObject(params).promise();
-}
+    return await this.s3.upload(params).promise();
+  }
 
-export async function listS3Files(prefix: string): Promise<AWS.S3.ObjectList> {
-  const params = {
-    Bucket: config.aws.s3Bucket!,
-    Prefix: prefix,
-  };
+  async deleteFromS3(key: string): Promise<void> {
+    const params = {
+      Bucket: S3_BUCKET!,
+      Key: key,
+    };
 
-  const result = await s3.listObjectsV2(params).promise();
-  return result.Contents || [];
+    await this.s3.deleteObject(params).promise();
+  }
+
+  async listS3Files(prefix: string): Promise<AWS.S3.ObjectList> {
+    const params = {
+      Bucket: S3_BUCKET!,
+      Prefix: prefix,
+    };
+
+    const result = await this.s3.listObjectsV2(params).promise();
+    return result.Contents || [];
+  }
+
+  // fs.readdir(directoryPath, (err: Error | null, files: string[]) => {
+  //   if (err) console.log(err);
+
+  //   const uploadPromises = files.map((file) =>
+  //     uploadToS3(path.join(directoryPath, file)),
+  //   );
+
+  //   Promise.all(uploadPromises)
+  //     .then(() => console.log("All files uploaded"))
+  //     .catch(console.error);
+  // });
 }

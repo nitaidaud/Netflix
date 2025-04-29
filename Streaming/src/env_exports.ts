@@ -12,6 +12,7 @@ export const {
   S3_BUCKET,
   HLS_SEGMENT_DURATION,
   TEMP_DIR,
+  MOVIE_URL
 } = process.env;
 
 export const validateEnv = () => {
@@ -53,5 +54,9 @@ export const validateEnv = () => {
 
   if (!TEMP_DIR) {
     throw new Error("Missing TEMP_DIR");
+  }
+
+  if (!MOVIE_URL) {
+    throw new Error("Missing MOVIE_URL");
   }
 };

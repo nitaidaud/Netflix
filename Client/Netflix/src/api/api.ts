@@ -256,12 +256,12 @@ export const getMovieByIdRequest = async (id: number) => {
 
 type SearchResponse = {
   message: string;
-  url: string;
+  movieUrl: string;
 };
 
 export const getMovieRequest = async () => {
   const { data } = await axios.get<SearchResponse>(
-    "localhost:3000/api/stream/get-movie",
+    "http://localhost:3003/api/stream/get-movie",
   );
 
   return data;

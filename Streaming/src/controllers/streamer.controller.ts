@@ -11,7 +11,7 @@ export class StreamerController {
   ) {}
 
   async processVideo(req: Request, res: Response) {
-    const movieName = "Madagascar";
+    const movieName = "Madagascar-movie";
     await this.streamerService.processVideo(movieName);
 
     res.status(200).json({ message: "Video processed successfully" });

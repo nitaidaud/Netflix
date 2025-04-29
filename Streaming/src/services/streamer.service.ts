@@ -59,12 +59,32 @@ export class StreamerService implements IStreamerService {
       await new Promise((resolve, reject) => {
         ffmpeg(videoPath)
           .addOptions([
-            "-profile:v baseline",
-            "-level 3.0",
-            "-start_number 0",
-            "-hls_time 10",
-            "-hls_list_size 0",
-            "-f hls",
+            "-profile:v",
+            "baseline",
+            "-level",
+            "3.0",
+            "-g",
+            "48",
+            "-keyint_min",
+            "48",
+            "-sc_threshold",
+            "0",
+            "-start_number",
+            "0",
+            "-c:v",
+            "libx264",
+            "-c:a",
+            "aac",
+            "-b:a",
+            "128k",
+            "-hls_time",
+            "10",
+            "-hls_list_size",
+            "0",
+            "-hls_segment_filename",
+            path.join(outputDir, "segment_%03d.ts"),
+            "-f",
+            "hls",
           ])
           .output(path.join(outputDir, `${movieName}.m3u8`))
           .on("end", async () => {

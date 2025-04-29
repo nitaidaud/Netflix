@@ -1,52 +1,61 @@
-// components/VideoPlayer.tsx
-import Hls from "hls.js";
-import { useEffect, useRef, useState } from "react";
+// components/HLSPlayer.tsx
+import React, { useEffect, useRef, useState } from 'react';
+import Hls from 'hls.js';
 
-interface VideoPlayerProps {
-  url: string; // URL to the .m3u8 file
+interface MovieStreamerProps {
+  url: string;
+  autoPlay?: boolean;
+  controls?: boolean;
+  width?: string;
+  height?: string;
 }
 
-const MovieStreamer = ({ url }: VideoPlayerProps) => {
+const MovieStreamer: React.FC<MovieStreamerProps> = ({
+  url,
+  autoPlay = true,
+  controls = true,
+  width = '100%',
+  height = 'auto',
+}) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [isSupported, setIsSupported] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (Hls.isSupported() && videoRef.current) {
+    const video = videoRef.current;
+
+    if (!video) return;
+
+    if (Hls.isSupported()) {
       const hls = new Hls();
       hls.loadSource(url);
-      hls.attachMedia(videoRef.current);
+      hls.attachMedia(video);
 
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        setIsSupported(true);
-      });
-
-        hls.on(Hls.Events.ERROR, (_event, data) => {
-        console.error("HLS error:", data);
+      hls.on(Hls.Events.ERROR, (_event, data) => {
+        console.error('HLS error:', data);
+        setError('Playback error');
       });
 
       return () => {
         hls.destroy();
       };
-    } else if (
-      videoRef.current &&
-      videoRef.current.canPlayType("application/vnd.apple.mpegurl")
-    ) {
-      // Native HLS support (Safari, iOS)
-      videoRef.current.src = url;
-      setIsSupported(true);
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = url;
+    } else {
+      setError('HLS not supported in this browser');
     }
   }, [url]);
 
   return (
-    <div>
-      {isSupported ? (
+    <div style={{ width, height }}>
+      {error ? (
+        <p>{error}</p>
+      ) : (
         <video
           ref={videoRef}
-          controls
-          style={{ width: "100%", height: "auto" }}
+          autoPlay={autoPlay}
+          controls={controls}
+          style={{ width: '100%', height: '100%' }}
         />
-      ) : (
-        <p>Loading video...</p>
       )}
     </div>
   );

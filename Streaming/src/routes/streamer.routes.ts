@@ -14,6 +14,8 @@ streamerRouter.get("/start-process", (req: Request, res: Response) => {
 });
 
 streamerRouter.get("/get-movie", (req: Request, res: Response) => {
+  console.log("in get movie");
+  
   streamerController.getMovie(req, res);
 });
 

@@ -30,8 +30,8 @@ const MovieModalContent = ({ movieId, onClose }: MovieModalContentProps) => {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
-      <div className="relative w-[95%] max-w-6xl bg-zinc-900 rounded-md overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4 py-8">
+      <div className="relative w-full max-w-6xl bg-zinc-900 rounded-md overflow-hidden shadow-xl">
         <ModalHeader
           movie={movie}
           trailerUrl={trailerData?.embedUrl ?? null}
@@ -40,7 +40,6 @@ const MovieModalContent = ({ movieId, onClose }: MovieModalContentProps) => {
           setMuted={setMuted}
           onClose={onClose}
         />
-        <ModalPlayButtons movie={movie} />
         <ModalInfo movie={movie} />
       </div>
     </div>

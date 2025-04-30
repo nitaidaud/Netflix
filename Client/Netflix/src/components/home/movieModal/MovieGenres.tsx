@@ -5,34 +5,22 @@ interface MovieGenresProps {
 }
 
 const MovieGenres = ({ movie }: MovieGenresProps) => {
-  const { genre_ids } = movie;
-
-  // מיפוי מקומי של מזהי ז'אנר לשם באנגלית
-  const localGenreMap: Record<number, string> = {
-    28: "Action",
-    16: "Animation",
-    35: "Comedy",
-    80: "Crime",
-    99: "Documentary",
-    27: "Horror",
-    10751: "Kids",
-    10749: "Romance",
-    0: "Top", // אם אתה מתייג סרטים עם קטגוריה פנימית כלשהי כמו 'Top'
-  };
-
-  
-  const genreNames =
-    genre_ids
-      ?.map((id) => localGenreMap[id])
-      .filter((name): name is string => Boolean(name)) ?? [];
-
-      console.log("genre_ids", genre_ids);
+  const { genres } = movie;
 
   return (
     <div className="space-y-4 md:w-1/3 w-full">
-      <span className="text-gray-400 text-lg">Genres:</span>
+      <span className="text-zinc-500 text-lg">Genres:</span>
       <div className="text-white">
-        {genreNames.length > 0 ? genreNames.join(", ") : "Unknown"}
+        {genres.length > 0 ? genres.map((genre)=>{
+          return (
+            <span
+              key={genre.id}
+              className="bg-gray-800 text-gray-300 text-sm font-medium mr-2 px-2.5 py-0.5 rounded"
+            >
+              {genre.name}
+            </span>
+          );
+        }) : "Unknown"}
       </div>
     </div>
   );

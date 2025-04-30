@@ -10,7 +10,7 @@ export function start(): http.Server {
   createTempDir();
 
   const server = app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Server is listening on port ${PORT}`);
   });
 
   return server;

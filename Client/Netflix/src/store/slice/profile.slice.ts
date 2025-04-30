@@ -170,9 +170,9 @@ export const removeMovieFromFavoriteList = createAsyncThunk(
 
 export const deleteProfile = createAsyncThunk(
   "profile/deleteProfile",
-  async (_, { rejectWithValue }) => {
+  async (profileName: string, { rejectWithValue }) => {
     try {
-      await deleteProfileRequest();
+      await deleteProfileRequest(profileName);
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
       return rejectWithValue(errorMessage);
@@ -215,8 +215,6 @@ const profileSlice = createSlice({
         state.error = action.payload as string;
       })
       .addCase(checkLoggedInProfile.fulfilled, (state, action) => {
-        console.log("action payload", action.payload);
-
         state.profile = action.payload;
         state.isProfileLoggedIn = true;
         state.error = null;

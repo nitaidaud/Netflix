@@ -18,7 +18,6 @@ export class StreamerController {
   }
 
   async getMovie(req: Request, res: Response) {
-    console.log("MOVIE_URL", MOVIE_URL);
     res
       .status(200)
       .json({ message: "video get successfully", movieUrl: MOVIE_URL });

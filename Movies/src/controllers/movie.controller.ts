@@ -46,8 +46,6 @@ export class MovieController {
       const { genre } = req.params;
       const page = req.query.page ? Number(req.query.page) : 1;
 
-      console.log("page in movies", page);
-
       const movies = await this.movieService.getMoviesByGenre(genre, page);
       res.json(movies);
     } catch (error) {
@@ -87,7 +85,6 @@ export class MovieController {
   async getMoviesByPage(req: Request, res: Response): Promise<void> {
     try {
       const { page } = req.params;
-      console.log("page in movies", page);
 
       if (!page) {
         const movies = await this.movieService.getMoviesByPage();
@@ -154,8 +151,6 @@ export class MovieController {
 
   async getKidsMovies(req: Request, res: Response): Promise<void> {
     try {
-      console.log("get kids movies");
-
       const movies = await this.movieService.getKidsMovies();
       res.json(movies);
     } catch (err) {

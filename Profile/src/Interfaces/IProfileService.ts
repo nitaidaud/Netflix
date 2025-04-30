@@ -29,7 +29,7 @@ export default interface IProfileService {
 
   getFavoritesList(profileId: string): Promise<IMovie[] | null>;
 
-  deleteProfile(profileId: string): Promise<boolean>;
+  deleteProfile(profileName: string): Promise<boolean>;
 
   getAllProfiles(userId: string): Promise<ProfileDTO[] | null>;
 }

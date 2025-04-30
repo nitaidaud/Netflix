@@ -19,7 +19,6 @@ const EmailVerification = () => {
         startTransition(() => {
           setMessage(res.message);
           setSuccess(res.success);
-          console.log("res", res);
         });
       } catch (error) {
         if (error instanceof Error) {

@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
 import Container from "../components/shared/Container";
 import Typography from "../components/shared/Typography";
-import SigninForm from "../features/auth/signin";
+import SigninForm from "../features/auth/SigninForm";
 import STRINGS from "@/components/ui/auth/STRINGS";
+import { useAppDispatch } from "@/store/store";
+import { setError } from "@/store/slice/auth.slice";
 
 const SigninPage = () => {
+  const dispatch = useAppDispatch();
+
   return (
     <Container>
       <div className="w-full max-w-sm bg-black bg-opacity-80 text-white p-8 rounded-md space-y-4 shadow-lg">
@@ -27,6 +31,9 @@ const SigninPage = () => {
         <div className="text-sm text-gray-400 text-center mt-4">
           {STRINGS.NewToNetflix}{" "}
           <Link
+            onClick={() => {
+              dispatch(setError(null));
+            }}
             to="/signup"
             className="text-[#646cff] font-medium hover:underline cursor-pointer"
           >

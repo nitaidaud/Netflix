@@ -202,11 +202,9 @@ describe("Test for users controller", () => {
         where: { email },
       });
 
-      console.log("Token fetched from DB:", tokenRecord);
       const res = await request(app)
         .post(`/api/users/verify-email/${tokenRecord!.id}`)
         .send();
-      console.log("Verify response:", res.body);
 
       expect(res.status).toBe(200);
     });

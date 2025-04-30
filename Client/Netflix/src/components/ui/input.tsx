@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { FormError } from "./auth/FormError";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: string;
@@ -20,7 +21,8 @@ function Input({ className, type, error, ...props }: InputProps) {
         )}
         {...props}
       />
-      {error && <p className="text-red-400 text-sm mt-1 px-2">{error}</p>}
+      {/* {error && <p className="text-red-400 text-sm mt-1 px-2">{error}</p>} */}
+      {error && <FormError message={error} />}
     </>
   );
 }

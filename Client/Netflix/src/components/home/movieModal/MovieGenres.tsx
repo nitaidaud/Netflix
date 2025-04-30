@@ -26,8 +26,6 @@ const MovieGenres = ({ movie }: MovieGenresProps) => {
       ?.map((id) => localGenreMap[id])
       .filter((name): name is string => Boolean(name)) ?? [];
 
-      console.log("genre_ids", genre_ids);
-
   return (
     <div className="space-y-4 md:w-1/3 w-full">
       <span className="text-gray-400 text-lg">Genres:</span>

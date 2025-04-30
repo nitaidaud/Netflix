@@ -1,6 +1,6 @@
 import { SigninFormData, SignupFormData } from "@/schemas/auth.schema";
 import { getErrorMessage } from "@/utils/axios.error.handler";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   AuthResponse,
   checkAuthRequest,
@@ -88,10 +88,8 @@ export const verifyEmail = createAsyncThunk<
   { rejectValue: string }
 >("auth/verify-email", async (token: string, { rejectWithValue }) => {
   try {
-    console.log("in verify email thunk", token);
     const res = await verifyEmailRequest(token);
 
-    // Return both the API response and our custom field
     return {
       ...res,
       emailVerified: res.success,
@@ -120,7 +118,11 @@ export const checkAuth = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    setError(state, action: PayloadAction<string | null>) {
+      state.error = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(signin.fulfilled, (state, action) => {
@@ -184,5 +186,7 @@ const authSlice = createSlice({
       });
   },
 });
+
+export const { setError } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -1,5 +1,6 @@
 import Form from "@/components/shared/Form";
 import Typography from "@/components/shared/Typography";
+import { FormError } from "@/components/ui/auth/FormError";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SignupFormData, signupSchema } from "@/schemas/auth.schema";
@@ -14,7 +15,7 @@ type SignupProps = {
   defaultEmail?: string;
 };
 
-const Signup: React.FC<SignupProps> = ({ defaultEmail = "" }) => {
+const SignupForm: React.FC<SignupProps> = ({ defaultEmail = "" }) => {
   const dispatch = useAppDispatch();
   const error = useAppSelector((state) => state.auth.error);
   const success = useAppSelector((state) => state.auth.success);
@@ -65,11 +66,7 @@ const Signup: React.FC<SignupProps> = ({ defaultEmail = "" }) => {
         error={errors.password?.message}
         className="w-full bg-transparent border border-gray-500 focus:border-white focus:outline-none text-white px-4 py-3 rounded placeholder-gray-400"
       />
-      {error && (
-        <Typography color="text-red-500" size="text-sm">
-          {error}
-        </Typography>
-      )}
+      {error && <FormError message={error} />}
       {success && (
         <Typography color="text-green-800" size="text-sm">
           {success}
@@ -86,4 +83,4 @@ const Signup: React.FC<SignupProps> = ({ defaultEmail = "" }) => {
   );
 };
 
-export default Signup;
+export default SignupForm;

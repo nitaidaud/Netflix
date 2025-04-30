@@ -1,0 +1,39 @@
+import { Request, Response, NextFunction } from "express";
+import { verify } from "../utils/jwt";
+
+const publicRoutes = [
+  "/api/users/login",
+  "/api/users/signup",
+  "/api/users/send-email",
+  "/api/users/verify-email/:tokenId",
+  "/api/users/reset-password/:token",
+  "/api/users/forgot-password",
+  "/api/users/check-auth",
+  "/api/users/check-logged-in",
+];
+
+export const checkAuthMiddleware = (req: Request, res: Response, next: NextFunction): void => {
+  
+  const isPublic = publicRoutes.some((route) => req.originalUrl.startsWith(route));
+
+  if (isPublic) {
+    next();
+    return;
+  }
+
+  const token = req.cookies?.Token;
+
+  if (!token) {
+    res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
+
+  const user = verify(token);
+
+  if (!user) {
+    res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
+
+  next();
+};

@@ -55,16 +55,4 @@ export class AwsService implements IAwsService {
     const result = await this.s3.listObjectsV2(params).promise();
     return result.Contents || [];
   }
-
-  // fs.readdir(directoryPath, (err: Error | null, files: string[]) => {
-  //   if (err) console.log(err);
-
-  //   const uploadPromises = files.map((file) =>
-  //     uploadToS3(path.join(directoryPath, file)),
-  //   );
-
-  //   Promise.all(uploadPromises)
-  //     .then(() => console.log("All files uploaded"))
-  //     .catch(console.error);
-  // });
 }

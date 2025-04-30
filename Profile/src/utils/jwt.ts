@@ -8,9 +8,7 @@ export const sign = (data: IProfilePayload): string => {
 
 export const verify = (token: string): IProfilePayload | null => {
   try {
-    console.log("Token to verify:", token);
     const payload = jwt.verify(token, JWT_KEY!) as IProfilePayload;
-    console.log("Verified payload:", payload);
     return payload;
   } catch (error) {
     console.error("JWT verification error:", error);

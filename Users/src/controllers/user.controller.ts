@@ -111,7 +111,9 @@ export class UserController {
       const { email } = data;
 
       if (!email || email == "") {
-        return res.status(400).json({ message: "Email is required", success: false });
+        return res
+          .status(400)
+          .json({ message: "Email is required", success: false });
       }
 
       const verificationToken =
@@ -212,22 +214,9 @@ export class UserController {
       }
       const authCheck = await this.userService.checkAuth(userId.id);
 
-      console.log("authCheck", authCheck);
-
       return res.json(authCheck);
     } catch (error) {
       handleError(res, error);
     }
   }
-
-  // async sendResetSuccessfulEmail(req: Request, res: Response) {
-  //   try {
-  //     const data: IBaseSendEmailRequest = req.body;
-  //     await this.userService.sendResetSuccessfulEmail(data);
-
-  //     res.status(200).json({ message: "Email sent" });
-  //   } catch (error) {
-  //     handleError(res, error);
-  //   }
-  // }
 }

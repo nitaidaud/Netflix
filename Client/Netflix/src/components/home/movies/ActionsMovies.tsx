@@ -5,7 +5,6 @@ type ActionsMoviesProps = {
 };
 
 const ActionsMovies = ({ movies }: ActionsMoviesProps) => {
-  console.log("movies", movies);
 
   return (
     <div className="grid grid-cols-6 h-full mt-32 gap-5">

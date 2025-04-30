@@ -13,35 +13,33 @@ const MyListPage = () => {
   const handleMoreInfo = (movieId: number) => {
     dispatch(openModal(movieId));
   };
-  console.log("My List movies", myList?.movies);
   return (
     <Container className="min-h-screen pt-24">
-  {myList && myList.movies.length > 0 ? (
-    <div className="w-full h-full">
-      <Typography size="text-2xl" weight="font-bold">
-        My List
-      </Typography>
-      <MoviesGrid
-        onMoreInfo={handleMoreInfo}
-        movies={myList.movies}
-        isLoading={false}
-      />
-    </div>
-  ) : (
-    <div className="flex items-center justify-center w-full h-[50vh]">
-      <Typography
-        size="text-2xl"
-        weight="font-bold"
-        color="text-gray-300"
-        className="text-center"
-      >
-        No movies in your list
-      </Typography>
-    </div>
-  )}
-  <MovieModal />
-</Container>
-
+      {myList && myList.movies.length > 0 ? (
+        <div className="w-full h-full">
+          <Typography size="text-2xl" weight="font-bold">
+            My List
+          </Typography>
+          <MoviesGrid
+            onMoreInfo={handleMoreInfo}
+            movies={myList.movies}
+            isLoading={false}
+          />
+        </div>
+      ) : (
+        <div className="flex items-center justify-center w-full h-[50vh]">
+          <Typography
+            size="text-2xl"
+            weight="font-bold"
+            color="text-gray-300"
+            className="text-center"
+          >
+            No movies in your list
+          </Typography>
+        </div>
+      )}
+      <MovieModal />
+    </Container>
   );
 };
 

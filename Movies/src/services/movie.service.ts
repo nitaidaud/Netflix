@@ -82,7 +82,6 @@ export class MovieService implements IMovieService {
       return [];
     }
     const cacheKey = genre + page;
-    console.log("cacheKey", cacheKey);
 
     const cachedMovies = await this.cacheClient.get(cacheKey);
 

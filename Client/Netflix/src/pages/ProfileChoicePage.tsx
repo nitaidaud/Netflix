@@ -13,7 +13,6 @@ const ProfileChoicePage = () => {
   const [isLogging, setIsLogging] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  console.log("data", data);
 
   const handleLogin = async (profile: IProfile) => {
     try {
@@ -56,7 +55,7 @@ const ProfileChoicePage = () => {
                 ></Button>
                 <MinusCircle
                   onClick={() => {
-                    dispatch(deleteProfile());
+                    dispatch(deleteProfile(name));
                   }}
                   className="size-[30px] absolute delete-profile-btn -top-4 -right-5 bg-transparent opacity-0 duration-300"
                   color="red"

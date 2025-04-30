@@ -37,8 +37,6 @@ const AddToListButton = ({ movie }: AddToListButtonProps) => {
         adult: movie.adult,
       };
 
-      console.log("movieToAdd", movieToAdd);
-
       await dispatch(addMovieToFavoriteList(movieToAdd));
     } catch (error) {
       console.error("Error adding movie to list:", error);
@@ -49,8 +47,6 @@ const AddToListButton = ({ movie }: AddToListButtonProps) => {
 
   const removeFromList = async () => {
     try {
-      console.log("movie", movie.id);
-
       setIsLoading(true);
       await dispatch(removeMovieFromFavoriteList(movie.id));
     } catch (error) {

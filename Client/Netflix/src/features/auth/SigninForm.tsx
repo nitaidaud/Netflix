@@ -1,9 +1,9 @@
-import Typography from "@/components/shared/Typography";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 
 import Form from "@/components/shared/Form";
+import useToastForm from "@/hooks/useToastify";
 import { SigninFormData, signinSchema } from "@/schemas/auth.schema";
 import { checkAuth, signin } from "@/store/slice/auth.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
@@ -13,7 +13,7 @@ import { useTransition } from "react";
 
 const SigninForm = () => {
   const dispatch = useAppDispatch();
-  const error = useAppSelector((state) => state.auth.error);
+  const serverError = useAppSelector((state) => state.auth.error);
   const [isPending, startTransition] = useTransition();
   const {
     register,
@@ -21,6 +21,12 @@ const SigninForm = () => {
     formState: { errors },
   } = useForm<SigninFormData>({
     resolver: zodResolver(signinSchema),
+  });
+
+  useToastForm({
+    formErrors: errors,
+    serverError,
+    successMessage: errors || serverError ? null : "Successfully signed in!",
   });
 
   const onSubmit = async (data: SigninFormData) => {
@@ -52,11 +58,7 @@ const SigninForm = () => {
         error={errors.password?.message}
         {...register("password")}
       />
-      {error && (
-        <Typography className="px-2" color="text-red-500" size="text-sm">
-          {error}
-        </Typography>
-      )}
+      {/* {error && <FormError message={error} />} */}
       <Button
         type="submit"
         className="w-full bg-red-600 hover:bg-red-700 font-bold text-lg py-3 rounded"

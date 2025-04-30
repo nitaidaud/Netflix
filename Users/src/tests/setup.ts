@@ -7,9 +7,6 @@ dotenv.config({ path: ".env.test" });
 const prisma = new PrismaClient();
 
 beforeAll(async () => {
-  // Push schema to SQLite (in-memory or file-based)
-  console.log("env:", process.env.DATABASE_URL);
-
   execSync("npx prisma db push", { stdio: "inherit" });
 });
 

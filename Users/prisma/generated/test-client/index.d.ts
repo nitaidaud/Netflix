@@ -8345,15 +8345,15 @@ export namespace Prisma {
 
   export type ProfileWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    name?: string
     AND?: ProfileWhereInput | ProfileWhereInput[]
     OR?: ProfileWhereInput[]
     NOT?: ProfileWhereInput | ProfileWhereInput[]
-    name?: StringFilter<"Profile"> | string
     image?: StringNullableFilter<"Profile"> | string | null
     userId?: StringFilter<"Profile"> | string
     User?: XOR<UserScalarRelationFilter, UserWhereInput>
     moviesFavoriteList?: XOR<MovieFavoriteListNullableScalarRelationFilter, MovieFavoriteListWhereInput> | null
-  }, "id">
+  }, "id" | "name">
 
   export type ProfileOrderByWithAggregationInput = {
     id?: SortOrder

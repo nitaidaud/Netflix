@@ -63,9 +63,6 @@ export class ProfileController {
       const token: string = req.cookies.Token;
       const profileToken: string = req.cookies.profileToken;
 
-      console.log("user token:", token);
-      console.log("profile token:", profileToken);
-
       if (!token || !profileToken)
         return res.status(401).json({ message: "Unauthorized" });
 
@@ -133,8 +130,6 @@ export class ProfileController {
       const file = req.file;
       const profileData: IProfileData = req.body;
 
-      console.log("file", file);
-
       const ProfilePayload = verify(profileToken);
       if (!ProfilePayload) {
         return res.status(401).json({ message: "Unauthorized" });
@@ -171,8 +166,6 @@ export class ProfileController {
     try {
       const profileToken: string = req.cookies.profileToken;
       const movieData: IMovie = req.body;
-
-      console.log("movieData", movieData);
 
       if (!profileToken) {
         return res.status(401).json({ message: "Unauthorized" });
@@ -235,21 +228,20 @@ export class ProfileController {
   async deleteProfile(req: Request, res: Response) {
     try {
       const profileToken: string = req.cookies.profileToken;
+      const profileName: string = req.body.name;
 
       const profilePayload = verify(profileToken);
       if (!profilePayload) {
         return res.status(401).json({ message: "Unauthorized" });
       }
 
-      const isDeleted = await this.profileService.deleteProfile(
-        profilePayload.id,
-      );
+      const isDeleted = await this.profileService.deleteProfile(profileName);
 
       if (!isDeleted) {
         return res.status(404).json({ message: "Profile not found" });
       }
 
-      res.clearCookie("profileToken", { httpOnly: true });
+      res.clearCookie(TOKENS.Token, { httpOnly: true });
 
       return res.status(200).json({ message: "Profile deleted" });
     } catch (error) {

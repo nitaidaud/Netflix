@@ -18,7 +18,6 @@ const SearchInput = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedQuery = query.trim();
-    console.log("searching for", trimmedQuery);
     dispatch(setCategory(undefined));
     dispatch(setSearchQuery(trimmedQuery || undefined));
   };

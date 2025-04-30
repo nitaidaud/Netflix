@@ -24,6 +24,21 @@ export class ProfileRepository implements IProfileRepository {
     return profile;
   }
 
+  async getProfileByName(profileName: string): Promise<ProfileDTO | null> {
+    const profile = await prisma.profile.findUnique({
+      where: { name: profileName },
+      include: {
+        moviesFavoriteList: {
+          include: {
+            movies: true,
+          },
+        },
+      },
+    });
+
+    return profile;
+  }
+
   async createProfile(
     profileData: IProfileData,
     userId: string,
@@ -122,9 +137,9 @@ export class ProfileRepository implements IProfileRepository {
     return myList;
   }
 
-  async deleteProfile(profileId: string): Promise<boolean> {
+  async deleteProfile(profileName: string): Promise<boolean> {
     const deletedProfile = await prisma.profile.delete({
-      where: { id: profileId },
+      where: { name: profileName },
     });
 
     return !!deletedProfile;

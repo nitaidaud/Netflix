@@ -40,6 +40,12 @@ export class ProfileService implements IProfileService {
     userId: string,
   ): Promise<IProfile> {
     try {
+      const userExist = !!(await this.profileRepository.getProfileByName(
+        profileData.name,
+      ));
+
+      if (userExist) throw new Error("Profile with this name already exists");
+
       const newProfile = await this.profileRepository.createProfile(
         profileData,
         userId,
@@ -59,8 +65,6 @@ export class ProfileService implements IProfileService {
   async login(profileData: IProfile): Promise<string | null> {
     try {
       const { id } = profileData;
-      console.log("profileData", profileData);
-      console.log("profileId", id);
 
       const profileToken = sign({ id });
 
@@ -109,7 +113,7 @@ export class ProfileService implements IProfileService {
       if (!myList) {
         throw new Error("Error removing movie from favorite list");
       }
-      
+
       return myList;
     }
   }
@@ -159,9 +163,9 @@ export class ProfileService implements IProfileService {
     }
   }
 
-  async deleteProfile(profileId: string): Promise<boolean> {
+  async deleteProfile(profileName: string): Promise<boolean> {
     try {
-      const isDeleted = await this.profileRepository.deleteProfile(profileId);
+      const isDeleted = await this.profileRepository.deleteProfile(profileName);
 
       if (!isDeleted) {
         throw new Error("Error deleting profile");

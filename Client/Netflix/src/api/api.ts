@@ -59,10 +59,8 @@ export const newVerificationRequest = async () => {
   if (!userData) {
     throw new Error("User not found");
   }
-  console.log("userData", userData);
 
   const { email } = userData;
-  console.log("email", email);
 
   const { data } = await api.post<ISendMailResponse>(`/api/users/send-email`, {
     email,
@@ -142,7 +140,6 @@ export const searchMoviesRequest = async (
   const { data } = await api.get<IBaseMovie[]>(`/api/movies/search`, {
     params: { title: query, page },
   });
-  console.log("data", data);
 
   return data;
 };
@@ -220,9 +217,12 @@ export const removeMovieFromFavoriteListRequest = async (movieId: number) => {
   return data;
 };
 
-export const deleteProfileRequest = async () => {
+export const deleteProfileRequest = async (profileName: string) => {
   const { data } = await api.delete<IBaseResponse>(
     `/api/profiles/delete-profile`,
+    {
+      data: { name: profileName },
+    },
   );
   return data;
 };
@@ -260,9 +260,7 @@ type SearchResponse = {
 };
 
 export const getMovieRequest = async () => {
-  const { data } = await axios.get<SearchResponse>(
-    "http://localhost:3003/api/stream/get-movie",
-  );
+  const { data } = await api.get<SearchResponse>("/api/stream/get-movie");
 
   return data;
 };

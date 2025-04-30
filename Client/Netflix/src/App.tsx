@@ -19,8 +19,8 @@ import MoviesPage from "./pages/MoviesPage";
 import MyListPage from "./pages/MyListPage";
 import ProfileChoicePage from "./pages/ProfileChoicePage";
 import ResetPassword from "./pages/ResetPassword";
-import SignInPage from "./pages/Signin";
-import SignupPage from "./pages/Signup";
+import SignInPage from "./pages/SigninPage";
+import SignupPage from "./pages/SignupPage";
 import VerifyEmail from "./pages/VerifyEmail";
 import { checkAuth } from "./store/slice/auth.slice";
 import { checkLoggedInProfile } from "./store/slice/profile.slice";
@@ -43,7 +43,6 @@ function App() {
     startTransition(async () => {
       await dispatch(checkAuth());
       await dispatch(checkLoggedInProfile());
-      console.log("checkLoggedInProfile");
     });
   }, [dispatch]);
 

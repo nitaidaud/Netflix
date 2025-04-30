@@ -29,7 +29,6 @@ const VerifyEmailForm = () => {
         const res = await dispatch(verifyEmail(tokenId));
         if (verifyEmail.fulfilled.match(res)) {
           if (res.payload.success) {
-            console.log("success verify");
             setSuccess(res.payload.message);
 
             navigate("/", {

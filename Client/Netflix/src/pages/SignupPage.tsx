@@ -2,9 +2,12 @@ import { Link, useLocation } from "react-router-dom";
 import Container from "@/components/shared/Container";
 import Typography from "@/components/shared/Typography";
 import STRINGS from "@/components/ui/auth/STRINGS";
-import Signup from "@/features/auth/signup";
+import SignupForm from "@/features/auth/SignupForm";
+import { useAppDispatch } from "@/store/store";
+import { setError } from "@/store/slice/auth.slice";
 
 const SignupPage = () => {
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const defaultEmail = location.state?.email || "";
 
@@ -14,10 +17,13 @@ const SignupPage = () => {
         <Typography size="text-2xl" weight="font-bold" className="mb-4">
           {STRINGS.SignUp}
         </Typography>
-        <Signup defaultEmail={defaultEmail} />
+        <SignupForm defaultEmail={defaultEmail} />
         <div className="text-sm text-gray-400 text-center mt-4">
           {STRINGS.AlreadyHaveAnAccount}{" "}
           <Link
+            onClick={() => {
+              dispatch(setError(null));
+            }}
             to="/signin"
             className="text-white font-medium hover:underline cursor-pointer"
           >

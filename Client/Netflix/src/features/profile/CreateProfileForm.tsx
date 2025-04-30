@@ -7,14 +7,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { profileSchema, ProfileFormData } from "@/schemas/profile.schema";
 import { useState } from "react";
 import { createNewProfile } from "@/store/slice/profile.slice";
-import { useAppDispatch } from "@/store/store";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 import { LucideLoader } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import useToastForm from "@/hooks/useToastify";
 
 const defaultImageUrl = "/images/default-profile.jpg";
 
 const CreateProfileForm = () => {
   const [preview, setPreview] = useState<string>(defaultImageUrl);
+  const serverError = useAppSelector((state) => state.auth.error);
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -32,11 +34,18 @@ const CreateProfileForm = () => {
     },
   });
 
+  useToastForm<ProfileFormData>({
+    formErrors: errors,
+    serverError,
+    successMessage:
+      errors || serverError ? null : "Successfully created profile!",
+  });
+
   const onSubmit = async (data: ProfileFormData) => {
     setLoading(true);
     try {
       await dispatch(createNewProfile(data));
-      navigate("/", {state: { profileCreated: true }});
+      navigate("/", { state: { profileCreated: true } });
     } catch (error) {
       console.error("Error creating profile:", error);
     } finally {
@@ -47,7 +56,6 @@ const CreateProfileForm = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      
       setValue("image", file, {
         shouldValidate: true,
         shouldDirty: true,

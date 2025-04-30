@@ -1,9 +1,9 @@
-import IBaseMovie from "@/api/interfaces/IBaseMovie";
+import IMovieDetails from "@/api/interfaces/IMovieDetails";
 import MovieDescription from "./MovieDescription";
 import MovieGenres from "./MovieGenres";
 
 interface ModalInfoProps {
-  movie: IBaseMovie;
+  movie: IMovieDetails;
 }
 
 const ModalInfo = ({ movie }: ModalInfoProps) => {

@@ -13,6 +13,7 @@ import IProfilesResponse from "./interfaces/IProfilesResponse";
 import ITrailerResponse from "./interfaces/ITrailerResponse";
 import IUser from "./interfaces/IUser";
 import ISendMailResponse from "./interfaces/IVerifyMailResponse";
+import IMovieDetails from "./interfaces/IMovieDetails";
 
 const api = axios.create({
   baseURL: apiBaseUrl,
@@ -250,7 +251,7 @@ export const getMoviesByPageRequest = async (pageParam: number = 1) => {
 };
 
 export const getMovieByIdRequest = async (id: number) => {
-  const { data } = await api.get<IBaseMovie>(`/api/movies/getMovieById/${id}`);
+  const { data } = await api.get<IMovieDetails>(`/api/movies/getMovieById/${id}`);
   return data;
 };
 

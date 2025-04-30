@@ -14,4 +14,6 @@ export const TOKENS = {
   CrimeMoviesCache: "crime_movies",
   DocumentaryMoviesCache: "documentary_movies",
   HomeContentCache: "home_content",
+  TVController: "TVController",
+  ITVService: "ITVService",
 };

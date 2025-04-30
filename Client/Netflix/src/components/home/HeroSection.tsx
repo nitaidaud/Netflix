@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
-import { InfoIcon, Volume2, VolumeX } from "lucide-react";
-import ReactPlayer from "react-player/youtube";
-import { Button } from "../ui/button";
 import { useTrailerKey } from "@/hooks/useTrailerKey";
 import cleanYouTubeEmbedUrl from "@/utils/cleanTrailerUrl";
+import { InfoIcon, Volume2, VolumeX } from "lucide-react";
+import { useEffect, useState } from "react";
+import ReactPlayer from "react-player/youtube";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../ui/button";
 
 type HeroSectionProps = {
   title: string;
@@ -18,6 +19,7 @@ const HeroSection = ({ title, overview, backdropPath, movieId }: HeroSectionProp
 
   const { data } = useTrailerKey(movieId);
   const cleanUrl = cleanYouTubeEmbedUrl(data?.embedUrl);
+  const navigate = useNavigate();
 
   // Start video after 2 seconds if user hasn't scrolled
   useEffect(() => {
@@ -84,7 +86,11 @@ const HeroSection = ({ title, overview, backdropPath, movieId }: HeroSectionProp
           {overview}
         </p>
         <div className="flex gap-3">
-          <Button className="bg-white text-black font-semibold hover:bg-zinc-400 h-9.5">
+          <Button className="bg-white text-black font-semibold hover:bg-zinc-400 h-9.5"
+            onClick={() => {
+              navigate(`/movie/stream`);
+            }}
+          >
             <img
               src="/icons/play_icon.png"
               alt="Play"

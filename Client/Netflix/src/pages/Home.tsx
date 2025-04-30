@@ -5,8 +5,10 @@ import Container from "@/components/shared/Container";
 import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation";
 
 import { useHomeContent } from "@/hooks/useHomeContent";
+import { useMovieById } from "@/hooks/useMovieById";
 import { openModal } from "@/store/slice/modal.slice";
 import { useAppDispatch } from "@/store/store";
+
 
 const categories = [
   { key: "newMovies", title: "New Releases", link: "/browse?category=new" },
@@ -22,10 +24,13 @@ const categories = [
   },
 ];
 
+const HeroIdMovie = 953;
+
 const Home = () => {
   const { data, isLoading } = useHomeContent();
+  const { data:heroIdMovie, isLoading:isHeroLoading } = useMovieById(HeroIdMovie);
   const dispatch = useAppDispatch();
-  if (isLoading || !data) {
+  if (isLoading || !data || isHeroLoading || !heroIdMovie) {
     return (
       <Container>
         <div className="space-y-10 px-6 lg:px-12 py-10 bg-black">
@@ -35,15 +40,16 @@ const Home = () => {
     );
   }
 
-  const heroMovie = data.newMovies[8]; // Display movie for Hero section
+  //const heroMovie = data.newMovies[8]; // Display movie for Hero section
 
   return (
     <div className="w-full">
       {/* Hero Section */}
       <HeroSection
-        title={heroMovie.title}
-        overview={heroMovie.overview}
-        backdropPath={heroMovie.backdrop_path ?? ""}
+        title={heroIdMovie.title}
+        overview={heroIdMovie.overview}
+        backdropPath={heroIdMovie.backdrop_path ?? ""}
+        movieId={heroIdMovie.id}
       />
 
       {/* Movie Categories */}

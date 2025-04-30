@@ -2,7 +2,7 @@ import IProfile from "@/api/interfaces/IProfile";
 import Typography from "@/components/shared/Typography";
 import { Button } from "@/components/ui/button";
 import { useProfiles } from "@/hooks/useProfiles";
-import { loginProfile } from "@/store/slice/profile.slice";
+import { deleteProfile, loginProfile } from "@/store/slice/profile.slice";
 import { useAppDispatch } from "@/store/store";
 import { MinusCircle, PlusCircle } from "lucide-react";
 import { useState } from "react";
@@ -55,6 +55,9 @@ const ProfileChoicePage = () => {
                   className={`bg-cover bg-center bg-no-repeat min-w-[200px] min-h-[200px] p-4 rounded shadow hover:scale-105 transition-transform duration-300 cursor-pointer`}
                 ></Button>
                 <MinusCircle
+                  onClick={() => {
+                    dispatch(deleteProfile());
+                  }}
                   className="size-[30px] absolute delete-profile-btn -top-4 -right-5 bg-transparent opacity-0 duration-300"
                   color="red"
                 />

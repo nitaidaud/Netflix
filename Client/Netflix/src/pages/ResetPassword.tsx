@@ -2,7 +2,7 @@ import ResetPasswordForm from "@/features/auth/ResetPasswordForm";
 
 const ResetPassword = () => {
   return (
-    <section className="w-full m-auto flex justify-center items-center">
+    <section className="min-h-screen w-full bg-neutral-900 flex items-center justify-center">
       <ResetPasswordForm />
     </section>
   );

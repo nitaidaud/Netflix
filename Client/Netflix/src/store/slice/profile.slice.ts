@@ -172,12 +172,7 @@ export const deleteProfile = createAsyncThunk(
   "profile/deleteProfile",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await deleteProfileRequest();
-      return {
-        name: res.name,
-        image: res.image,
-        moviesFavoriteList: res.moviesFavoriteList,
-      };
+      await deleteProfileRequest();
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
       return rejectWithValue(errorMessage);

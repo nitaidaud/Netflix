@@ -26,6 +26,7 @@ import { checkAuth } from "./store/slice/auth.slice";
 import { checkLoggedInProfile } from "./store/slice/profile.slice";
 import { useAppDispatch, useAppSelector } from "./store/store";
 import UpdateProfilePage from "./pages/UpdateProfile";
+import StreamPage from "./pages/StreamPage";
 
 // Layouts
 
@@ -67,6 +68,7 @@ function App() {
                 <Route path="/profile/create" element={<CreateProfilePage />} />
                 <Route path="/profile/update" element={<UpdateProfilePage />} />
                 <Route path="/my-list" element={<MyListPage />} />
+                <Route path="/movie/stream" element={<StreamPage />} />
                 <Route path="/movies" element={<MoviesPage />} />
                 <Route path="/browse" element={<Browse />} />
                 <Route path="/reset-password" element={<ResetPassword />} />

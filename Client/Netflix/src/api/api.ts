@@ -200,7 +200,6 @@ export const updateProfileRequest = async (profileData: ProfileFormData) => {
         "Content-Type": "multipart/form-data",
       },
     },
-
   );
   return data;
 };
@@ -222,7 +221,9 @@ export const removeMovieFromFavoriteListRequest = async (movieId: number) => {
 };
 
 export const deleteProfileRequest = async () => {
-  const { data } = await api.delete<IProfile>(`/api/profiles/delete-profile`);
+  const { data } = await api.delete<IBaseResponse>(
+    `/api/profiles/delete-profile`,
+  );
   return data;
 };
 
@@ -250,5 +251,18 @@ export const getMoviesByPageRequest = async (pageParam: number = 1) => {
 
 export const getMovieByIdRequest = async (id: number) => {
   const { data } = await api.get<IBaseMovie>(`/api/movies/getMovieById/${id}`);
+  return data;
+};
+
+type SearchResponse = {
+  message: string;
+  movieUrl: string;
+};
+
+export const getMovieRequest = async () => {
+  const { data } = await axios.get<SearchResponse>(
+    "http://localhost:3003/api/stream/get-movie",
+  );
+
   return data;
 };

@@ -1,7 +1,7 @@
-import IBaseMovie from "@/api/interfaces/IBaseMovie";
+import IMovieDetails from "@/api/interfaces/IMovieDetails";
 
 interface MovieGenresProps {
-  movie: IBaseMovie;
+  movie: IMovieDetails;
 }
 
 const MovieGenres = ({ movie }: MovieGenresProps) => {

@@ -1,4 +1,4 @@
-import IBaseMovie from "@/api/interfaces/IBaseMovie";
+import IMovieDTO from "@/api/interfaces/IMovieDTO";
 import AddToList from "@/components/ui/home/AddToList";
 import RemoveFromList from "@/components/ui/home/RemoveFromList";
 import {
@@ -10,7 +10,7 @@ import { LucideLoader } from "lucide-react";
 import { useState } from "react";
 
 type AddToListButtonProps = {
-  movie: IBaseMovie;
+  movie: IMovieDTO;
 };
 
 const AddToListButton = ({ movie }: AddToListButtonProps) => {
@@ -25,7 +25,7 @@ const AddToListButton = ({ movie }: AddToListButtonProps) => {
   const addToList = async () => {
     try {
       setIsLoading(true);
-      const movieToAdd: IBaseMovie = {
+      const movieToAdd: IMovieDTO = {
         backdrop_path: movie.backdrop_path,
         genre_ids: movie.genre_ids,
         id: movie.id,

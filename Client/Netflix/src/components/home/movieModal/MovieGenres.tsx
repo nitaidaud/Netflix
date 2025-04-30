@@ -1,5 +1,4 @@
 import IBaseMovie from "@/api/interfaces/IBaseMovie";
-import { Categories } from "@/components/browse/categories/browseCategories";
 
 interface MovieGenresProps {
   movie: IBaseMovie;
@@ -7,7 +6,27 @@ interface MovieGenresProps {
 
 const MovieGenres = ({ movie }: MovieGenresProps) => {
   const { genre_ids } = movie;
-  const genreNames = genre_ids?.map((id) => Categories[id]) ?? [];
+
+  // מיפוי מקומי של מזהי ז'אנר לשם באנגלית
+  const localGenreMap: Record<number, string> = {
+    28: "Action",
+    16: "Animation",
+    35: "Comedy",
+    80: "Crime",
+    99: "Documentary",
+    27: "Horror",
+    10751: "Kids",
+    10749: "Romance",
+    0: "Top", // אם אתה מתייג סרטים עם קטגוריה פנימית כלשהי כמו 'Top'
+  };
+
+  
+  const genreNames =
+    genre_ids
+      ?.map((id) => localGenreMap[id])
+      .filter((name): name is string => Boolean(name)) ?? [];
+
+      console.log("genre_ids", genre_ids);
 
   return (
     <div className="space-y-4 md:w-1/3 w-full">

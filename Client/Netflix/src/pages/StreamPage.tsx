@@ -3,6 +3,7 @@ import MovieStreamer from "@/components/streaming/MovieStreamer";
 import { useMovieUrl } from "@/hooks/useMovieUrl";
 
 const StreamPage = () => {
+  console.log("StreamPage");
   const { data: hlsUrl, isLoading, isFetching } = useMovieUrl();
 
   if (isLoading || isFetching) return <div>Loading...</div>;

@@ -84,8 +84,7 @@ const MovieCard = ({
               <img src="/icons/play_icon.png" alt="Play" className="w-4 h-4" />
             </Button>
 
-            <AddToListButton movie={movie}/>
-            
+            <AddToListButton movie={movie} />
           </div>
 
           <Button

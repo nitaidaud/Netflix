@@ -162,7 +162,6 @@ exports.Prisma.MovieScalarFieldEnum = {
   id: 'id',
   title: 'title',
   release_date: 'release_date',
-  genre_ids: 'genre_ids',
   poster_path: 'poster_path',
   backdrop_path: 'backdrop_path',
   overview: 'overview',

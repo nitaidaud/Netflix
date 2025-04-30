@@ -1,9 +1,9 @@
-import IBaseMovie from "@/api/interfaces/IBaseMovie";
+import IMovieDetails from "@/api/interfaces/IMovieDetails";
 import { Button } from "@/components/ui/button";
 import AddToListButton from "@/features/home/AddToListButton";
 
 interface ModalInfoProps {
-  movie: IBaseMovie;
+  movie: IMovieDetails;
 }
 
 const ModalPlayButtons = ({movie}: ModalInfoProps) => {

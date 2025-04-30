@@ -6806,13 +6806,11 @@ export namespace Prisma {
 
   export type MovieAvgAggregateOutputType = {
     id: number | null
-    genre_ids: number | null
     popularity: number | null
   }
 
   export type MovieSumAggregateOutputType = {
     id: number | null
-    genre_ids: number[]
     popularity: number | null
   }
 
@@ -6842,7 +6840,6 @@ export namespace Prisma {
     id: number
     title: number
     release_date: number
-    genre_ids: number
     poster_path: number
     backdrop_path: number
     overview: number
@@ -6854,13 +6851,11 @@ export namespace Prisma {
 
   export type MovieAvgAggregateInputType = {
     id?: true
-    genre_ids?: true
     popularity?: true
   }
 
   export type MovieSumAggregateInputType = {
     id?: true
-    genre_ids?: true
     popularity?: true
   }
 
@@ -6890,7 +6885,6 @@ export namespace Prisma {
     id?: true
     title?: true
     release_date?: true
-    genre_ids?: true
     poster_path?: true
     backdrop_path?: true
     overview?: true
@@ -6989,7 +6983,6 @@ export namespace Prisma {
     id: number
     title: string
     release_date: string
-    genre_ids: number[]
     poster_path: string
     backdrop_path: string
     overview: string
@@ -7020,7 +7013,6 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     release_date?: boolean
-    genre_ids?: boolean
     poster_path?: boolean
     backdrop_path?: boolean
     overview?: boolean
@@ -7034,7 +7026,6 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     release_date?: boolean
-    genre_ids?: boolean
     poster_path?: boolean
     backdrop_path?: boolean
     overview?: boolean
@@ -7046,7 +7037,6 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     release_date?: boolean
-    genre_ids?: boolean
     poster_path?: boolean
     backdrop_path?: boolean
     overview?: boolean
@@ -7058,7 +7048,6 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     release_date?: boolean
-    genre_ids?: boolean
     poster_path?: boolean
     backdrop_path?: boolean
     overview?: boolean
@@ -7066,7 +7055,7 @@ export namespace Prisma {
     adult?: boolean
   }
 
-  export type MovieOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "release_date" | "genre_ids" | "poster_path" | "backdrop_path" | "overview" | "popularity" | "adult", ExtArgs["result"]["movie"]>
+  export type MovieOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "release_date" | "poster_path" | "backdrop_path" | "overview" | "popularity" | "adult", ExtArgs["result"]["movie"]>
   export type MovieInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     favoriteLists?: boolean | Movie$favoriteListsArgs<ExtArgs>
     _count?: boolean | MovieCountOutputTypeDefaultArgs<ExtArgs>
@@ -7083,7 +7072,6 @@ export namespace Prisma {
       id: number
       title: string
       release_date: string
-      genre_ids: number[]
       poster_path: string
       backdrop_path: string
       overview: string
@@ -7516,7 +7504,6 @@ export namespace Prisma {
     readonly id: FieldRef<"Movie", 'Int'>
     readonly title: FieldRef<"Movie", 'String'>
     readonly release_date: FieldRef<"Movie", 'String'>
-    readonly genre_ids: FieldRef<"Movie", 'Int[]'>
     readonly poster_path: FieldRef<"Movie", 'String'>
     readonly backdrop_path: FieldRef<"Movie", 'String'>
     readonly overview: FieldRef<"Movie", 'String'>
@@ -8026,7 +8013,6 @@ export namespace Prisma {
     id: 'id',
     title: 'title',
     release_date: 'release_date',
-    genre_ids: 'genre_ids',
     poster_path: 'poster_path',
     backdrop_path: 'backdrop_path',
     overview: 'overview',
@@ -8425,7 +8411,6 @@ export namespace Prisma {
     id?: IntFilter<"Movie"> | number
     title?: StringFilter<"Movie"> | string
     release_date?: StringFilter<"Movie"> | string
-    genre_ids?: IntNullableListFilter<"Movie">
     poster_path?: StringFilter<"Movie"> | string
     backdrop_path?: StringFilter<"Movie"> | string
     overview?: StringFilter<"Movie"> | string
@@ -8438,7 +8423,6 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     release_date?: SortOrder
-    genre_ids?: SortOrder
     poster_path?: SortOrder
     backdrop_path?: SortOrder
     overview?: SortOrder
@@ -8454,7 +8438,6 @@ export namespace Prisma {
     NOT?: MovieWhereInput | MovieWhereInput[]
     title?: StringFilter<"Movie"> | string
     release_date?: StringFilter<"Movie"> | string
-    genre_ids?: IntNullableListFilter<"Movie">
     poster_path?: StringFilter<"Movie"> | string
     backdrop_path?: StringFilter<"Movie"> | string
     overview?: StringFilter<"Movie"> | string
@@ -8467,7 +8450,6 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     release_date?: SortOrder
-    genre_ids?: SortOrder
     poster_path?: SortOrder
     backdrop_path?: SortOrder
     overview?: SortOrder
@@ -8487,7 +8469,6 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Movie"> | number
     title?: StringWithAggregatesFilter<"Movie"> | string
     release_date?: StringWithAggregatesFilter<"Movie"> | string
-    genre_ids?: IntNullableListFilter<"Movie">
     poster_path?: StringWithAggregatesFilter<"Movie"> | string
     backdrop_path?: StringWithAggregatesFilter<"Movie"> | string
     overview?: StringWithAggregatesFilter<"Movie"> | string
@@ -8799,7 +8780,6 @@ export namespace Prisma {
     id?: number
     title: string
     release_date: string
-    genre_ids?: MovieCreategenre_idsInput | number[]
     poster_path: string
     backdrop_path: string
     overview: string
@@ -8812,7 +8792,6 @@ export namespace Prisma {
     id?: number
     title: string
     release_date: string
-    genre_ids?: MovieCreategenre_idsInput | number[]
     poster_path: string
     backdrop_path: string
     overview: string
@@ -8825,7 +8804,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
-    genre_ids?: MovieUpdategenre_idsInput | number[]
     poster_path?: StringFieldUpdateOperationsInput | string
     backdrop_path?: StringFieldUpdateOperationsInput | string
     overview?: StringFieldUpdateOperationsInput | string
@@ -8838,7 +8816,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
-    genre_ids?: MovieUpdategenre_idsInput | number[]
     poster_path?: StringFieldUpdateOperationsInput | string
     backdrop_path?: StringFieldUpdateOperationsInput | string
     overview?: StringFieldUpdateOperationsInput | string
@@ -8851,7 +8828,6 @@ export namespace Prisma {
     id?: number
     title: string
     release_date: string
-    genre_ids?: MovieCreategenre_idsInput | number[]
     poster_path: string
     backdrop_path: string
     overview: string
@@ -8863,7 +8839,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
-    genre_ids?: MovieUpdategenre_idsInput | number[]
     poster_path?: StringFieldUpdateOperationsInput | string
     backdrop_path?: StringFieldUpdateOperationsInput | string
     overview?: StringFieldUpdateOperationsInput | string
@@ -8875,7 +8850,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
-    genre_ids?: MovieUpdategenre_idsInput | number[]
     poster_path?: StringFieldUpdateOperationsInput | string
     backdrop_path?: StringFieldUpdateOperationsInput | string
     overview?: StringFieldUpdateOperationsInput | string
@@ -9196,14 +9170,6 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type IntNullableListFilter<$PrismaModel = never> = {
-    equals?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    has?: number | IntFieldRefInput<$PrismaModel> | null
-    hasEvery?: number[] | ListIntFieldRefInput<$PrismaModel>
-    hasSome?: number[] | ListIntFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
-  }
-
   export type FloatFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[] | ListFloatFieldRefInput<$PrismaModel>
@@ -9234,7 +9200,6 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     release_date?: SortOrder
-    genre_ids?: SortOrder
     poster_path?: SortOrder
     backdrop_path?: SortOrder
     overview?: SortOrder
@@ -9244,7 +9209,6 @@ export namespace Prisma {
 
   export type MovieAvgOrderByAggregateInput = {
     id?: SortOrder
-    genre_ids?: SortOrder
     popularity?: SortOrder
   }
 
@@ -9272,7 +9236,6 @@ export namespace Prisma {
 
   export type MovieSumOrderByAggregateInput = {
     id?: SortOrder
-    genre_ids?: SortOrder
     popularity?: SortOrder
   }
 
@@ -9532,10 +9495,6 @@ export namespace Prisma {
     deleteMany?: MovieScalarWhereInput | MovieScalarWhereInput[]
   }
 
-  export type MovieCreategenre_idsInput = {
-    set: number[]
-  }
-
   export type MovieFavoriteListCreateNestedManyWithoutMoviesInput = {
     create?: XOR<MovieFavoriteListCreateWithoutMoviesInput, MovieFavoriteListUncheckedCreateWithoutMoviesInput> | MovieFavoriteListCreateWithoutMoviesInput[] | MovieFavoriteListUncheckedCreateWithoutMoviesInput[]
     connectOrCreate?: MovieFavoriteListCreateOrConnectWithoutMoviesInput | MovieFavoriteListCreateOrConnectWithoutMoviesInput[]
@@ -9554,11 +9513,6 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
-  }
-
-  export type MovieUpdategenre_idsInput = {
-    set?: number[]
-    push?: number | number[]
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -10109,7 +10063,6 @@ export namespace Prisma {
     id?: number
     title: string
     release_date: string
-    genre_ids?: MovieCreategenre_idsInput | number[]
     poster_path: string
     backdrop_path: string
     overview: string
@@ -10121,7 +10074,6 @@ export namespace Prisma {
     id?: number
     title: string
     release_date: string
-    genre_ids?: MovieCreategenre_idsInput | number[]
     poster_path: string
     backdrop_path: string
     overview: string
@@ -10182,7 +10134,6 @@ export namespace Prisma {
     id?: IntFilter<"Movie"> | number
     title?: StringFilter<"Movie"> | string
     release_date?: StringFilter<"Movie"> | string
-    genre_ids?: IntNullableListFilter<"Movie">
     poster_path?: StringFilter<"Movie"> | string
     backdrop_path?: StringFilter<"Movie"> | string
     overview?: StringFilter<"Movie"> | string
@@ -10291,7 +10242,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
-    genre_ids?: MovieUpdategenre_idsInput | number[]
     poster_path?: StringFieldUpdateOperationsInput | string
     backdrop_path?: StringFieldUpdateOperationsInput | string
     overview?: StringFieldUpdateOperationsInput | string
@@ -10303,7 +10253,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
-    genre_ids?: MovieUpdategenre_idsInput | number[]
     poster_path?: StringFieldUpdateOperationsInput | string
     backdrop_path?: StringFieldUpdateOperationsInput | string
     overview?: StringFieldUpdateOperationsInput | string
@@ -10315,7 +10264,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
-    genre_ids?: MovieUpdategenre_idsInput | number[]
     poster_path?: StringFieldUpdateOperationsInput | string
     backdrop_path?: StringFieldUpdateOperationsInput | string
     overview?: StringFieldUpdateOperationsInput | string

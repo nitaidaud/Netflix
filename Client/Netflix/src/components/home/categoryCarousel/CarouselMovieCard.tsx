@@ -1,7 +1,7 @@
-import MovieCard from "@/components/shared/MovieCard";
 import IBaseMovie from "@/api/interfaces/IBaseMovie";
-import { useAppDispatch } from "@/store/store";
+import MovieCard from "@/components/shared/MovieCard";
 import { openModal } from "@/store/slice/modal.slice";
+import { useAppDispatch } from "@/store/store";
 
 interface CarouselMovieCardProps {
   movie: IBaseMovie;

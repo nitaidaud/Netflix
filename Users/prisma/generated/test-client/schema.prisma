@@ -70,7 +70,6 @@ model Movie {
   id            Int     @id @default(dbgenerated())
   title         String
   release_date  String
-  genre_ids     Int[]
   poster_path   String
   backdrop_path String
   overview      String

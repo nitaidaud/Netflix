@@ -1,12 +1,12 @@
-import { AnimatePresence, motion } from "framer-motion";
-import ReactPlayer from "react-player/youtube";
-import { X, Volume2, VolumeX } from "lucide-react";
 import cleanYouTubeEmbedUrl from "@/utils/cleanTrailerUrl";
-import IBaseMovie from "@/api/interfaces/IBaseMovie";
+import { AnimatePresence, motion } from "framer-motion";
+import { Volume2, VolumeX, X } from "lucide-react";
+import ReactPlayer from "react-player/youtube";
 import ModalPlayButtons from "./ModalPlayButtons";
+import IMovieDetails from "@/api/interfaces/IMovieDetails";
 
 interface ModalHeaderProps {
-  movie: IBaseMovie;
+  movie: IMovieDetails;
   trailerUrl: string | null;
   showTrailer: boolean;
   muted: boolean;
@@ -30,7 +30,6 @@ const ModalHeader = ({
       <AnimatePresence mode="wait">
         {!showTrailer || !cleanUrl ? (
           <motion.img
-          
             key="poster"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -58,15 +57,16 @@ const ModalHeader = ({
               playing
               muted={muted}
               width={"100%"}
-                height={"100%"}
-                
-              style={{ position: "absolute",
+              height={"100%"}
+              style={{
+                position: "absolute",
                 top: 0,
                 left: 0,
                 transform: "scale(1.2)",
                 transformOrigin: "center",
-                zIndex: 0, 
-              pointerEvents: "none" }}
+                zIndex: 0,
+                pointerEvents: "none",
+              }}
             />
           </motion.div>
         )}

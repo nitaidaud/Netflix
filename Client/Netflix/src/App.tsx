@@ -21,14 +21,12 @@ import ResetPassword from "./pages/ResetPassword";
 import SignInPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
 import StreamPage from "./pages/StreamPage";
+import TVShowPage from "./pages/TVShowsPage";
 import UpdateProfilePage from "./pages/UpdateProfile";
 import VerifyEmail from "./pages/VerifyEmail";
 import { checkAuth } from "./store/slice/auth.slice";
 import { checkLoggedInProfile } from "./store/slice/profile.slice";
 import { useAppDispatch, useAppSelector } from "./store/store";
-import UpdateProfilePage from "./pages/UpdateProfile";
-import StreamPage from "./pages/StreamPage";
-import TVShowPage from "./pages/TVShowsPage";
 
 // Layouts
 

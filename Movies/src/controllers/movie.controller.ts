@@ -7,7 +7,7 @@ import { TOKENS } from "../../tokens";
 @injectable()
 export class MovieController {
   constructor(
-    @inject(TOKENS.IMovieService) private movieService: IMovieService,
+    @inject(TOKENS.IMovieService) private movieService: IMovieService
   ) {}
 
   async getPopularMovies(req: Request, res: Response) {
@@ -194,6 +194,36 @@ export class MovieController {
     }
   }
 
+  async getSeasonDetails(req: Request, res: Response) {
+    try {
+      const { seriesId, seasonNumber } = req.params;
+      const season = await this.movieService.getSeasonDetails(
+        seriesId,
+        seasonNumber
+      );
+      res.json(season);
+    } catch (error) {
+      handleError(res, error);
+    }
+  }
+
+  async getPopularTVShows(req: Request, res: Response) {
+    try {
+      const shows = await this.movieService.getPopularTVShows();
+      res.json(shows);
+    } catch (error) {
+      handleError(res, error);
+    }
+  }
+  async getTVShowById(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const tvShow = await this.movieService.getTVShowById(id);
+      res.json(tvShow);
+    } catch (error) {
+      handleError(res, error);
+    }
+  }
 
   
 }

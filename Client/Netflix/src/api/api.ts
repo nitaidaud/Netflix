@@ -14,6 +14,8 @@ import IProfilesResponse from "./interfaces/IProfilesResponse";
 import ITrailerResponse from "./interfaces/ITrailerResponse";
 import IUser from "./interfaces/IUser";
 import ISendMailResponse from "./interfaces/IVerifyMailResponse";
+import ITVShow from "./interfaces/ITVShow";
+import ISeason from "./interfaces/ISeason";
 
 const api = axios.create({
   baseURL: apiBaseUrl,
@@ -265,5 +267,24 @@ type SearchResponse = {
 export const getStreamMovieRequest = async () => {
   const { data } = await api.get<SearchResponse>("/api/stream/get-movie");
 
+  return data;
+};
+
+export const getPopularTVShows = async (): Promise<ITVShow[]> => {
+  const { data } = await api.get("/api/movies/tv-shows/popular");
+  return data;
+};
+
+export const getTVShowByIdRequest = async (id: number) => {
+  const { data } = await api.get<ITVShow>(
+    `/api/movies/getTVShowById/${id}`,
+  );
+  return data;
+};
+
+export const getSeasonByIdRequest = async (seriesId: number, seasonNumber: number) => {
+  const { data } = await api.get<ISeason>(
+    `/series/${seriesId}/${seasonNumber}`,
+  );
   return data;
 };

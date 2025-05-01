@@ -33,7 +33,7 @@ userRoutes.use(
         console.log("Received response with status:", proxyRes.statusCode);
       },
     },
-  }),
+  })
 );
 
 movieRoutes.use(
@@ -56,7 +56,7 @@ movieRoutes.use(
         console.log("Received response with status:", proxyRes.statusCode);
       },
     },
-  }),
+  })
 );
 
 profileRoutes.use(
@@ -79,7 +79,7 @@ profileRoutes.use(
         console.log("Received response with status:", proxyRes.statusCode);
       },
     },
-  }),
+  })
 );
 
 streamRoutes.use(
@@ -102,7 +102,7 @@ streamRoutes.use(
         console.log("Received response with status:", proxyRes.statusCode);
       },
     },
-  }),
+  })
 );
 
 export { movieRoutes, profileRoutes, streamRoutes, userRoutes };

@@ -1,6 +1,6 @@
 import IBaseMovie from "@/api/interfaces/IBaseMovie";
 import MovieCard from "@/components/shared/MovieCard";
-import { openModal } from "@/store/slice/modal.slice";
+import { openMovieModal } from "@/store/slice/modal.slice";
 import { useAppDispatch } from "@/store/store";
 
 interface CarouselMovieCardProps {
@@ -19,7 +19,7 @@ const CarouselMovieCard = ({ movie }: CarouselMovieCardProps) => {
           ? `https://image.tmdb.org/t/p/w500${backdrop_path}`
           : "/images/not-found-img.png"
       }
-      onMoreInfo={() => dispatch(openModal(id))}
+      onMoreInfo={() => dispatch(openMovieModal(id))}
     />
   );
 };

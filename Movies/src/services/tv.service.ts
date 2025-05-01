@@ -1,14 +1,14 @@
 import { injectable } from "inversify";
 import tmbd from "../api/tmdb";
 import RedisClient from "../config/redis";
-import ISeasonDetails from "../interfaces/ISeasonDetails";
 import ITVService from "../interfaces/ITVService";
+import ISeason from "../interfaces/ISeason";
 
 @injectable()
 export class TVService implements ITVService {
   private cacheClient = RedisClient;
 
-  async getSeasonDetails(seriesId: string, seasonNumber: string): Promise<ISeasonDetails> {
+  async getSeasonDetails(seriesId: string, seasonNumber: string): Promise<ISeason> {
     const cacheKey = `tv_${seriesId}_season_${seasonNumber}`;
 
     const cached = await this.cacheClient.get(cacheKey);
@@ -17,7 +17,7 @@ export class TVService implements ITVService {
       return JSON.parse(cached);
     }
 
-    const { data } = await tmbd.get<ISeasonDetails>(
+    const { data } = await tmbd.get<ISeason>(
       `/tv/${seriesId}/season/${seasonNumber}`
     );
 

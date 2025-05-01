@@ -4,9 +4,10 @@ import MovieModal from "@/components/home/movieModal/MovieModal";
 import Container from "@/components/shared/Container";
 import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation";
 
+import TVModal from "@/components/home/tvModal/TvModal";
 import { useHomeContent } from "@/hooks/useHomeContent";
 import { useMovieById } from "@/hooks/useMovieById";
-import { openModal } from "@/store/slice/modal.slice";
+import { openMovieModal } from "@/store/slice/modal.slice";
 import { useAppDispatch } from "@/store/store";
 
 
@@ -56,7 +57,7 @@ const Home = () => {
       <div className="space-y-16 px-6 lg:px-12 py-10 bg-gradient-to-t from-black via-black/90 to-transparent -mt-13 relative z-20">
         {categories.map(({ key, title, link }) => (
           <CategoryCarousel
-            onMoreInfo={(id) => dispatch(openModal(id))} // Open modal on movie click
+            onMoreInfo={(id) => dispatch(openMovieModal(id))} // Open modal on movie click
             key={key}
             title={title}
             movies={data[key as keyof typeof data]}
@@ -67,6 +68,7 @@ const Home = () => {
 
       {/* Movie Modal */}
       <MovieModal />
+      <TVModal />
     </div>
   );
 };

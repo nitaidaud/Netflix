@@ -16,9 +16,12 @@ const NetflixNavBar = () => {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  
+
   const location = useLocation();
-  const isBrowsePage = location.pathname.startsWith("/browse"); 
+  const pathname = location.pathname;
+
+  const isFixedBlack =
+    pathname.startsWith("/browse") || pathname.startsWith("/tv");
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
@@ -27,16 +30,16 @@ const NetflixNavBar = () => {
       setIsScrolled(window.scrollY > 20);
     };
 
-    if (!isBrowsePage) {
+    if (!isFixedBlack) {
       window.addEventListener("scroll", handleScroll);
     }
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [isBrowsePage]);
+  }, [isFixedBlack]);
 
-  const navbarClass = isBrowsePage
+  const navbarClass = isFixedBlack
     ? "bg-black"
     : isScrolled
     ? "bg-black shadow-lg"

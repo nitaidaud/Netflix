@@ -1,9 +1,12 @@
 import IBaseMovie from "./IBaseMovie";
 import IHomeContent from "./IHomeContent";
+import ISeason from "./ISeason";
+import ITVShow from "./ITVShow";
 
 export default interface IMovieService {
   getPopularMovies(): Promise<IBaseMovie[]>;
   getMovieById(id: string): Promise<IBaseMovie>;
+  getTVShowById(id: string): Promise<ITVShow>;
   search(title: string, page: number): Promise<IBaseMovie[]>;
   getMoviesByGenre(genre: string, page: number): Promise<IBaseMovie[]>;
   getTopMovies(): Promise<IBaseMovie[]>;
@@ -21,4 +24,11 @@ export default interface IMovieService {
   getDocumentaryMovies(): Promise<IBaseMovie[]>;
 
   getHomeContent(): Promise<IHomeContent>;
+
+  getSeasonDetails(
+    seriesId: string,
+    seasonNumber: string
+  ): Promise<ISeason>;
+
+  getPopularTVShows(): Promise<ITVShow[]>;
 }

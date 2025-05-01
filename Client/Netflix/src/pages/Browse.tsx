@@ -5,7 +5,7 @@ import MovieModal from "@/components/home/movieModal/MovieModal";
 import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation";
 import ScrollToTopButton from "@/components/shared/ScrollToTopButton";
 import { useBrowseMovies } from "@/hooks/useCategoryMovies";
-import { openModal } from "@/store/slice/modal.slice";
+import { openMovieModal } from "@/store/slice/modal.slice";
 import { setCategory } from "@/store/slice/movies.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useEffect } from "react";
@@ -58,7 +58,7 @@ const Browse = () => {
   const movies = data?.pages.flatMap((page) => page) ?? [];
 
   const handleMoreInfo = (movieId: number) => {
-    dispatch(openModal(movieId));
+    dispatch(openMovieModal(movieId));
   };
 
   return (

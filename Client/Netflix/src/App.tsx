@@ -27,6 +27,7 @@ import { checkLoggedInProfile } from "./store/slice/profile.slice";
 import { useAppDispatch, useAppSelector } from "./store/store";
 import UpdateProfilePage from "./pages/UpdateProfile";
 import StreamPage from "./pages/StreamPage";
+import TVShowPage from "./pages/TVShowsPage";
 
 // Layouts
 
@@ -69,6 +70,7 @@ function App() {
                 <Route path="/my-list" element={<MyListPage />} />
                 <Route path="/movie/stream" element={<StreamPage />} />
                 <Route path="/movies" element={<MoviesPage />} />
+                <Route path="/tv" element={<TVShowPage />} />
                 <Route path="/browse" element={<Browse />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="*" element={<Navigate to="/" />} />

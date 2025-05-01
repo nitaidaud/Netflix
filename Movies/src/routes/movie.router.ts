@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import { MovieController } from "../controllers/movie.controller";
 import { TOKENS } from "../../tokens";
 import { container } from "../config/inversify";
+import { tvRouter } from "./tv.router";
 
 const movieRouter = Router();
 
@@ -28,16 +29,12 @@ movieRouter.get("/getMovieById/:id", (req: Request, res: Response) => {
   movieController.getMovieById(req, res);
 });
 
-movieRouter.get("/:id/trailer", (req: Request, res: Response) => {
-  movieController.getTrailer(req, res);
-});
-
 movieRouter.get("/getMovies/page/:page?", (req: Request, res: Response) =>
-  movieController.getMoviesByPage(req, res),
+  movieController.getMoviesByPage(req, res)
 );
 
 movieRouter.get("/getMovies", (req: Request, res: Response) =>
-  movieController.getMoviesByPage(req, res),
+  movieController.getMoviesByPage(req, res)
 );
 
 movieRouter.get("/new", (req: Request, res: Response) => {
@@ -79,5 +76,22 @@ movieRouter.get("/documentary", (req: Request, res: Response) => {
 movieRouter.get("/home", (req: Request, res: Response) => {
   movieController.getHomeContent(req, res);
 });
+
+movieRouter.get("/series/:seriesId/:seasonNumber", (req, res) =>
+  movieController.getSeasonDetails(req, res)
+);
+
+movieRouter.get("/tv-shows/popular", (req, res) =>
+  movieController.getPopularTVShows(req, res)
+);
+
+movieRouter.get("/:id/trailer", (req: Request, res: Response) => {
+  movieController.getTrailer(req, res);
+});
+
+movieRouter.get("/getTVShowById/:id", (req: Request, res: Response) => {
+  movieController.getMovieById(req, res);
+});
+
 
 export { movieRouter };

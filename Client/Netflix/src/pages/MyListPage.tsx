@@ -2,7 +2,7 @@ import MoviesGrid from "@/components/browse/MovieGrid";
 import MovieModal from "@/components/home/movieModal/MovieModal";
 import Container from "@/components/shared/Container";
 import Typography from "@/components/shared/Typography";
-import { openModal } from "@/store/slice/modal.slice";
+import { openMovieModal } from "@/store/slice/modal.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 
 const MyListPage = () => {
@@ -11,7 +11,7 @@ const MyListPage = () => {
     (state) => state.profile.profile?.moviesFavoriteList,
   );
   const handleMoreInfo = (movieId: number) => {
-    dispatch(openModal(movieId));
+    dispatch(openMovieModal(movieId));
   };
   return (
     <Container className="min-h-screen pt-24">

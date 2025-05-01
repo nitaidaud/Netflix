@@ -10,7 +10,7 @@ const TVShowPage = () => {
   const { data: tvShows, isLoading } = useTVShows();
   const dispatch = useAppDispatch();
   return (
-    <div className="p-6 pt-28 max-w-7xl mx-auto">
+    <div className="p-6 pt-28 max-w-7xl mx-auto relative">
       <Typography className="mb-10" size="text-2xl" weight="font-bold">
         Tv Shows
       </Typography>

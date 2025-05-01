@@ -17,9 +17,10 @@ const ModalHeader = ({ tvShow, onClose }: Props) => {
   } = tvShow;
 
   const year = parseInt(first_air_date.slice(0, 4), 10);
+  const clearOverview = overview.length > 200 ? `${overview.slice(0, 200)}...` : overview;
 
   return (
-    <div className="relative  h-[450px] w-full overflow-hidden">
+    <div className="relative h-[450px] w-full rounded-t-lg">
       <img
         src={
           backdrop_path
@@ -27,7 +28,7 @@ const ModalHeader = ({ tvShow, onClose }: Props) => {
             : "/images/not-found-img.png"
         }
         alt={name}
-        className="w-full h-full object-cover "
+        className="w-full h-full object-cover rounded-t-lg"
       />
 
       <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-800/70 to-transparent" />
@@ -39,36 +40,31 @@ const ModalHeader = ({ tvShow, onClose }: Props) => {
         <X />
       </button>
 
-      <div className="absolute bottom-4 left-4 right-4 text-white flex justify-between items-start flex-wrap gap-6">
-        {/* Left side */}
+      <div className="absolute bottom-4 left-4 right-4 text-white grid gap-6">
         <div className="max-w-2xl ">
           <h2 className="text-4xl font-bold">{name}</h2>
           <p className="text-lg text-zinc-400 flex gap-2 mt-1">
             <span>{number_of_seasons} Seasons</span>
             <span>{year}</span>
           </p>
-          <p className="mt-3 text-base max-w-xl">{overview}</p>
+          <p className="mt-3 text-base max-w-xl">{clearOverview}</p>
         </div>
-        
-        {/* Right side */}
-        <div className="self-start">
-          <div className="flex mt-20 mr-90 items-center">
-            <p className="text-md text-zinc-400 mr-2">Genres:</p>
-            <div className="flex flex-wrap gap-2">
-              {genres.map((genre) => (
-                <span
-                  key={genre.id}
-                  className="bg-white/10 text-sm px-2 py-1 rounded-full"
-                >
-                  {genre.name}
-                </span>
-              ))}
-            </div>
+
+        <div className="flex mr-90 items-center">
+          <p className="text-md text-zinc-400 mr-2">Genres:</p>
+          <div className="flex flex-wrap gap-2">
+            {genres.map((genre) => (
+              <span
+                key={genre.id}
+                className="bg-white/10 text-sm px-2 py-1 rounded-full"
+              >
+                {genre.name}
+              </span>
+            ))}
           </div>
         </div>
       </div>
-      </div>
-    
+    </div>
   );
 };
 

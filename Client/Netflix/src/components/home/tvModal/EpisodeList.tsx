@@ -6,7 +6,7 @@ interface Props {
 
 const EpisodeList = ({ episodes }: Props) => {
   return (
-    <ul className="grid  text-white overflow-y-auto h-full max-h-fit">
+    <ul className="grid text-white overflow-y-auto h-[360px]">
       {episodes.map((ep) => (
         <li
           className="flex gap-4 items-center py-4 hover:bg-zinc-800/50 transition-colors duration-200 cursor-pointer border-b border-white/10"

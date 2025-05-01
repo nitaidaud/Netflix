@@ -19,13 +19,16 @@ const ModalSeasons = ({ season, totalSeasons }: Props) => {
         openTVShowWithSeasonModal({
           tvId: selectedTVShowId,
           seasonNumber: newSeason,
-        })
+        }),
       );
     }
   };
 
   return (
-    <div className="p-4 space-y-6 h-fit" key={season.id}>
+    <div
+      className="p-4 space-y-6 h-fit bg-zinc-900 shadow-xl rounded-b-lg"
+      key={season.id}
+    >
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-xl font-semibold text-white">Episodes</h3>
         <SeasonSelect

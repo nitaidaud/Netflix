@@ -6,7 +6,7 @@ interface Props {
 
 const EpisodeList = ({ episodes }: Props) => {
   return (
-    <ul className="grid grid-cols-2 gap-4 text-white">
+    <ul className="grid grid-cols-2 gap-4 text-white overflow-y-auto max-h-[50vh]">
       {episodes.map((ep) => (
         <li key={ep.id} className="bg-zinc-800 rounded-md p-3">
           <p className="font-semibold">{ep.episode_number}. {ep.name}</p>

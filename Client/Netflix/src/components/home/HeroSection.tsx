@@ -13,11 +13,16 @@ type HeroSectionProps = {
   movieId: number;
 };
 
-const HeroSection = ({ title, overview, backdropPath, movieId }: HeroSectionProps) => {
+const HeroSection = ({
+  title,
+  overview,
+  backdropPath,
+  movieId,
+}: HeroSectionProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
 
-  const { data } = useTrailerKey(movieId);
+  const { data } = useTrailerKey(movieId, "movie");
   const cleanUrl = cleanYouTubeEmbedUrl(data?.embedUrl);
   const navigate = useNavigate();
 
@@ -86,7 +91,8 @@ const HeroSection = ({ title, overview, backdropPath, movieId }: HeroSectionProp
           {overview}
         </p>
         <div className="flex gap-3">
-          <Button className="bg-white text-black font-semibold hover:bg-zinc-400 h-9.5"
+          <Button
+            className="bg-white text-black font-semibold hover:bg-zinc-400 h-9.5"
             onClick={() => {
               navigate(`/movie/stream`);
             }}
@@ -109,14 +115,13 @@ const HeroSection = ({ title, overview, backdropPath, movieId }: HeroSectionProp
 
         {/* Mute button */}
         {cleanUrl && isPlaying && (
-  <button
-    onClick={() => setIsMuted(!isMuted)}
-    className="absolute bottom-12 right-6 text-white border-white border-2 p-2 rounded-full z-20"
-  >
-    {isMuted ? <VolumeX size={26} /> : <Volume2 size={26} />}
-  </button>
-)}
-
+          <button
+            onClick={() => setIsMuted(!isMuted)}
+            className="absolute bottom-12 right-6 text-white border-white border-2 p-2 rounded-full z-20"
+          >
+            {isMuted ? <VolumeX size={26} /> : <Volume2 size={26} />}
+          </button>
+        )}
       </div>
 
       {/* Fallback background image with opacity transition */}

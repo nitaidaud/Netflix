@@ -4,7 +4,6 @@ import MovieModal from "@/components/home/movieModal/MovieModal";
 import Container from "@/components/shared/Container";
 import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation";
 
-import TVModal from "@/components/home/tvModal/TvModal";
 import { useHomeContent } from "@/hooks/useHomeContent";
 import { useMovieById } from "@/hooks/useMovieById";
 import { openMovieModal } from "@/store/slice/modal.slice";
@@ -68,7 +67,6 @@ const Home = () => {
 
       {/* Movie Modal */}
       <MovieModal />
-      <TVModal />
     </div>
   );
 };

@@ -284,7 +284,7 @@ export const getTVShowByIdRequest = async (id: number) => {
 
 export const getSeasonByIdRequest = async (seriesId: number, seasonNumber: number) => {
   const { data } = await api.get<ISeason>(
-    `/series/${seriesId}/${seasonNumber}`,
+    `/api/movies/series/${seriesId}/${seasonNumber}`,
   );
   return data;
 };

@@ -1,3 +1,4 @@
+import TVModal from "@/components/home/tvModal/TvModal";
 import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation";
 import Typography from "@/components/shared/Typography";
 import TVCard from "@/components/tv/TVCard";
@@ -28,6 +29,7 @@ const TVShowPage = () => {
           ))}
         </div>
       )}
+        <TVModal />
     </div>
   );
 };

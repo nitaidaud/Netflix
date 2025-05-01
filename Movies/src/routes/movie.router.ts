@@ -90,7 +90,7 @@ movieRouter.get("/:id/trailer", (req: Request, res: Response) => {
 });
 
 movieRouter.get("/getTVShowById/:id", (req: Request, res: Response) => {
-  movieController.getMovieById(req, res);
+  movieController.getTVShowById(req, res);
 });
 
 

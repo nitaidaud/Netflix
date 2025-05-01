@@ -12,4 +12,5 @@ export default interface ITVShow {
   overview: string;
   poster_path: string | null;
   seasons: ISeason[];
+  popularity: number;
 }

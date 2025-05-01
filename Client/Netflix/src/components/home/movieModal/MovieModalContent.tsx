@@ -12,7 +12,7 @@ interface MovieModalContentProps {
 
 const MovieModalContent = ({ movieId, onClose }: MovieModalContentProps) => {
   const { data: movie, isLoading } = useMovieById(movieId);
-  const { data: trailerData } = useTrailerKey(movieId);
+  const { data: trailerData } = useTrailerKey(movieId, "movie");
 
   const [muted, setMuted] = useState(true);
   const [showTrailer, setShowTrailer] = useState(false);

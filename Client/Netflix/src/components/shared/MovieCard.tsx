@@ -23,7 +23,7 @@ const MovieCard = ({
 }: MovieCardProps) => {
   const { title, id } = movie;
 
-  const { data } = useTrailerKey(id);
+  const { data } = useTrailerKey(id, "movie");
   const cleanUrl = cleanYouTubeEmbedUrl(data?.embedUrl);
 
   const [isHovered, setIsHovered] = useState(false);

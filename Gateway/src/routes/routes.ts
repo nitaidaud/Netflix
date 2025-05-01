@@ -24,7 +24,7 @@ userRoutes.use(
     },
     on: {
       error: (err, req, res) => {
-        console.error("Proxy error:", err);
+        // console.error("Proxy error:", err);
       },
       proxyReq: (proxyReq, req, res) => {
         console.log("Proxying request to:", USER_SERVICE_URL + req.url);
@@ -47,7 +47,7 @@ movieRoutes.use(
     },
     on: {
       error: (err, req, res) => {
-        console.error("Proxy error:", err);
+        // console.error("Proxy error:", err);
       },
       proxyReq: (proxyReq, req, res) => {
         console.log("Proxying request to:", MOVIES_SERVICE_URL + req.url);
@@ -70,7 +70,7 @@ profileRoutes.use(
     },
     on: {
       error: (err, req, res) => {
-        console.error("Proxy error:", err);
+        // console.error("Proxy error:", err);
       },
       proxyReq: (proxyReq, req, res) => {
         console.log("Proxying request to:", PROFILES_SERVICE_URL + req.url);
@@ -93,7 +93,7 @@ streamRoutes.use(
     },
     on: {
       error: (err, req, res) => {
-        console.error("Proxy error:", err);
+        // console.error("Proxy error:", err);
       },
       proxyReq: (proxyReq, req, res) => {
         console.log("Proxying request to:", STREAMING_SERVICE_URL + req.url);

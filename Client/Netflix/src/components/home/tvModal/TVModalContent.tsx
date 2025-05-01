@@ -11,19 +11,21 @@ interface Props {
 
 const TVModalContent = ({ tvId, onClose, seasonNumber }: Props) => {
   const { data: tvShow } = useTVShowById(tvId);
+  console.log("tvShow", tvShow);
+
   const { data: season } = useSeasonById(tvId, seasonNumber);
+  console.log("season", season);
 
   if (!tvShow || !season) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4 py-8">
-      <div className="relative w-full max-w-6xl bg-zinc-900 rounded-md overflow-hidden shadow-xl">
+    <div className="fixed inset-0 z-50 grid overflow-y-auto items-center justify-center bg-black/80 px-4 py-8 max-h-[50vh] m-auto w-fit">
+      <div className="relative w-full max-w-6xl bg-zinc-900 rounded-md shadow-xl">
         <ModalHeader tvShow={tvShow} onClose={onClose} />
-        <ModalSeasons seasons={tvShow.seasons} />
+        <ModalSeasons season={season} />
       </div>
     </div>
   );
 };
 
 export default TVModalContent;
-

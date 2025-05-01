@@ -22,6 +22,14 @@ const modalSlice = createSlice({
     openTVShowModal: (state, action: PayloadAction<number>) => {
       state.selectedTVShowId = action.payload;
     },
+    openTVShowWithSeasonModal: (
+      state,
+      action: PayloadAction<{ tvId: number; seasonNumber: number }>
+    ) => {
+      state.selectedTVShowId = action.payload.tvId;
+      state.selectedSeasonNumber = action.payload.seasonNumber;
+    }
+    ,    
     closeModal: (state) => {
       state.selectedMovieId = null;
       state.selectedTVShowId = null;
@@ -30,9 +38,14 @@ const modalSlice = createSlice({
     setSelectedSeasonNumber: (state, action: PayloadAction<number>) => {
       state.selectedSeasonNumber = action.payload;
     },
+    
   },
 });
 
-export const { openMovieModal, closeModal, openTVShowModal } =
+export const {  openMovieModal,
+  openTVShowModal,
+  openTVShowWithSeasonModal,
+  closeModal,
+  setSelectedSeasonNumber, } =
   modalSlice.actions;
 export default modalSlice.reducer;

@@ -1,7 +1,10 @@
+import { useEffect } from "react";
+import { useTVShowById } from "@/hooks/useTVShowById";
 import { useSeasonById } from "@/hooks/useSeasonsByTVId";
+
 import ModalHeader from "./ModalHeaderTV";
 import ModalSeasons from "./ModalSeasons";
-import { useTVShowById } from "@/hooks/useTVShowById";
+import EpisodeLoadingPlaceholder from "./EpisodeLoadingPlaceholder";
 
 interface Props {
   tvId: number;
@@ -10,19 +13,34 @@ interface Props {
 }
 
 const TVModalContent = ({ tvId, onClose, seasonNumber }: Props) => {
-  const { data: tvShow } = useTVShowById(tvId);
-  console.log("tvShow", tvShow);
+  const { data: tvShow, isLoading: isTVLoading } = useTVShowById(tvId);
+  const { data: season, isLoading: isSeasonLoading } = useSeasonById(tvId, seasonNumber);
 
-  const { data: season } = useSeasonById(tvId, seasonNumber);
-  console.log("season", season);
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
 
-  if (!tvShow || !season) return null;
+  const isLoading = isTVLoading || isSeasonLoading || !tvShow || !season;
 
   return (
-    <div className="fixed inset-0 z-50 grid overflow-y-auto items-center justify-center bg-black/80 px-4 py-8 max-h-[50vh] m-auto w-fit">
-      <div className="relative w-full max-w-6xl bg-zinc-900 rounded-md shadow-xl">
-        <ModalHeader tvShow={tvShow} onClose={onClose} />
-        <ModalSeasons season={season} />
+    <div className="fixed inset-0 z-50 grid items-center justify-center bg-black/80 px-4 py-8">
+      <div className="relative w-full max-w-[800px] min-w-fit bg-zinc-900 rounded-md shadow-xl h-[85vh] scrollbar-hide">
+        {isLoading ? (
+          
+          <EpisodeLoadingPlaceholder />
+        
+        ) : (
+          <>
+            <ModalHeader tvShow={tvShow} onClose={onClose} />
+            <ModalSeasons
+              season={season}
+              totalSeasons={tvShow.number_of_seasons}
+            />
+          </>
+        )}
       </div>
     </div>
   );

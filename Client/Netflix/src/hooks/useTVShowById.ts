@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useTVShowById = (id: number) => {
   return useQuery({
-    queryKey: ["TVShow", id],
+    queryKey: [`tvShow-${id}`],
     queryFn: () => getTVShowByIdRequest(id),
     enabled: !!id, 
   });

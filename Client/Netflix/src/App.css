@@ -5,6 +5,7 @@ body {
   background-color: #000;
   color: #fff;
   font-family: Arial, sans-serif;
+  
 }
 
 #root {
@@ -46,4 +47,13 @@ html {
 .profile-choose:hover .delete-profile-btn {
   opacity: 1;
   z-index: 100;
+}
+
+/* הסתרת scrollbar לכל הדפדפנים */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none;     /* Firefox */
 }

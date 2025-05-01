@@ -1,14 +1,13 @@
 import Form from "@/components/shared/Form";
-import Typography from "@/components/shared/Typography";
-import { FormError } from "@/components/ui/auth/FormError";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import useToastForm from "@/hooks/useToastify";
 import { SignupFormData, signupSchema } from "@/schemas/auth.schema";
-import { signup } from "@/store/slice/auth.slice";
+import { clearAuthErrors, signup } from "@/store/slice/auth.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LucideLoader } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 type SignupProps = {
@@ -17,9 +16,10 @@ type SignupProps = {
 
 const SignupForm: React.FC<SignupProps> = ({ defaultEmail = "" }) => {
   const dispatch = useAppDispatch();
-  const error = useAppSelector((state) => state.auth.error);
-  const success = useAppSelector((state) => state.auth.success);
-  const [loading, setLoading] = useState(false);
+  const { error: serverError, successMsg } = useAppSelector(
+    (state) => state.auth,
+  );
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -32,16 +32,28 @@ const SignupForm: React.FC<SignupProps> = ({ defaultEmail = "" }) => {
     },
   });
 
+  useToastForm({
+    formErrors: errors,
+    serverError,
+    successMessage: successMsg ?? null,
+  });
+
   const onSubmit = async (data: SignupFormData) => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       await dispatch(signup(data));
     } catch (err) {
       console.error("Signup failed:", err);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearAuthErrors());
+    };
+  }, [dispatch]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -66,18 +78,12 @@ const SignupForm: React.FC<SignupProps> = ({ defaultEmail = "" }) => {
         error={errors.password?.message}
         className="w-full bg-transparent border border-gray-500 focus:border-white focus:outline-none text-white px-4 py-3 rounded placeholder-gray-400"
       />
-      {error && <FormError message={error} />}
-      {success && (
-        <Typography color="text-green-800" size="text-sm">
-          {success}
-        </Typography>
-      )}
       <Button
         type="submit"
         className="w-full bg-red-600 hover:bg-red-700 font-bold text-lg py-3 rounded"
-        disabled={loading}
+        disabled={isLoading}
       >
-        {loading ? <LucideLoader className="animate-spin" /> : "Sign up"}
+        {isLoading ? <LucideLoader className="animate-spin" /> : "Sign up"}
       </Button>
     </Form>
   );

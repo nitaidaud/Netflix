@@ -6,11 +6,11 @@ import cleanYouTubeEmbedUrl from "@/utils/cleanTrailerUrl";
 import { InfoIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import ReactPlayer from "react-player/youtube";
+import { Link } from "react-router-dom";
 
 type MovieCardProps = {
   movie: IBaseMovie;
   image: string;
-  onPlay?: () => void;
   onMoreInfo?: () => void;
   showTrailerOnHover?: boolean;
 };
@@ -18,7 +18,6 @@ type MovieCardProps = {
 const MovieCard = ({
   movie,
   image,
-  onPlay,
   onMoreInfo,
   showTrailerOnHover = true,
 }: MovieCardProps) => {
@@ -76,13 +75,31 @@ const MovieCard = ({
 
         <div className="flex justify-between items-center w-full">
           <div className="flex gap-2">
-            <Button
-              size="icon"
-              className="bg-white text-black hover:bg-zinc-400 rounded-full w-9 h-9"
-              onClick={onPlay}
-            >
-              <img src="/icons/play_icon.png" alt="Play" className="w-4 h-4" />
-            </Button>
+            {!cleanUrl ? (
+              <Button
+                size="icon"
+                className="bg-white text-black hover:bg-zinc-400 rounded-full w-9 h-9"
+              >
+                <img
+                  src="/icons/play_icon.png"
+                  alt="Play"
+                  className="w-4 h-4"
+                />
+              </Button>
+            ) : (
+              <Link to={cleanUrl} target="_blank">
+                <Button
+                  size="icon"
+                  className="bg-white text-black hover:bg-zinc-400 rounded-full w-9 h-9"
+                >
+                  <img
+                    src="/icons/play_icon.png"
+                    alt="Play"
+                    className="w-4 h-4"
+                  />
+                </Button>
+              </Link>
+            )}
 
             <AddToListButton movie={movie} />
           </div>

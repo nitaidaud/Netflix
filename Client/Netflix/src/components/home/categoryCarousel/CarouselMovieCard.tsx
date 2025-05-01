@@ -9,17 +9,16 @@ interface CarouselMovieCardProps {
 
 const CarouselMovieCard = ({ movie }: CarouselMovieCardProps) => {
   const dispatch = useAppDispatch();
-  const { id, title, backdrop_path } = movie;
+  const { id, backdrop_path } = movie;
 
   return (
     <MovieCard
       movie={movie}
       image={
         backdrop_path
-          ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+          ? `https://image.tmdb.org/t/p/w500${backdrop_path}`
           : "/images/not-found-img.png"
       }
-      onPlay={() => console.log("Play", title)}
       onMoreInfo={() => dispatch(openModal(id))}
     />
   );

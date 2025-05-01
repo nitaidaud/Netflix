@@ -2,10 +2,9 @@
 import { forgotPassword } from "@/api/api";
 import Form from "@/components/shared/Form";
 import CardWrapper from "@/components/ui/auth/CardWrapper";
-import { FormError } from "@/components/ui/auth/FormError";
-import { FormSuccess } from "@/components/ui/auth/FormSuccess";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import useToastForm from "@/hooks/useToastify";
 import { ForgotPasswordSchema } from "@/schemas/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LucideLoader } from "lucide-react";
@@ -48,13 +47,18 @@ const ForgotPasswordForm = () => {
     });
   };
 
+  useToastForm({
+    formErrors: errors,
+    successMessage: success,
+    serverError: error,
+  });
+
   return (
     <CardWrapper
       headerLabel=""
       title="Forgot password"
       backButtonHref="/signin"
       backButtonLabel="Back to login page"
-      
     >
       <Form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Input
@@ -64,8 +68,8 @@ const ForgotPasswordForm = () => {
           className="w-full bg-neutral-900 border-gray-500 focus:border-red-600 focus:outline-none text-white px-4 py-3 rounded placeholder:text-gray-500 text-sm"
           disabled={isPending}
         />
-        {success && <FormSuccess message={success} />}
-        {error && <FormError message={error} />}
+        {/* {success && <FormSuccess message={success} />}
+        {error && <FormError message={error} />} */}
         <Button
           type="submit"
           className="w-full bg-red-600 hover:bg-red-800 font-bold text-lg py-3 rounded"

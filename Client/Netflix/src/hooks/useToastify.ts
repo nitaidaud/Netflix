@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { FieldErrors } from "react-hook-form";
 import { ToastOptions as ReactToastifyOptions, toast } from "react-toastify";
 
@@ -10,7 +10,6 @@ type ToastPosition =
   | "bottom-center"
   | "bottom-left";
 type ToastTheme = "light" | "dark" | "colored";
-
 type ToastOptions = {
   position?: ToastPosition;
   autoClose?: number;
@@ -58,32 +57,52 @@ const useToastForm = <TFormValues extends Record<string, unknown>>({
     [options],
   );
 
+  // Refs to track already shown errors and success messages
+  const shownFormErrorRef = useRef<string | null>(null);
+  const shownServerErrorRef = useRef<string | null>(null);
+  const shownSuccessRef = useRef<string | null>(null);
+
   // Handle form validation errors
   useEffect(() => {
     const errorMessages = Object.values(formErrors)
       .map((err) => err?.message)
       .filter((message): message is string => typeof message === "string");
 
-    // Only show the first error to avoid overwhelming the user
-    if (errorMessages.length > 0) {
+    // Only show the first error if it's new
+    if (
+      errorMessages.length > 0 &&
+      errorMessages[0] !== shownFormErrorRef.current
+    ) {
+      shownFormErrorRef.current = errorMessages[0];
       toast.error(errorMessages[0], defaultOptions);
+    } else if (errorMessages.length === 0) {
+      // Reset when there are no errors
+      shownFormErrorRef.current = null;
     }
   }, [formErrors, defaultOptions]);
 
   // Handle server errors
   useEffect(() => {
-    if (serverError) {
+    if (serverError && serverError !== shownServerErrorRef.current) {
+      shownServerErrorRef.current = serverError;
       toast.error(serverError, defaultOptions);
+    } else if (!serverError) {
+      // Reset when there is no server error
+      shownServerErrorRef.current = null;
     }
   }, [serverError, defaultOptions]);
 
   // Handle success message
   useEffect(() => {
-    if (successMessage) {
+    if (successMessage && successMessage !== shownSuccessRef.current) {
+      shownSuccessRef.current = successMessage;
       toast.success(successMessage, {
         ...defaultOptions,
         autoClose: 3000, // Success messages can be shorter
       });
+    } else if (!successMessage) {
+      // Reset when there is no success message
+      shownSuccessRef.current = null;
     }
   }, [successMessage, defaultOptions]);
 

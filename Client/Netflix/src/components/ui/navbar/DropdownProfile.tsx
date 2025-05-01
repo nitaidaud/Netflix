@@ -55,7 +55,7 @@ const DropdownProfile = ({ currentProfile }: DropdownProfileProps) => {
   };
 
   if (isLogging) {
-    return <LucideLoader className="animate-spin mx-auto" />;
+    return <LucideLoader color="red" className="animate-spin mx-auto" />;
   }
 
   return (
@@ -83,7 +83,7 @@ const DropdownProfile = ({ currentProfile }: DropdownProfileProps) => {
       <DropdownMenuContent className="w-56 bg-black/80 text-white rounded-md shadow-lg border border-gray-700">
         {data ? (
           isLoading || isFetching ? (
-            <LucideLoader className="animate-spin mx-auto" />
+            <LucideLoader color="red" className="animate-spin mx-auto" />
           ) : (
             data.profiles.map((profile, index) => (
               <DropdownMenuItem

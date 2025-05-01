@@ -2,10 +2,14 @@ import IProfile from "@/api/interfaces/IProfile";
 import Typography from "@/components/shared/Typography";
 import { Button } from "@/components/ui/button";
 import { useProfiles } from "@/hooks/useProfiles";
-import { deleteProfile, loginProfile } from "@/store/slice/profile.slice";
+import {
+  clearProfileErrors,
+  deleteProfile,
+  loginProfile,
+} from "@/store/slice/profile.slice";
 import { useAppDispatch } from "@/store/store";
 import { MinusCircle, PlusCircle } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const ProfileChoicePage = () => {
@@ -25,6 +29,12 @@ const ProfileChoicePage = () => {
       setIsLogging(false);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearProfileErrors());
+    };
+  }, [dispatch]);
 
   return (
     <div className="flex flex-col items-center justify-center size-full">

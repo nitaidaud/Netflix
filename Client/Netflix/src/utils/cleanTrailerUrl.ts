@@ -1,6 +1,6 @@
-function cleanYouTubeEmbedUrl(dirtyUrl?: string ): string {
+function cleanYouTubeEmbedUrl(dirtyUrl?: string ): string | null {
     if (!dirtyUrl) {
-        return "";
+        return null;
     }
   return dirtyUrl?.replace(/\"/g, "").replace(/\\+$/, "");
 }

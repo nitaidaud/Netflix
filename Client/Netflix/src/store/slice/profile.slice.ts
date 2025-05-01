@@ -19,12 +19,14 @@ interface ProfileState {
   profile: IProfile | null;
   isProfileLoggedIn: boolean;
   error: string | null;
+  isSuccess: boolean;
 }
 
 const initialState: ProfileState = {
   profile: null,
   isProfileLoggedIn: false,
   error: null,
+  isSuccess: false,
 };
 
 export const createNewProfile = createAsyncThunk(
@@ -183,66 +185,87 @@ export const deleteProfile = createAsyncThunk(
 const profileSlice = createSlice({
   name: "profile",
   initialState,
-  reducers: {},
+  reducers: {
+    clearProfileErrors: (state) => {
+      state.error = null;
+      state.isSuccess = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
+      .addCase(createNewProfile.pending, (state) => {
+        state.error = null;
+        state.isSuccess = false;
+      })
       .addCase(createNewProfile.fulfilled, (state, action) => {
         state.profile = action.payload;
         state.isProfileLoggedIn = true;
         state.error = null;
+        state.isSuccess = true;
       })
       .addCase(createNewProfile.rejected, (state, action) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
         state.error = action.payload as string;
+        state.isSuccess = false;
       })
       .addCase(loginProfile.fulfilled, (state, action) => {
         state.profile = action.payload;
         state.isProfileLoggedIn = true;
         state.error = null;
+        state.isSuccess = true;
       })
       .addCase(loginProfile.rejected, (state, action) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
         state.error = action.payload as string;
+        state.isSuccess = false;
       })
       .addCase(logoutProfile.fulfilled, (state) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
         state.error = null;
+        state.isSuccess = true;
       })
       .addCase(logoutProfile.rejected, (state, action) => {
         state.error = action.payload as string;
+        state.isSuccess = false;
       })
       .addCase(checkLoggedInProfile.fulfilled, (state, action) => {
         state.profile = action.payload;
         state.isProfileLoggedIn = true;
         state.error = null;
+        state.isSuccess = true;
       })
-      .addCase(checkLoggedInProfile.rejected, (state, action) => {
+      .addCase(checkLoggedInProfile.rejected, (state) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
-        state.error = action.payload as string;
+        state.error = null;
+        state.isSuccess = false;
       })
       .addCase(getProfileById.fulfilled, (state, action) => {
         state.profile = action.payload;
         state.isProfileLoggedIn = true;
         state.error = null;
+        state.isSuccess = true;
       })
       .addCase(getProfileById.rejected, (state, action) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
         state.error = action.payload as string;
+        state.isSuccess = false;
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.profile = action.payload;
         state.isProfileLoggedIn = true;
         state.error = null;
+        state.isSuccess = true;
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
         state.error = action.payload as string;
+        state.isSuccess = false;
       })
       .addCase(addMovieToFavoriteList.fulfilled, (state, action) => {
         const updatedProfile = state.profile;
@@ -252,11 +275,13 @@ const profileSlice = createSlice({
         state.profile = updatedProfile;
         state.isProfileLoggedIn = true;
         state.error = null;
+        state.isSuccess = true;
       })
       .addCase(addMovieToFavoriteList.rejected, (state, action) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
         state.error = action.payload as string;
+        state.isSuccess = false;
       })
       .addCase(removeMovieFromFavoriteList.fulfilled, (state, action) => {
         const updatedProfile = state.profile;
@@ -266,23 +291,29 @@ const profileSlice = createSlice({
         state.profile = updatedProfile;
         state.isProfileLoggedIn = true;
         state.error = null;
+        state.isSuccess = true;
       })
       .addCase(removeMovieFromFavoriteList.rejected, (state, action) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
         state.error = action.payload as string;
+        state.isSuccess = false;
       })
       .addCase(deleteProfile.fulfilled, (state) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
         state.error = null;
+        state.isSuccess = true;
       })
       .addCase(deleteProfile.rejected, (state, action) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
         state.error = action.payload as string;
+        state.isSuccess = false;
       });
   },
 });
+
+export const { clearProfileErrors } = profileSlice.actions;
 
 export default profileSlice.reducer;

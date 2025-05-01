@@ -110,6 +110,15 @@ export class ProfileController {
         userPayload.id,
       );
 
+      if (!newProfile) {
+        return res
+          .status(404)
+          .json({
+            message: "Profile with this name already exists",
+            profile: null,
+          });
+      }
+
       const { id, ...profile } = newProfile;
       const profileToken = sign({ id });
 

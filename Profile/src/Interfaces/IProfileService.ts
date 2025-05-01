@@ -8,7 +8,7 @@ import IProfileData from "./IProfilePayload";
 export default interface IProfileService {
   getProfileByToken(profileToken: string): Promise<ProfileDTO | null>;
 
-  createProfile(profileData: IProfileData, userId: string): Promise<IProfile>;
+  createProfile(profileData: IProfileData, userId: string): Promise<IProfile | null>;
 
   updateProfile(
     profileId: string,

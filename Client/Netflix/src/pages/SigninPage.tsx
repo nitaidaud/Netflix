@@ -1,10 +1,10 @@
+import STRINGS from "@/components/ui/auth/STRINGS";
+import { clearAuthErrors } from "@/store/slice/auth.slice";
+import { useAppDispatch } from "@/store/store";
 import { Link } from "react-router-dom";
 import Container from "../components/shared/Container";
 import Typography from "../components/shared/Typography";
 import SigninForm from "../features/auth/SigninForm";
-import STRINGS from "@/components/ui/auth/STRINGS";
-import { useAppDispatch } from "@/store/store";
-import { setError } from "@/store/slice/auth.slice";
 
 const SigninPage = () => {
   const dispatch = useAppDispatch();
@@ -32,7 +32,7 @@ const SigninPage = () => {
           {STRINGS.NewToNetflix}{" "}
           <Link
             onClick={() => {
-              dispatch(setError(null));
+              dispatch(clearAuthErrors());
             }}
             to="/signup"
             className="text-[#646cff] font-medium hover:underline cursor-pointer"

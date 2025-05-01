@@ -38,13 +38,13 @@ export class ProfileService implements IProfileService {
   async createProfile(
     profileData: IProfileData,
     userId: string,
-  ): Promise<IProfile> {
+  ): Promise<IProfile | null> {
     try {
       const userExist = !!(await this.profileRepository.getProfileByName(
         profileData.name,
       ));
 
-      if (userExist) throw new Error("Profile with this name already exists");
+      if (userExist) return null;
 
       const newProfile = await this.profileRepository.createProfile(
         profileData,
@@ -58,7 +58,7 @@ export class ProfileService implements IProfileService {
       return newProfile;
     } catch (error) {
       console.error("Error creating profile:", error);
-      throw new Error("Error creating profile");
+      throw new Error(`Error creating profile: ${error}`);
     }
   }
 

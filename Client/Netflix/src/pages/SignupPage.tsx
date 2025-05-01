@@ -1,10 +1,10 @@
-import { Link, useLocation } from "react-router-dom";
 import Container from "@/components/shared/Container";
 import Typography from "@/components/shared/Typography";
 import STRINGS from "@/components/ui/auth/STRINGS";
 import SignupForm from "@/features/auth/SignupForm";
+import { clearAuthErrors } from "@/store/slice/auth.slice";
 import { useAppDispatch } from "@/store/store";
-import { setError } from "@/store/slice/auth.slice";
+import { Link, useLocation } from "react-router-dom";
 
 const SignupPage = () => {
   const dispatch = useAppDispatch();
@@ -22,7 +22,7 @@ const SignupPage = () => {
           {STRINGS.AlreadyHaveAnAccount}{" "}
           <Link
             onClick={() => {
-              dispatch(setError(null));
+              dispatch(clearAuthErrors());
             }}
             to="/signin"
             className="text-white font-medium hover:underline cursor-pointer"

@@ -1,4 +1,3 @@
-import { LucideLoader } from "lucide-react";
 import { useEffect, useTransition } from "react";
 import {
   Navigate,
@@ -21,12 +20,12 @@ import ProfileChoicePage from "./pages/ProfileChoicePage";
 import ResetPassword from "./pages/ResetPassword";
 import SignInPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
+import StreamPage from "./pages/StreamPage";
+import UpdateProfilePage from "./pages/UpdateProfile";
 import VerifyEmail from "./pages/VerifyEmail";
 import { checkAuth } from "./store/slice/auth.slice";
 import { checkLoggedInProfile } from "./store/slice/profile.slice";
 import { useAppDispatch, useAppSelector } from "./store/store";
-import UpdateProfilePage from "./pages/UpdateProfile";
-import StreamPage from "./pages/StreamPage";
 
 // Layouts
 
@@ -49,7 +48,8 @@ function App() {
   if (pending) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <LucideLoader className="animate-spin" />
+        {/* <LucideLoader className="animate-spin" /> */}
+        <img src="/images/loading-screen.gif" alt="loading screen" />
       </div>
     );
   }

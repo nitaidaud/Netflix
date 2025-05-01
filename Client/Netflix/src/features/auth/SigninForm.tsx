@@ -5,15 +5,17 @@ import { useForm } from "react-hook-form";
 import Form from "@/components/shared/Form";
 import useToastForm from "@/hooks/useToastify";
 import { SigninFormData, signinSchema } from "@/schemas/auth.schema";
-import { checkAuth, signin } from "@/store/slice/auth.slice";
+import { checkAuth, clearAuthErrors, signin } from "@/store/slice/auth.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LucideLoader } from "lucide-react";
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
 
 const SigninForm = () => {
   const dispatch = useAppDispatch();
-  const serverError = useAppSelector((state) => state.auth.error);
+  const { error: serverError, successMsg } = useAppSelector(
+    (state) => state.auth,
+  );
   const [isPending, startTransition] = useTransition();
   const {
     register,
@@ -26,7 +28,7 @@ const SigninForm = () => {
   useToastForm({
     formErrors: errors,
     serverError,
-    successMessage: errors || serverError ? null : "Successfully signed in!",
+    successMessage: successMsg ?? null,
   });
 
   const onSubmit = async (data: SigninFormData) => {
@@ -41,6 +43,12 @@ const SigninForm = () => {
       console.error("Signin failed:", err);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearAuthErrors());
+    };
+  }, [dispatch]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

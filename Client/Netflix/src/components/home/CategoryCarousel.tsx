@@ -48,8 +48,9 @@ const CategoryCarousel = ({
             >
               <MovieCard
                 movie={movie}
-                image={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
-                onPlay={() => console.log("Play", movie.title)}
+                image={ movie.backdrop_path
+                  ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+                  : "/images/not-found-img.png"}
                 onMoreInfo={() => onMoreInfo(movie.id)}
               />
             </CarouselItem>

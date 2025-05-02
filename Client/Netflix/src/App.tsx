@@ -27,6 +27,9 @@ import VerifyEmail from "./pages/VerifyEmail";
 import { checkAuth } from "./store/slice/auth.slice";
 import { checkLoggedInProfile } from "./store/slice/profile.slice";
 import { useAppDispatch, useAppSelector } from "./store/store";
+import Step1AccountSetup from "./pages/payment/Step1AccountSetup";
+import Step2PlanSelection from "./pages/payment/Step2PlanSelection";
+import Step3PaymentMethod from "./pages/payment/Step3PaymentMethod";
 
 // Layouts
 
@@ -72,6 +75,9 @@ function App() {
                 <Route path="/movies" element={<MoviesPage />} />
                 <Route path="/tv" element={<TVShowPage />} />
                 <Route path="/browse" element={<Browse />} />
+                <Route path="/payment/step-1" element={<Step1AccountSetup />} />
+                <Route path="/payment/step-2" element={<Step2PlanSelection />} />
+                <Route path="/payment/step-3" element={<Step3PaymentMethod />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </>

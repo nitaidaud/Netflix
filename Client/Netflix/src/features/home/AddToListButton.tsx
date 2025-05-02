@@ -17,12 +17,10 @@ type AddToListButtonProps = {
 
 const AddToListButton = ({ movie, tvShow }: AddToListButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const myList = useAppSelector(
-    (state) => state.profile.profile?.moviesFavoriteList,
-  );
+  const myList = useAppSelector((state) => state.profile.profile?.favoriteList);
   const dispatch = useAppDispatch();
 
-  const isMovieAdded = myList?.movies.some(
+  const isMovieAdded = myList?.favoriteList.some(
     (m) => m.id === movie?.id || m.id === tvShow?.id,
   );
 
@@ -39,6 +37,7 @@ const AddToListButton = ({ movie, tvShow }: AddToListButtonProps) => {
           release_date: movie.release_date,
           title: movie.title,
           adult: movie.adult,
+          type: "Movie",
         };
 
         await dispatch(addMovieToFavoriteList(movieToAdd));
@@ -54,6 +53,7 @@ const AddToListButton = ({ movie, tvShow }: AddToListButtonProps) => {
           release_date: tvShow.first_air_date,
           title: tvShow.name,
           adult: tvShow.adult,
+          type: "Show",
         };
 
         await dispatch(addMovieToFavoriteList(tvShowToAdd));

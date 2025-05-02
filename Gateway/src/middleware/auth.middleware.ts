@@ -12,9 +12,20 @@ const publicRoutes = [
   "/api/users/check-logged-in",
 ];
 
-export const checkAuthMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-  
-  const isPublic = publicRoutes.some((route) => req.originalUrl.startsWith(route));
+const userRoutes = ["/api/profiles/delete-profile"];
+
+export const checkAuthMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): void => {
+  const isPublic = publicRoutes.some((route) =>
+    req.originalUrl.startsWith(route),
+  );
+
+  const isUserRoute = userRoutes.some((route) =>
+    req.originalUrl.startsWith(route),
+  );
 
   if (isPublic) {
     next();
@@ -25,6 +36,11 @@ export const checkAuthMiddleware = (req: Request, res: Response, next: NextFunct
 
   if (!token) {
     res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
+
+  if (isUserRoute) {
+    next();
     return;
   }
 

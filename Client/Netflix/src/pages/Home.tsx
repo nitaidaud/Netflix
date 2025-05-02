@@ -1,6 +1,6 @@
 import CategoryCarousel from "@/components/home/CategoryCarousel";
 import HeroSection from "@/components/home/HeroSection";
-import MovieModal from "@/components/home/movieModal/MovieModal";
+import MovieModal from "@/components/home/modals/movieModal/MovieModal";
 import Container from "@/components/shared/Container";
 import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation";
 
@@ -8,7 +8,6 @@ import { useHomeContent } from "@/hooks/useHomeContent";
 import { useMovieById } from "@/hooks/useMovieById";
 import { openMovieModal } from "@/store/slice/modal.slice";
 import { useAppDispatch } from "@/store/store";
-
 
 const categories = [
   { key: "newMovies", title: "New Releases", link: "/browse?category=new" },
@@ -28,7 +27,8 @@ const HeroIdMovie = 953;
 
 const Home = () => {
   const { data, isLoading } = useHomeContent();
-  const { data:heroIdMovie, isLoading:isHeroLoading } = useMovieById(HeroIdMovie);
+  const { data: heroIdMovie, isLoading: isHeroLoading } =
+    useMovieById(HeroIdMovie);
   const dispatch = useAppDispatch();
   if (isLoading || !data || isHeroLoading || !heroIdMovie) {
     return (

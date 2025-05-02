@@ -1,28 +1,28 @@
 import MoviesGrid from "@/components/browse/MovieGrid";
-import MovieModal from "@/components/home/movieModal/MovieModal";
+import MovieModal from "@/components/home/modals/movieModal/MovieModal";
+import TVModal from "@/components/home/modals/tvModal/TvModal";
 import Container from "@/components/shared/Container";
 import Typography from "@/components/shared/Typography";
-import { openMovieModal } from "@/store/slice/modal.slice";
+import { openMovieModal, openTVShowModal } from "@/store/slice/modal.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 
 const MyListPage = () => {
   const dispatch = useAppDispatch();
-  const myList = useAppSelector(
-    (state) => state.profile.profile?.moviesFavoriteList,
-  );
-  const handleMoreInfo = (movieId: number) => {
-    dispatch(openMovieModal(movieId));
+  const myList = useAppSelector((state) => state.profile.profile?.favoriteList);
+  const handleMoreInfo = (id: number, type: "Movie" | "Show") => {
+    if (type === "Show") dispatch(openTVShowModal(id));
+    else dispatch(openMovieModal(id));
   };
   return (
     <Container className="min-h-screen pt-24">
-      {myList && myList.movies.length > 0 ? (
+      {myList && myList.favoriteList.length > 0 ? (
         <div className="w-full h-full">
           <Typography size="text-2xl" weight="font-bold">
             My List
           </Typography>
           <MoviesGrid
             onMoreInfo={handleMoreInfo}
-            movies={myList.movies}
+            movies={myList.favoriteList}
             isLoading={false}
           />
         </div>
@@ -39,6 +39,7 @@ const MyListPage = () => {
         </div>
       )}
       <MovieModal />
+      <TVModal />
     </Container>
   );
 };

@@ -1,3 +1,5 @@
+import { Type } from "@prisma/client";
+
 export default interface IMovie {
   id: number;
   adult: boolean;
@@ -7,4 +9,5 @@ export default interface IMovie {
   poster_path: string;
   release_date: string;
   title: string;
+  type: Type;
 }

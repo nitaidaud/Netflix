@@ -151,12 +151,12 @@ export class ProfileService implements IProfileService {
         throw new Error("Profile not found");
       }
 
-      const favList = profile.moviesFavoriteList;
+      const favList = profile.favoriteList;
       if (!favList) {
         throw new Error("Favorite list not found");
       }
 
-      return favList.movies;
+      return favList.favoriteList;
     } catch (error) {
       console.error("Error fetching favorite list:", error);
       return null;

@@ -1,7 +1,7 @@
 import EmptyState from "@/components/browse/EmptyState";
 import Filters from "@/components/browse/filters/Filters";
 import MoviesGrid from "@/components/browse/MovieGrid";
-import MovieModal from "@/components/home/movieModal/MovieModal";
+import MovieModal from "@/components/home/modals/movieModal/MovieModal";
 import LoadingContentAnimation from "@/components/shared/LoadingContentAnimation";
 import ScrollToTopButton from "@/components/shared/ScrollToTopButton";
 import { useBrowseMovies } from "@/hooks/useCategoryMovies";
@@ -15,15 +15,15 @@ import { useSearchParams } from "react-router-dom";
 const Browse = () => {
   const dispatch = useAppDispatch();
   const selectedCategory = useAppSelector(
-    (state) => state.movies.selectedCategory
+    (state) => state.movies.selectedCategory,
   );
   const searchQuery = useAppSelector((state) => state.movies.searchQuery);
   const [searchParams] = useSearchParams();
-  
+
   // Configure the intersection observer with a threshold
   const { ref, inView } = useInView({
     threshold: 0.1, // Trigger when at least 10% of the element is visible
-    triggerOnce: false // Make sure it triggers every time it comes into view
+    triggerOnce: false, // Make sure it triggers every time it comes into view
   });
 
   // Get category from URL if present
@@ -79,14 +79,14 @@ const Browse = () => {
           lastMovieRef={ref}
         />
       )}
-      
+
       {/* Loading indicator at the bottom */}
       {(isFetchingNextPage || (isFetching && !isLoading)) && (
         <div className="p-4">
           <LoadingContentAnimation />
         </div>
       )}
-      <ScrollToTopButton/>
+      <ScrollToTopButton />
       <MovieModal />
     </div>
   );

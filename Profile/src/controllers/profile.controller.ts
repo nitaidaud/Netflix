@@ -236,13 +236,13 @@ export class ProfileController {
 
   async deleteProfile(req: Request, res: Response) {
     try {
-      const profileToken: string = req.cookies.profileToken;
+      // const profileToken: string = req.cookies.profileToken;
       const profileName: string = req.body.name;
 
-      const profilePayload = verify(profileToken);
-      if (!profilePayload) {
-        return res.status(401).json({ message: "Unauthorized" });
-      }
+      // const profilePayload = verify(profileToken);
+      // if (!profilePayload) {
+      //   return res.status(401).json({ message: "Unauthorized" });
+      // }
 
       const isDeleted = await this.profileService.deleteProfile(profileName);
 

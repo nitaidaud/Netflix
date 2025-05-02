@@ -46,7 +46,7 @@ export const createNewProfile = createAsyncThunk(
       return {
         name: profile.name,
         image: profile.image,
-        moviesFavoriteList: profile.moviesFavoriteList,
+        favoriteList: profile.favoriteList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
@@ -65,7 +65,7 @@ export const loginProfile = createAsyncThunk(
       return {
         name: newProfile.name,
         image: newProfile.image,
-        moviesFavoriteList: newProfile.moviesFavoriteList,
+        favoriteList: newProfile.favoriteList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
@@ -95,7 +95,7 @@ export const checkLoggedInProfile = createAsyncThunk(
       return {
         name: profile.name,
         image: profile.image,
-        moviesFavoriteList: profile.moviesFavoriteList,
+        favoriteList: profile.favoriteList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
@@ -112,7 +112,7 @@ export const getProfileById = createAsyncThunk(
       return {
         name: profile.name,
         image: profile.image,
-        moviesFavoriteList: profile.moviesFavoriteList,
+        favoriteList: profile.favoriteList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
@@ -130,7 +130,7 @@ export const updateProfile = createAsyncThunk(
       return {
         name: profile.name,
         image: profile.image,
-        moviesFavoriteList: profile.moviesFavoriteList,
+        favoriteList: profile.favoriteList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
@@ -145,7 +145,7 @@ export const addMovieToFavoriteList = createAsyncThunk(
     try {
       const res = await addMovieToFavoriteListRequest(movie);
       return {
-        moviesFavoriteList: res.myList,
+        favoriteList: res.myList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
@@ -161,7 +161,7 @@ export const removeMovieFromFavoriteList = createAsyncThunk(
       const res = await removeMovieFromFavoriteListRequest(movieId);
 
       return {
-        moviesFavoriteList: res.myList,
+        favoriteList: res.myList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
@@ -270,7 +270,7 @@ const profileSlice = createSlice({
       .addCase(addMovieToFavoriteList.fulfilled, (state, action) => {
         const updatedProfile = state.profile;
         if (updatedProfile) {
-          updatedProfile.moviesFavoriteList = action.payload.moviesFavoriteList;
+          updatedProfile.favoriteList = action.payload.favoriteList;
         }
         state.profile = updatedProfile;
         state.isProfileLoggedIn = true;
@@ -286,7 +286,7 @@ const profileSlice = createSlice({
       .addCase(removeMovieFromFavoriteList.fulfilled, (state, action) => {
         const updatedProfile = state.profile;
         if (updatedProfile) {
-          updatedProfile.moviesFavoriteList = action.payload.moviesFavoriteList;
+          updatedProfile.favoriteList = action.payload.favoriteList;
         }
         state.profile = updatedProfile;
         state.isProfileLoggedIn = true;

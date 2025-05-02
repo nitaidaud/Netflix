@@ -9,7 +9,7 @@ const EpisodeList = ({ episodes }: Props) => {
     <ul className="grid text-white overflow-y-auto h-[360px]">
       {episodes.map((ep) => (
         <li
-          className="flex gap-4 items-center py-4 hover:bg-zinc-800/50 transition-colors duration-200 cursor-pointer border-b border-white/10"
+          className="flex gap-4 items-center py-4 hover:bg-zinc-800/50 transition-colors duration-200 cursor-pointer border-b border-white/10 h-fit"
           key={ep.id}
         >
           <div className="w-6 text-lg flex justify-center">

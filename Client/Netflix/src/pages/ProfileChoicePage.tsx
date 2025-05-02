@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const ProfileChoicePage = () => {
-  const { data, isLoading, isFetching } = useProfiles();
+  const { data, isLoading, isFetching, refetch } = useProfiles();
   const [isLogging, setIsLogging] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -28,6 +28,12 @@ const ProfileChoicePage = () => {
     } finally {
       setIsLogging(false);
     }
+  };
+
+  const handleDeleteProfile = async (profileName: string) => {
+    await dispatch(deleteProfile(profileName));
+    await refetch();
+    dispatch(clearProfileErrors());
   };
 
   useEffect(() => {
@@ -63,10 +69,9 @@ const ProfileChoicePage = () => {
                   }}
                   className={`bg-cover bg-center bg-no-repeat min-w-[200px] min-h-[200px] p-4 rounded shadow hover:scale-105 transition-transform duration-300 cursor-pointer`}
                 ></Button>
+
                 <MinusCircle
-                  onClick={() => {
-                    dispatch(deleteProfile(name));
-                  }}
+                  onClick={() => handleDeleteProfile(profile.name)}
                   className="size-[30px] absolute delete-profile-btn -top-4 -right-5 bg-transparent opacity-0 duration-300"
                   color="red"
                 />

@@ -5,7 +5,7 @@ import MovieCard from "../shared/MovieCard";
 type MoviesGridProps = {
   movies: IBaseMovie[];
   isLoading: boolean;
-  onMoreInfo: (id: number) => void;
+  onMoreInfo: (id: number, type: "Movie" | "Show") => void;
   lastMovieRef?: (node?: Element | null) => void; // Added ref parameter
 };
 
@@ -18,8 +18,8 @@ const MoviesGrid = ({ movies, isLoading, onMoreInfo, lastMovieRef }: MoviesGridP
         <p className="text-center text-white">No movies found.</p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {movies.map((movie, index) => {
-            const { backdrop_path, id } = movie;
+          {movies.map((item, index) => {
+            const { backdrop_path, id, type } = item;
             // Check if this is the last movie in the array
             const isLastMovie = index === movies.length - 1;
             
@@ -29,13 +29,13 @@ const MoviesGrid = ({ movies, isLoading, onMoreInfo, lastMovieRef }: MoviesGridP
                 ref={isLastMovie ? lastMovieRef : undefined} // Apply ref to last movie wrapper
               >
                 <MovieCard
-                  movie={movie}
+                  movie={item}
                   image={
                     backdrop_path
                       ? `https://image.tmdb.org/t/p/w500${backdrop_path}`
                       : "/images/not-found-img.png"
                   }
-                  onMoreInfo={() => onMoreInfo(id)}
+                  onMoreInfo={() => onMoreInfo(id, type)}
                 />
               </div>
             );

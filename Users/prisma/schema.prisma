@@ -46,27 +46,27 @@ model VerificationToken {
 }
 
 model Profile {
-  id                 String             @id @default(cuid())
-  name               String             @unique
-  image              String?
-  User               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId             String
-  moviesFavoriteList MovieFavoriteList?
+  id           String        @id @default(cuid())
+  name         String        @unique
+  image        String?
+  User         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  favoriteList FavoriteList?
 
   @@map("profiles")
 }
 
-model MovieFavoriteList {
-  id        String  @id @default(cuid())
-  profileId String  @unique
-  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  movies    Movie[] @relation("FavoriteMovies")
+model FavoriteList {
+  id           String         @id @default(cuid())
+  profileId    String         @unique
+  profile      Profile        @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  favoriteList FavoriteItem[] @relation("FavoriteItems")
 
-  @@map("movie_favorite_lists")
+  @@map("favorite_lists")
 }
 
-model Movie {
-  id            Int  @id @default(dbgenerated())
+model FavoriteItem {
+  id            Int                 @id @default(dbgenerated())
   title         String
   release_date  String
   poster_path   String
@@ -74,10 +74,15 @@ model Movie {
   overview      String
   popularity    Float
   adult         Boolean
+  type          Type
+  favoriteLists FavoriteList[] @relation("FavoriteItems")
 
-  favoriteLists MovieFavoriteList[] @relation("FavoriteMovies")
+  @@map("favoriteItems")
+}
 
-  @@map("movies")
+enum Type {
+  Movie
+  Show
 }
 
 enum Genre {

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import ModalHeader from "./ModalHeader";
 import ModalInfo from "./ModalInfo";
+import ModalLoadingPlaceholder from "../ModalLoadingPlaceholder";
 
 interface MovieModalContentProps {
   movieId: number;
@@ -24,22 +25,24 @@ const MovieModalContent = ({ movieId, onClose }: MovieModalContentProps) => {
     return () => clearTimeout(timeout);
   }, []);
 
-  if (isLoading || !movie) {
-    return null;
-  }
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4 py-8">
       <div className="relative w-full max-w-6xl bg-zinc-900 rounded-md overflow-hidden shadow-xl">
-        <ModalHeader
-          movie={movie}
-          trailerUrl={trailerData?.embedUrl ?? null}
-          showTrailer={showTrailer}
-          muted={muted}
-          setMuted={setMuted}
-          onClose={onClose}
-        />
-        <ModalInfo movie={movie} />
+        {isLoading || !movie ? (
+          <ModalLoadingPlaceholder />
+        ) : (
+          <div className="h-full my-auto w-full">
+            <ModalHeader
+              movie={movie}
+              trailerUrl={trailerData?.embedUrl ?? null}
+              showTrailer={showTrailer}
+              muted={muted}
+              setMuted={setMuted}
+              onClose={onClose}
+            />
+            <ModalInfo movie={movie} />
+          </div>
+        )}
       </div>
     </div>
   );

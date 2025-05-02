@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
   return useQuery({
     queryKey: ["profiles"],
     queryFn: async () => await getProfilesRequest(),
+    enabled: true
   });
 }
 

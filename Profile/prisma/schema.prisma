@@ -20,6 +20,7 @@ model User {
   resetPasswordExpiresAt DateTime?
   sessions               Session[]
   profiles               Profile[]
+  orders                 Order[]
 
   @@map("users")
 }
@@ -66,7 +67,7 @@ model FavoriteList {
 }
 
 model FavoriteItem {
-  id            Int                 @id @default(dbgenerated())
+  id            Int            @id @default(dbgenerated())
   title         String
   release_date  String
   poster_path   String
@@ -78,6 +79,30 @@ model FavoriteItem {
   favoriteLists FavoriteList[] @relation("FavoriteItems")
 
   @@map("favoriteItems")
+}
+
+model Order {
+  id          String         @id @default(cuid())
+  orderStatus OrderStatus
+  plan        Plan
+  price       Float
+  User        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+}
+
+enum OrderStatus {
+  Approved
+  Completed
+  Created
+  PayerActionRequired
+  Saved
+  Voided
+}
+
+enum Plan {
+  Basic
+  Standard
+  Premium
 }
 
 enum Type {

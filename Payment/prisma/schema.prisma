@@ -1,11 +1,10 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "./generated/test-client" // isolate test client build
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL") // points to your .env.test 
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -21,7 +20,7 @@ model User {
   resetPasswordExpiresAt DateTime?
   sessions               Session[]
   profiles               Profile[]
-  orders                 Order[]
+  Orders                 Order[]
 
   @@map("users")
 }
@@ -92,10 +91,12 @@ model Order {
 }
 
 enum OrderStatus {
-  Pending
+  Approved
   Completed
-  Failed
-  Canceled
+  Created
+  PayerActionRequired
+  Saved
+  Voided
 }
 
 enum Plan {

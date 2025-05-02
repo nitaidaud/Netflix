@@ -170,6 +170,14 @@ exports.Prisma.FavoriteItemScalarFieldEnum = {
   type: 'type'
 };
 
+exports.Prisma.OrderScalarFieldEnum = {
+  id: 'id',
+  orderStatus: 'orderStatus',
+  plan: 'plan',
+  price: 'price',
+  userId: 'userId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -189,13 +197,27 @@ exports.Type = exports.$Enums.Type = {
   Show: 'Show'
 };
 
+exports.OrderStatus = exports.$Enums.OrderStatus = {
+  Pending: 'Pending',
+  Completed: 'Completed',
+  Failed: 'Failed',
+  Canceled: 'Canceled'
+};
+
+exports.Plan = exports.$Enums.Plan = {
+  Basic: 'Basic',
+  Standard: 'Standard',
+  Premium: 'Premium'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Profile: 'Profile',
   FavoriteList: 'FavoriteList',
-  FavoriteItem: 'FavoriteItem'
+  FavoriteItem: 'FavoriteItem',
+  Order: 'Order'
 };
 
 /**

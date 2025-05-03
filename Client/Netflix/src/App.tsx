@@ -8,6 +8,7 @@ import {
 import "./App.css";
 
 // Pages
+import { useCheckUserPayment } from "./hooks/useCheckUserPayment";
 import AppLayout from "./layouts/AppLayout";
 import Browse from "./pages/Browse";
 import CreateProfilePage from "./pages/CreateProfilePage";
@@ -16,6 +17,10 @@ import Home from "./pages/Home";
 import Landing from "./pages/Landing";
 import MoviesPage from "./pages/MoviesPage";
 import MyListPage from "./pages/MyListPage";
+import PayPalSetupPage from "./pages/payment/PayPalSetupPage";
+import Step1AccountSetup from "./pages/payment/Step1AccountSetup";
+import Step2PlanSelection from "./pages/payment/Step2PlanSelection";
+import Step3PaymentMethod from "./pages/payment/Step3PaymentMethod";
 import ProfileChoicePage from "./pages/ProfileChoicePage";
 import ResetPassword from "./pages/ResetPassword";
 import SignInPage from "./pages/SigninPage";
@@ -27,20 +32,18 @@ import VerifyEmail from "./pages/VerifyEmail";
 import { checkAuth } from "./store/slice/auth.slice";
 import { checkLoggedInProfile } from "./store/slice/profile.slice";
 import { useAppDispatch, useAppSelector } from "./store/store";
-import Step1AccountSetup from "./pages/payment/Step1AccountSetup";
-import Step2PlanSelection from "./pages/payment/Step2PlanSelection";
-import Step3PaymentMethod from "./pages/payment/Step3PaymentMethod";
 
 // Layouts
 
 function App() {
   const [pending, startTransition] = useTransition();
   const dispatch = useAppDispatch();
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
 
-  const isProfileLoggedIn = useAppSelector(
-    (state) => state.profile.isProfileLoggedIn,
-  );
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const isProfileLoggedIn = useAppSelector((state) => state.profile.isProfileLoggedIn);
+  const userEmail = useAppSelector((state) => state.auth.email); //email? change to id?
+
+  const { hasPayment, loading: paymentLoading } = useCheckUserPayment(userEmail );
 
   useEffect(() => {
     startTransition(async () => {
@@ -49,38 +52,42 @@ function App() {
     });
   }, [dispatch]);
 
-  if (pending) {
+  if (pending || paymentLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        {/* <LucideLoader className="animate-spin" /> */}
         <img src="/images/loading-screen.gif" alt="loading screen" />
       </div>
     );
   }
-
   return (
     <Router>
       <Routes>
         <Route element={<AppLayout />}>
           {isAuthenticated ? (
             isProfileLoggedIn ? (
-              <>
-                <Route index element={<Home />} />
-                <Route path="/verify-email" element={<VerifyEmail />} />
-                <Route path="/profiles" element={<ProfileChoicePage />} />
-                <Route path="/profile/create" element={<CreateProfilePage />} />
-                <Route path="/profile/update" element={<UpdateProfilePage />} />
-                <Route path="/my-list" element={<MyListPage />} />
-                <Route path="/movie/stream" element={<StreamPage />} />
-                <Route path="/movies" element={<MoviesPage />} />
-                <Route path="/tv" element={<TVShowPage />} />
-                <Route path="/browse" element={<Browse />} />
-                <Route path="/payment/step-1" element={<Step1AccountSetup />} />
-                <Route path="/payment/step-2" element={<Step2PlanSelection />} />
-                <Route path="/payment/step-3" element={<Step3PaymentMethod />} />
-                <Route path="/reset-password" element={<ResetPassword />} />
-                <Route path="*" element={<Navigate to="/" />} />
-              </>
+              hasPayment === false ? (
+                <>
+                  <Route path="/payment/step-1" element={<Step1AccountSetup />} />
+                  <Route path="/payment/step-2" element={<Step2PlanSelection />} />
+                  <Route path="/payment/step-3" element={<Step3PaymentMethod />} />
+                  <Route path="/payment/paypal" element={<PayPalSetupPage />} />
+                  <Route path="*" element={<Navigate to="/payment/step-1" />} />
+                </>
+              ) : (
+                <>
+                  <Route index element={<Home />} />
+                  <Route path="/verify-email" element={<VerifyEmail />} />
+                  <Route path="/profiles" element={<ProfileChoicePage />} />
+                  <Route path="/profile/create" element={<CreateProfilePage />} />
+                  <Route path="/profile/update" element={<UpdateProfilePage />} />
+                  <Route path="/my-list" element={<MyListPage />} />
+                  <Route path="/movie/stream" element={<StreamPage />} />
+                  <Route path="/movies" element={<MoviesPage />} />
+                  <Route path="/tv" element={<TVShowPage />} />
+                  <Route path="/browse" element={<Browse />} />
+                  <Route path="*" element={<Navigate to="/browse" />} />
+                </>
+              )
             ) : (
               <>
                 <Route index element={<ProfileChoicePage />} />

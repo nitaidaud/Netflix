@@ -16,6 +16,7 @@ import IUser from "./interfaces/IUser";
 import ISendMailResponse from "./interfaces/IVerifyMailResponse";
 import ITVShow from "./interfaces/ITVShow";
 import ISeason from "./interfaces/ISeason";
+import { IPaymentStatusResponse } from "./interfaces/IPaymentResponse";
 
 const api = axios.create({
   baseURL: apiBaseUrl,
@@ -288,3 +289,10 @@ export const getSeasonByIdRequest = async (seriesId: number, seasonNumber: numbe
   );
   return data;
 };
+
+export const getUserPaymentStatus = async (userId: string) => {
+  const { data } = await api.get<IPaymentStatusResponse>(
+    `/api/payment/status/${userId}`,
+  );
+  return data;
+}

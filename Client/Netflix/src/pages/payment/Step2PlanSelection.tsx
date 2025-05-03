@@ -6,8 +6,8 @@ const Step2PlanSelection = () => {
   const [stepPart, setStepPart] = useState<"info" | "plans">("info");
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center px-4">
-      <div className="max-w-3xl w-full text-center">
+    <div className="min-h-screen bg-black text-white flex items-center justify-center px-4 sm:px-6 md:px-8 py-10">
+      <div className="w-full max-w-6xl text-center">
         {stepPart === "info" ? (
           <PlanSelectionHeader onNext={() => setStepPart("plans")} />
         ) : (
@@ -17,5 +17,6 @@ const Step2PlanSelection = () => {
     </div>
   );
 };
+
 
 export default Step2PlanSelection;

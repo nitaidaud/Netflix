@@ -1,3 +1,5 @@
+import Typography from "@/components/shared/Typography";
+
 interface PlanCardProps {
   title: string;
   resolution: string;
@@ -24,14 +26,14 @@ const PlanCard = ({
     <div
       onClick={onSelect}
       className={`flex flex-col justify-between p-6 border rounded-lg cursor-pointer 
-          transition-transform duration-200 ease-in-out w-full max-w-xs min-h-[550px]
-          ${selected ? "border-red-500 ring-2 ring-red-500" : "border-gray-700"}
-          ${
-            isMostPopular
-              ? "bg-gradient-to-b from-red-700 to-purple-700 text-white"
-              : "bg-zinc-900 text-white"
-          }
-          text-left hover:border-red-500 hover:shadow-lg hover:scale-[1.02]`}
+        transition-transform duration-200 ease-in-out w-full max-w-[360px] min-h-[550px]
+        ${selected ? "border-red-500 ring-2 ring-red-500" : "border-gray-700"}
+        ${
+          isMostPopular
+            ? "bg-gradient-to-b from-red-700 to-purple-700 text-white"
+            : "bg-zinc-900 text-white"
+        }
+        text-left hover:border-red-500 hover:shadow-lg hover:scale-[1.02]`}
     >
       <div>
         {isMostPopular && (
@@ -39,14 +41,33 @@ const PlanCard = ({
             Most Popular
           </div>
         )}
-        <h3 className="text-xl font-bold mb-1">{title}</h3>
-        <p className="text-sm text-gray-300 mb-4">{resolution}</p>
-        <p className="text-2xl font-bold text-white mb-4">{price}</p>
+
+        <Typography size="text-xl" weight="font-bold" className="mb-1">
+          {title}
+        </Typography>
+
+        <Typography size="text-sm" color="text-gray-300" className="mb-4">
+          {resolution}
+        </Typography>
+
+        <Typography size="text-2xl" weight="font-bold" className="mb-4">
+          {price}
+        </Typography>
+
         <div className="flex flex-col divide-y divide-gray-700 text-sm text-white">
           {features.map((item, i) => (
             <div key={i} className="py-3">
-              <span className="text-gray-400 font-semibold">{item.label}:</span>{" "}
-              <span className="text-white">{item.value}</span>
+              <Typography
+                size="text-sm"
+                weight="font-semibold"
+                color="text-gray-400"
+                className="inline"
+              >
+                {item.label}:
+              </Typography>{" "}
+              <Typography size="text-sm" color="text-white" className="inline">
+                {item.value}
+              </Typography>
             </div>
           ))}
         </div>

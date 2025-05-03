@@ -9,11 +9,13 @@ type TypographyProps = {
     | "text-lg"
     | "text-xl"
     | "text-2xl"
-    | "text-4xl";
+    | "text-4xl"
+    | "text-5xl";
   weight?: "font-light" | "font-normal" | "font-bold" | "font-semibold";
   color?:
     | "text-white"
     | "text-gray-300"
+    | "text-gray-400"
     | "text-gray-500"
     | "text-red-500"
     | "text-green-800"

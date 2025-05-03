@@ -3,8 +3,7 @@ const TOKENS = {
   IPaymentService: "IPaymentService",
   PaymentService: "PaymentService",
   IPaymentRepository: "IPaymentRepository",
-  PaymentsPostgressqlRepository: "PaymentsPostgressqlRepository",
-  IUserService: "IUserService",
+  PaymentRepository: "PaymentRepository",
   UserService: "UserService",
 };
 

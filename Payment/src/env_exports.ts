@@ -9,6 +9,7 @@ export const {
   CLIENT,
   OAUTH_CLIENT_ID,
   OAUTH_CLIENT_SECRET,
+  JWT_KEY
 } = process.env;
 
 export const validateEnv = () => {
@@ -38,5 +39,9 @@ export const validateEnv = () => {
 
   if (!OAUTH_CLIENT_SECRET) {
     throw new Error("Missing oauth client secret");
+  }
+
+  if (!JWT_KEY) {
+    throw new Error("Missing jwt key");
   }
 };

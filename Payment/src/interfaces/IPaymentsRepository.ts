@@ -1,7 +1,11 @@
-import { Order } from "@prisma/client";
-
 export default interface IPaymentRepository {
-  createOrder(orderDetails: Order): Promise<boolean>;
-  captureOrder(captureDetails: any): Promise<void>;
-  getOrderById(orderId: string): Promise<any>;
+  saveOrder(data: {
+    id: string;
+    userId: string;
+    plan: "Basic" | "Standard" | "Premium";
+    price: number;
+    status: "CREATED";
+  }): Promise<void>;
+
+  updateOrderStatus(orderId: string, status: string): Promise<void>;
 }

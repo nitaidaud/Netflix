@@ -82,7 +82,7 @@ model FavoriteItem {
 }
 
 model Order {
-  id          String         @id @default(cuid())
+  id          String      @id @default(cuid())
   orderStatus OrderStatus
   plan        Plan
   price       Float
@@ -91,12 +91,12 @@ model Order {
 }
 
 enum OrderStatus {
-  Approved
-  Completed
-  Created
-  PayerActionRequired
-  Saved
-  Voided
+  CREATED
+  SAVED
+  APPROVED
+  VOIDED
+  COMPLETED
+  PAYER_ACTION_REQUIRED
 }
 
 enum Plan {

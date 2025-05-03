@@ -1,32 +1,31 @@
-import { inject } from "inversify";
-import TOKENS from "../../tokens";
-import IPaymentService from "../interfaces/IPaymentService";
 import { Request, Response } from "express";
-import {
-  CheckoutPaymentIntent,
-  Order,
-  OrderRequest,
-} from "@paypal/paypal-server-sdk";
-import { CLIENT } from "../env_exports";
-import IOrderRequest from "../interfaces/IOrderRequest";
+import { inject } from "inversify";
+import IPaymentService from "../interfaces/IPaymentService";
+import TOKENS from "../../tokens";
 import { handleError } from "../utils/handle-error-request";
 
 export class PaymentController {
   constructor(
-    @inject(TOKENS.IPaymentService) private paymentService: IPaymentService,
+    @inject(TOKENS.IPaymentService)
+    private paymentService: IPaymentService,
   ) {}
 
   async createPayment(req: Request, res: Response) {
     try {
-      const orderRequest: IOrderRequest = req.body;
+      const { userId, plan, price, currency } = req.body;
 
-      if (!orderRequest.purchaseUnits || !orderRequest.purchaseUnits.length) {
-        throw new Error("Purchase units are required");
+      if (!userId || !plan || !price || !currency) {
+        return res.status(400).json({ error: "Missing required fields" });
       }
 
-      const result = await this.paymentService.createPayment(orderRequest);
+      const result = await this.paymentService.createPayment({
+        userId,
+        plan,
+        price,
+        currency,
+      });
 
-      res.status(201).json({
+      return res.status(201).json({
         message: "Payment created successfully",
         order: {
           success: true,
@@ -36,12 +35,28 @@ export class PaymentController {
         success: true,
       });
     } catch (error) {
-      console.error("Error in createPayment controller:", error);
+      console.error("Create Payment Error:", error);
       handleError(res, error);
     }
   }
 
-  async capturePayment() {
-    await this.paymentService.capturePayment();
+  async capturePayment(req: Request, res: Response) {
+    try {
+      const { orderId } = req.params;
+
+      if (!orderId) {
+        return res.status(400).json({ error: "Order ID is required" });
+      }
+
+      await this.paymentService.capturePayment(orderId);
+
+      return res.status(200).json({
+        message: "Payment captured successfully",
+        success: true,
+      });
+    } catch (error) {
+      console.error("Capture Payment Error:", error);
+      handleError(res, error);
+    }
   }
 }

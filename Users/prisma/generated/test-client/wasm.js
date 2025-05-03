@@ -198,10 +198,12 @@ exports.Type = exports.$Enums.Type = {
 };
 
 exports.OrderStatus = exports.$Enums.OrderStatus = {
-  Pending: 'Pending',
-  Completed: 'Completed',
-  Failed: 'Failed',
-  Canceled: 'Canceled'
+  CREATED: 'CREATED',
+  SAVED: 'SAVED',
+  APPROVED: 'APPROVED',
+  VOIDED: 'VOIDED',
+  COMPLETED: 'COMPLETED',
+  PAYER_ACTION_REQUIRED: 'PAYER_ACTION_REQUIRED'
 };
 
 exports.Plan = exports.$Enums.Plan = {

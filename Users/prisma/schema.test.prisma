@@ -92,11 +92,14 @@ model Order {
 }
 
 enum OrderStatus {
-  Pending
-  Completed
-  Failed
-  Canceled
+  CREATED
+  SAVED
+  APPROVED
+  VOIDED
+  COMPLETED
+  PAYER_ACTION_REQUIRED
 }
+
 
 enum Plan {
   Basic

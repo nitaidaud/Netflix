@@ -1,17 +1,19 @@
-import { useAppDispatch, useAppSelector } from "@/store/store";
 import { closeModal } from "@/store/slice/modal.slice";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 import TVModalContent from "./TVModalContent";
 
 const TVModal = () => {
-  const { selectedTVShowId, selectedSeasonNumber } = useAppSelector((state) => state.modal);
+  const { selectedTVShowId, selectedSeasonNumber } = useAppSelector(
+    (state) => state.modal,
+  );
   const dispatch = useAppDispatch();
-
-  if (!selectedTVShowId ) return null;
+  
+  if (!selectedTVShowId) return null;
 
   return (
     <TVModalContent
       tvId={selectedTVShowId}
-      seasonNumber={selectedSeasonNumber} 
+      seasonNumber={selectedSeasonNumber}
       onClose={() => dispatch(closeModal())}
     />
   );

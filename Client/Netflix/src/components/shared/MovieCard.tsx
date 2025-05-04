@@ -68,23 +68,19 @@ const MovieCard = ({
         />
       )}
 
-      <div className="absolute inset-0 mt-auto h-full bg-gradient-to-t from-black/80 via-black/50 to-transparent w-full opacity-0 group-hover:opacity-100 flex transition-opacity duration-300  flex-col justify-end p-3">
-        <h3 className="text-white text-lg font-bold line-clamp-1 mb-1">
+      <div className="absolute inset-0 mt-auto h-full bg-gradient-to-t from-black/80 via-black/50 to-transparent w-full opacity-0 group-hover:opacity-100 flex transition-opacity duration-300 flex-col justify-end p-3">
+        <h3 className="text-white text-base sm:text-lg font-bold line-clamp-1 mb-1">
           {title}
         </h3>
 
-        <div className="flex justify-between items-center w-full">
+        <div className="flex justify-between items-center w-full flex-wrap gap-2">
           <div className="flex gap-2">
             {!cleanUrl ? (
               <Button
                 size="icon"
                 className="bg-white text-black hover:bg-zinc-400 rounded-full w-9 h-9"
               >
-                <img
-                  src="/icons/play_icon.png"
-                  alt="Play"
-                  className="w-4 h-4"
-                />
+                <img src="/icons/play_icon.png" alt="Play" className="w-4 h-4" />
               </Button>
             ) : (
               <Link to={cleanUrl} target="_blank">
@@ -92,11 +88,7 @@ const MovieCard = ({
                   size="icon"
                   className="bg-white text-black hover:bg-zinc-400 rounded-full w-9 h-9"
                 >
-                  <img
-                    src="/icons/play_icon.png"
-                    alt="Play"
-                    className="w-4 h-4"
-                  />
+                  <img src="/icons/play_icon.png" alt="Play" className="w-4 h-4" />
                 </Button>
               </Link>
             )}

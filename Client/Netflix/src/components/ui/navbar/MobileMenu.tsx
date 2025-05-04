@@ -9,7 +9,7 @@ type MobileMenuProps = {
 const MobileMenu = ({ isOpen, isAuthenticated }: MobileMenuProps) => {
   return (
     <motion.div
-      className="md:hidden overflow-hidden transition-all duration-500 ease-in-out"
+      className="fixed top-[60px] left-0 w-full z-40 md:hidden overflow-hidden transition-all duration-500 ease-in-out bg-black/80 backdrop-blur-sm"
       initial={false}
       animate={{
         maxHeight: isOpen ? 400 : 0,

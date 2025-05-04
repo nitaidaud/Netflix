@@ -1,4 +1,4 @@
-import IBaseMovie from "@/api/interfaces/IBaseMovie";
+import IBaseMovie from "@/api/interfaces/movie/IBaseMovie";
 import { Button } from "@/components/ui/button";
 import AddToListButton from "@/features/home/AddToListButton";
 import { useTrailerKey } from "@/hooks/useTrailerKey";

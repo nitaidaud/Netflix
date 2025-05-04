@@ -26,12 +26,13 @@ const MovieModalContent = ({ movieId, onClose }: MovieModalContentProps) => {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4 py-8">
-      <div className="relative w-full max-w-6xl bg-zinc-900 rounded-md overflow-hidden shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-2 sm:px-4 py-4 sm:py-8">
+    <div className="relative w-full h-full md:h-auto max-w-none md:max-w-6xl bg-zinc-900 rounded-none md:rounded-md overflow-hidden shadow-xl">
+      <div className="h-full overflow-y-auto">
         {isLoading || !movie ? (
           <ModalLoadingPlaceholder />
         ) : (
-          <div className="h-full my-auto w-full">
+          <div className="h-full w-full">
             <ModalHeader
               movie={movie}
               trailerUrl={trailerData?.embedUrl ?? null}
@@ -45,6 +46,8 @@ const MovieModalContent = ({ movieId, onClose }: MovieModalContentProps) => {
         )}
       </div>
     </div>
+  </div>
+  
   );
 };
 

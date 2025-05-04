@@ -1,4 +1,4 @@
-import IMovieDetails from "@/api/interfaces/IMovieDetails";
+import IMovieDetails from "@/api/interfaces/movie/IMovieDetails";
 import MovieDescription from "./MovieDescription";
 import MovieGenres from "./MovieGenres";
 
@@ -8,7 +8,8 @@ interface ModalInfoProps {
 
 const ModalInfo = ({ movie }: ModalInfoProps) => {
   return (
-    <div className="p-6 bg-zinc-900 z-20 flex flex-col md:flex-row gap-8">
+    <div className="px-4 py-6 bg-zinc-900 flex flex-col md:flex-row gap-6">
+
       <MovieDescription movie={movie} />
 
       <MovieGenres movie={movie} />

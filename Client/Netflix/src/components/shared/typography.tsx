@@ -18,11 +18,15 @@ type TypographyProps = {
   color?:
     | "text-white"
     | "text-gray-300"
+    | "text-gray-200"
     | "text-gray-400"
     | "text-gray-500"
     | "text-red-500"
     | "text-zinc-400"
-    | "text-green-800";
+    | "text-green-800"
+    | "text-zinc-500"
+    | "text-zinc-900";
+
   spacing?: "tracking-tight" | "tracking-normal" | "tracking-wide";
 };
 

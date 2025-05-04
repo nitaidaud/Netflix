@@ -1,5 +1,5 @@
-import IBaseMovie from "@/api/interfaces/IBaseMovie";
-import ITVShow from "@/api/interfaces/ITVShow";
+import IBaseMovie from "@/api/interfaces/movie/IBaseMovie";
+import ITVShow from "@/api/interfaces/tv/ITVShow";
 import AddToList from "@/components/ui/home/AddToList";
 import RemoveFromList from "@/components/ui/home/RemoveFromList";
 import {

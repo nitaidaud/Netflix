@@ -1,16 +1,18 @@
-import StepProgressIndicator from "@/components/shared/StepProgressIndicator";
-import PlanSummaryBox from "@/components/payment/method/PlanSummaryBox";
 import PayPalForm from "@/components/payment/method/PayPalForm";
-import { plans } from "@/data/plans";
+import PlanSummaryBox from "@/components/payment/method/PlanSummaryBox";
+import StepProgressIndicator from "@/components/shared/StepProgressIndicator";
 import { useAppSelector } from "@/store/store";
 import { useNavigate } from "react-router-dom";
 
 const PayPalSetupPage = () => {
   const navigate = useNavigate();
-  const selectedPlanId = useAppSelector((state) => state.payment.selectedPlan);
-  const selectedPlan = plans.find((plan) => plan.id === selectedPlanId);
 
-  const handleChangePlan = () => navigate("/payment/step-2");
+  const { selectedPlan } = useAppSelector((state) => state.payment);
+
+  const handleChangePlan = () =>
+    navigate("/payment/step-2", {
+      state: { changePlan: true },
+    });
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center px-4 py-10">
@@ -23,7 +25,7 @@ const PayPalSetupPage = () => {
 
         <PlanSummaryBox
           planLabel={selectedPlan?.title || "No Plan Selected"}
-          price={selectedPlan?.price || "₪--"}
+          price={selectedPlan?.price || 0}
           onChange={handleChangePlan}
         />
 

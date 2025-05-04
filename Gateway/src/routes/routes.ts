@@ -2,6 +2,7 @@ import { Router } from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import {
   MOVIES_SERVICE_URL,
+  PAYMENTS_SERVICE_URL,
   PROFILES_SERVICE_URL,
   STREAMING_SERVICE_URL,
   USER_SERVICE_URL,
@@ -12,6 +13,7 @@ const userRoutes = Router();
 const movieRoutes = Router();
 const profileRoutes = Router();
 const streamRoutes = Router();
+const paymentsRoutes = Router();
 
 userRoutes.use(
   "/",
@@ -33,7 +35,7 @@ userRoutes.use(
         console.log("Received response with status:", proxyRes.statusCode);
       },
     },
-  })
+  }),
 );
 
 movieRoutes.use(
@@ -56,7 +58,7 @@ movieRoutes.use(
         console.log("Received response with status:", proxyRes.statusCode);
       },
     },
-  })
+  }),
 );
 
 profileRoutes.use(
@@ -79,7 +81,7 @@ profileRoutes.use(
         console.log("Received response with status:", proxyRes.statusCode);
       },
     },
-  })
+  }),
 );
 
 streamRoutes.use(
@@ -102,7 +104,30 @@ streamRoutes.use(
         console.log("Received response with status:", proxyRes.statusCode);
       },
     },
-  })
+  }),
 );
 
-export { movieRoutes, profileRoutes, streamRoutes, userRoutes };
+paymentsRoutes.use(
+  "/",
+  checkAuthMiddleware,
+  createProxyMiddleware({
+    target: PAYMENTS_SERVICE_URL,
+    changeOrigin: true,
+    pathRewrite: {
+      "": "/api/payments",
+    },
+    on: {
+      error: (err, req, res) => {
+        // console.error("Proxy error:", err);
+      },
+      proxyReq: (proxyReq, req, res) => {
+        console.log("Proxying request to:", PAYMENTS_SERVICE_URL + req.url);
+      },
+      proxyRes: (proxyRes, req, res) => {
+        console.log("Received response with status:", proxyRes.statusCode);
+      },
+    },
+  }),
+);
+
+export { movieRoutes, profileRoutes, streamRoutes, userRoutes, paymentsRoutes };

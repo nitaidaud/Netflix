@@ -15,6 +15,7 @@ const links = [
   { name: "My List", href: "/my-list" },
   { name: "Browse", href: "/browse" },
   { name: "Payment", href: "/payment/step-1" },
+  { name: "Capture", href: "/payment/capture" },
  
 ];
 

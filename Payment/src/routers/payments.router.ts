@@ -13,8 +13,12 @@ paymentsRouter.post("/create", (req: Request, res: Response) => {
   paymentController.createPayment(req, res);
 });
 
-paymentsRouter.post("/capture/:orderId", (req: Request, res: Response) => {
+paymentsRouter.post("/capture", (req: Request, res: Response) => {
   paymentController.capturePayment(req, res);
 });
+
+paymentsRouter.get("/check-payment", (req: Request, res: Response) => {
+  paymentController.checkPayment(req, res);
+})
 
 export default paymentsRouter;

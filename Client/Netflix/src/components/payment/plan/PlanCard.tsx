@@ -3,7 +3,8 @@ import Typography from "@/components/shared/Typography";
 interface PlanCardProps {
   title: string;
   resolution: string;
-  price: string;
+  price: number;
+  currency: string;
   features: {
     label: string;
     value: string;
@@ -18,6 +19,7 @@ const PlanCard = ({
   resolution,
   price,
   features,
+  currency,
   isMostPopular = false,
   selected = false,
   onSelect,
@@ -51,7 +53,10 @@ const PlanCard = ({
         </Typography>
 
         <Typography size="text-2xl" weight="font-bold" className="mb-4">
-          {price}
+          {price.toLocaleString(undefined, {
+            style: "currency",
+            currency: currency,
+          })}
         </Typography>
 
         <div className="flex flex-col divide-y divide-gray-700 text-sm text-white">

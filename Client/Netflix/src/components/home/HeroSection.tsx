@@ -66,6 +66,7 @@ const HeroSection = ({
         <div className="absolute top-0 left-0 w-full h-full animate-fade-in z-0">
           <ReactPlayer
             playing
+            loop
             muted={isMuted}
             url={cleanUrl}
             width="100%"

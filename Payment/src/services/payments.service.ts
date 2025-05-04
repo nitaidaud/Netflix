@@ -9,6 +9,7 @@ import TOKENS from "../../tokens";
 import IPaymentService from "../interfaces/IPaymentService";
 import IPaymentRepository from "../interfaces/IPaymentsRepository";
 import PaypalClient from "../paypal/paypal.client";
+import { CLIENT } from "../env_exports";
 
 export class PaymentService implements IPaymentService {
   private ordersController = new OrdersController(PaypalClient);
@@ -45,8 +46,8 @@ export class PaymentService implements IPaymentService {
       body: {
         ...orderRequest,
         applicationContext: {
-          cancelUrl: "http://localhost:5173/",
-          returnUrl: "http://localhost:5173/",
+          cancelUrl: CLIENT,
+          returnUrl: `${CLIENT}/payment/capture`,
         },
       },
     });
@@ -69,18 +70,35 @@ export class PaymentService implements IPaymentService {
     };
   }
 
-  async capturePayment(orderId: string): Promise<void> {
+  async capturePayment(userId: string): Promise<void> {
+    const order = await this.paymentRepository.getOrderByUserId(userId);
+
+    if (!order) throw new Error("Order not found");
+
+    console.log("order", order);
+
     const response = await this.ordersController.captureOrder({
-      id: orderId,
+      id: order.id,
     });
 
     const result = response.result;
-    console.log("result", result);
 
     if (!result || result.status !== PayPalOrderStatus.Completed) {
       throw new Error("Payment capture failed");
     }
 
-    await this.paymentRepository.updateOrderStatus(orderId, "COMPLETED");
+    await this.paymentRepository.updateOrderStatus(order.id, "COMPLETED");
+  }
+
+  async checkPayment(userId: string): Promise<boolean> {
+    const order = await this.paymentRepository.getOrderByUserId(userId);
+
+    if (!order) throw new Error("Order not found");
+
+    if (order.orderStatus !== "COMPLETED") {
+      throw new Error("Payment not completed");
+    }
+
+    return true;
   }
 }

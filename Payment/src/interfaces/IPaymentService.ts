@@ -1,4 +1,3 @@
-
 export default interface IPaymentService {
   createPayment(input: {
     userId: string;
@@ -8,4 +7,6 @@ export default interface IPaymentService {
   }): Promise<{ orderId: string; approvalLink: string }>;
 
   capturePayment(orderId: string): Promise<void>;
+
+  checkPayment(userId: string): Promise<boolean>;
 }

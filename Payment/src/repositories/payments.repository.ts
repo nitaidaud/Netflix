@@ -1,4 +1,4 @@
-import { OrderStatus, Plan, PrismaClient } from "@prisma/client";
+import { Order, OrderStatus, Plan, PrismaClient } from "@prisma/client";
 import IPaymentRepository from "../interfaces/IPaymentsRepository";
 
 const prisma = new PrismaClient();
@@ -27,5 +27,9 @@ export class PaymentRepository implements IPaymentRepository {
       where: { id: orderId },
       data: { orderStatus: status },
     });
+  }
+
+  async getOrderByUserId(userId: string): Promise<Order | null> {
+    return prisma.order.findFirst({ where: { userId } });
   }
 }

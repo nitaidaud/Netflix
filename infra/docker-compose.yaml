@@ -68,7 +68,7 @@ services:
       - ../Profile/uploads:/app/uploads
     networks:
       - app_network
-    
+
   streaming:
     build:
       context: ../Streaming
@@ -78,6 +78,18 @@ services:
     env_file:
       - .env
       - .env.streaming
+    networks:
+      - app_network
+
+  payments:
+    build:
+      context: ../Payment
+    container_name: payments
+    ports:
+      - "3004:3004"
+    env_file:
+      - .env
+      - .env.payment
     networks:
       - app_network
 

@@ -4,6 +4,7 @@ import express, { Application, Request, Response } from "express";
 import { ORIGIN } from "./env_exports";
 import {
   movieRoutes,
+  paymentsRoutes,
   profileRoutes,
   streamRoutes,
   userRoutes,
@@ -18,6 +19,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/movies", movieRoutes);
 app.use("/api/profiles", profileRoutes);
 app.use("/api/stream", streamRoutes);
+app.use("/api/payments", paymentsRoutes);
 
 app.all("*", async (req: Request, res: Response) => {
   res.status(404).json({ message: "Route not found" });

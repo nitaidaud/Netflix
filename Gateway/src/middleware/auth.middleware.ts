@@ -12,7 +12,7 @@ const publicRoutes = [
   "/api/users/check-logged-in",
 ];
 
-const userRoutes = ["/api/profiles/delete-profile"];
+const userRoutes = ["/api/profiles/delete-profile", "/api/payments/create"];
 
 export const checkAuthMiddleware = (
   req: Request,
@@ -34,20 +34,15 @@ export const checkAuthMiddleware = (
 
   const token = req.cookies?.Token;
 
-  if (!token) {
-    res.status(401).json({ message: "Unauthorized" });
+  const user = verify(token);
+
+  if (!user) {
+    res.status(401).json({ message: "Unauthorized", success: false });
     return;
   }
 
   if (isUserRoute) {
     next();
-    return;
-  }
-
-  const user = verify(token);
-
-  if (!user) {
-    res.status(401).json({ message: "Unauthorized" });
     return;
   }
 

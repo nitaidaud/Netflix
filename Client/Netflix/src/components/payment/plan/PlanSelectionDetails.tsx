@@ -1,15 +1,15 @@
+import StepProgressIndicator from "@/components/shared/StepProgressIndicator";
+import Typography from "@/components/shared/Typography";
+import { Button } from "@/components/ui/button";
+import { Plan, plans } from "@/data/plans";
+import { setSelectedPlanId } from "@/store/slice/payment.slice";
+import { useAppDispatch } from "@/store/store";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import PlanCard from "./PlanCard";
-import { plans } from "@/data/plans";
-import StepProgressIndicator from "@/components/shared/StepProgressIndicator";
-import { useAppDispatch } from "@/store/store";
-import { setSelectedPlanId } from "@/store/slice/payment.slice";
-import Typography from "@/components/shared/Typography";
 
 const PlanSelectionDetails = () => {
-  const [selectedPlan, setSelectedPlan] = useState<string>("premium");
+  const [selectedPlan, setSelectedPlan] = useState<Plan>(plans[0]);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -31,8 +31,8 @@ const PlanSelectionDetails = () => {
           <PlanCard
             key={plan.id}
             {...plan}
-            selected={selectedPlan === plan.id}
-            onSelect={() => setSelectedPlan(plan.id)}
+            selected={selectedPlan === plan}
+            onSelect={() => setSelectedPlan(plan)}
           />
         ))}
       </div>

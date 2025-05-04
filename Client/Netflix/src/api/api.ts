@@ -17,6 +17,8 @@ import ISendMailResponse from "./interfaces/IVerifyMailResponse";
 import ITVShow from "./interfaces/ITVShow";
 import ISeason from "./interfaces/ISeason";
 import { IPaymentStatusResponse } from "./interfaces/IPaymentResponse";
+import ICreatePaymentResponse from "./interfaces/ICreatePaymentResponse";
+import ICreatePaymentData from "./interfaces/ICreatePaymentData";
 
 const api = axios.create({
   baseURL: apiBaseUrl,
@@ -277,22 +279,40 @@ export const getPopularTVShows = async (): Promise<ITVShow[]> => {
 };
 
 export const getTVShowByIdRequest = async (id: number) => {
-  const { data } = await api.get<ITVShow>(
-    `/api/movies/getTVShowById/${id}`,
-  );
+  const { data } = await api.get<ITVShow>(`/api/movies/getTVShowById/${id}`);
   return data;
 };
 
-export const getSeasonByIdRequest = async (seriesId: number, seasonNumber: number) => {
+export const getSeasonByIdRequest = async (
+  seriesId: number,
+  seasonNumber: number,
+) => {
   const { data } = await api.get<ISeason>(
     `/api/movies/series/${seriesId}/${seasonNumber}`,
   );
   return data;
 };
 
-export const getUserPaymentStatus = async (userId: string) => {
-  const { data } = await api.get<IPaymentStatusResponse>(
-    `/api/payment/status/${userId}`,
+export const createPaymentIntentRequest = async (
+  paymentData: ICreatePaymentData,
+) => {
+  const { data } = await api.post<ICreatePaymentResponse>(
+    `/api/payments/create`,
+    paymentData,
   );
   return data;
-}
+};
+
+export const capturePaymentRequest = async () => {
+  const { data } = await api.post<IPaymentStatusResponse>(
+    `/api/payments/capture`,
+  );
+  return data;
+};
+
+export const checkPayment = async () => {
+  const { data } = await api.get<IPaymentStatusResponse>(
+    `/api/payments/check-payment`,
+  );
+  return data;
+};

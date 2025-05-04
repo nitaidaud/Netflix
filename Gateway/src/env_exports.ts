@@ -8,6 +8,7 @@ export const {
   MOVIES_SERVICE_URL,
   PROFILES_SERVICE_URL,
   STREAMING_SERVICE_URL,
+  PAYMENTS_SERVICE_URL,
   JWT_KEY
 } = process.env;
 
@@ -34,6 +35,10 @@ export const validateEnv = () => {
 
   if (!STREAMING_SERVICE_URL) {
     throw new Error("Missing streaming service url");
+  }
+
+  if (!PAYMENTS_SERVICE_URL) {
+    throw new Error("Missing payments service url");
   }
 
   if (!JWT_KEY) {

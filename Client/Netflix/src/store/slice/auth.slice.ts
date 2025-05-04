@@ -16,7 +16,7 @@ interface AuthState {
   token: string;
   isAuthenticated: boolean;
   emailVerified: boolean;
-  success: string | null;
+  successMsg: string | null;
   error: string | null;
 }
 
@@ -33,7 +33,7 @@ const initialState: AuthState = {
   token: "",
   isAuthenticated: false,
   emailVerified: false,
-  success: null,
+  successMsg: null,
   error: null,
 };
 
@@ -88,10 +88,8 @@ export const verifyEmail = createAsyncThunk<
   { rejectValue: string }
 >("auth/verify-email", async (token: string, { rejectWithValue }) => {
   try {
-    console.log("in verify email thunk", token);
     const res = await verifyEmailRequest(token);
 
-    // Return both the API response and our custom field
     return {
       ...res,
       emailVerified: res.success,
@@ -120,14 +118,19 @@ export const checkAuth = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    clearAuthErrors: (state) => {
+      state.error = null;
+      state.successMsg = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(signin.fulfilled, (state, action) => {
         state.token = action.payload.token;
         state.email = action.payload.email;
         state.isAuthenticated = true;
-        state.success = "success";
+        state.successMsg = "Logged In Successfully";
         state.error = null;
       })
       .addCase(signin.rejected, (state, action) => {
@@ -135,7 +138,7 @@ const authSlice = createSlice({
         state.email = "";
         state.name = "";
         state.isAuthenticated = false;
-        state.success = null;
+        state.successMsg = null;
         state.error = action.payload as string;
       })
       .addCase(signup.fulfilled, (state, action) => {
@@ -143,7 +146,7 @@ const authSlice = createSlice({
         state.email = action.payload.email;
         state.name = action.payload.name;
         state.isAuthenticated = false;
-        state.success = "Email Sent Successfully";
+        state.successMsg = "Email Sent Successfully";
         state.error = null;
       })
       .addCase(signup.rejected, (state, action) => {
@@ -151,14 +154,14 @@ const authSlice = createSlice({
         state.email = "";
         state.name = "";
         state.isAuthenticated = false;
-        state.success = null;
+        state.successMsg = null;
         state.error = action.payload as string;
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.token = "";
         state.email = "";
         state.name = "";
-        state.success = null;
+        state.successMsg = null;
         state.isAuthenticated = false;
         state.error = null;
       })
@@ -176,7 +179,7 @@ const authSlice = createSlice({
       })
       .addCase(verifyEmail.fulfilled, (state, action) => {
         state.emailVerified = action.payload.emailVerified;
-        state.success = action.payload.message;
+        state.successMsg = action.payload.message;
       })
       .addCase(verifyEmail.rejected, (state, action) => {
         state.error = action.payload as string;
@@ -184,5 +187,7 @@ const authSlice = createSlice({
       });
   },
 });
+
+export const { clearAuthErrors } = authSlice.actions;
 
 export default authSlice.reducer;

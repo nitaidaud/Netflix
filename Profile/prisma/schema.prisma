@@ -20,6 +20,7 @@ model User {
   resetPasswordExpiresAt DateTime?
   sessions               Session[]
   profiles               Profile[]
+  orders                 Order?
 
   @@map("users")
 }
@@ -46,39 +47,67 @@ model VerificationToken {
 }
 
 model Profile {
-  id                 String             @id @default(cuid())
-  name               String
-  image              String?
-  User               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId             String
-  moviesFavoriteList MovieFavoriteList?
+  id           String        @id @default(cuid())
+  name         String        @unique
+  image        String?
+  User         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  favoriteList FavoriteList?
 
   @@map("profiles")
 }
 
-model MovieFavoriteList {
-  id        String  @id @default(cuid())
-  profileId String  @unique
-  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  movies    Movie[] @relation("FavoriteMovies")
+model FavoriteList {
+  id           String         @id @default(cuid())
+  profileId    String         @unique
+  profile      Profile        @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  favoriteList FavoriteItem[] @relation("FavoriteItems")
 
-  @@map("movie_favorite_lists")
+  @@map("favorite_lists")
 }
 
-model Movie {
-  id            Int  @id @default(dbgenerated())
+model FavoriteItem {
+  id            Int            @id @default(dbgenerated())
   title         String
   release_date  String
-  genre_ids     Int[]
   poster_path   String
   backdrop_path String
   overview      String
   popularity    Float
   adult         Boolean
+  type          Type
+  favoriteLists FavoriteList[] @relation("FavoriteItems")
 
-  favoriteLists MovieFavoriteList[] @relation("FavoriteMovies")
+  @@map("favoriteItems")
+}
 
-  @@map("movies")
+model Order {
+  id          String      @id @default(cuid())
+  orderStatus OrderStatus
+  plan        Plan
+  price       Float
+  User        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String      @unique
+}
+
+enum OrderStatus {
+  CREATED
+  SAVED
+  APPROVED
+  VOIDED
+  COMPLETED
+  PAYER_ACTION_REQUIRED
+}
+
+enum Plan {
+  Basic
+  Standard
+  Premium
+}
+
+enum Type {
+  Movie
+  Show
 }
 
 enum Genre {

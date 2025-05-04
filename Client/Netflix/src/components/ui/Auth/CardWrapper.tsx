@@ -27,7 +27,7 @@ const CardWrapper = ({
   title,
 }: CardWrapperProps) => {
   return (
-    <Card className="xl:w-1/4 md:w-1/2 shadow-md text-center bg-transparent border-red-500/40">
+    <Card className="w-full max-w-sm bg-[#0f0f0f] text-white p-8 rounded-lg shadow-xl border border-[#333]">
       <CardHeader>
         <AuthHeader label={headerLabel} title={title} />
       </CardHeader>

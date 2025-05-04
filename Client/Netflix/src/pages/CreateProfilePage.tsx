@@ -1,5 +1,5 @@
 import Container from "@/components/shared/Container";
-import CreateProfileForm from "@/features/profile/CreateProfile";
+import CreateProfileForm from "@/features/profile/CreateProfileForm";
 
 const CreateProfilePage = () => {
   return (

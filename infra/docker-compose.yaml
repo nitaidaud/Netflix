@@ -69,6 +69,30 @@ services:
     networks:
       - app_network
 
+  streaming:
+    build:
+      context: ../Streaming
+    container_name: streaming
+    ports:
+      - "3003:3003"
+    env_file:
+      - .env
+      - .env.streaming
+    networks:
+      - app_network
+
+  payments:
+    build:
+      context: ../Payment
+    container_name: payments
+    ports:
+      - "3004:3004"
+    env_file:
+      - .env
+      - .env.payment
+    networks:
+      - app_network
+
 networks:
   app_network:
     driver: bridge

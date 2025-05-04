@@ -1,4 +1,4 @@
-import IBaseMovie from "./IBaseMovie";
+import IBaseMovie from "./movie/IBaseMovie";
 
 export default interface IHomeContent {
     newMovies: IBaseMovie[];

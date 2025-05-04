@@ -1,91 +1,28 @@
-import IProfile from "@/api/interfaces/IProfile";
-import { Button } from "@/components/ui/button";
+
+import ProfileGrid from "@/components/profile/ProfileGrid";
+import ProfileLoadingAnimation from "@/components/profile/ProfileLoadingAnimation";
+import Typography from "@/components/shared/Typography";
 import { useProfiles } from "@/hooks/useProfiles";
-import { loginProfile } from "@/store/slice/profile.slice";
-import { useAppDispatch } from "@/store/store";
-import { PlusCircle } from "lucide-react";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+
 
 const ProfileChoicePage = () => {
   const { data, isLoading, isFetching } = useProfiles();
-  const [isLogging, setIsLogging] = useState(false);
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  console.log("data", data);
-
-  const handleLogin = async (profile: IProfile) => {
-    try {
-      setIsLogging(true);
-      await dispatch(loginProfile(profile));
-      navigate("/");
-    } catch (error) {
-      console.error("Error logging in:", error);
-    } finally {
-      setIsLogging(false);
-    }
-  };
+  const profiles = data?.profiles ?? [];
 
   return (
-    <div className="flex flex-col items-center justify-center size-full">
-      <h1 className="text-3xl font-bold mb-4">Choose Your Profile</h1>
-      {isLoading || isFetching ? (
-        <p>Loading...</p>
-      ) : data && data.profiles.length > 0 ? (
-        <div className="flex justify-center items-center gap-10">
-          {data.profiles.map((profile) => {
-            const imgUrl = profile.image;
-            return (
-              <div
-                className="flex flex-col items-center justify-center"
-                key={profile.image}
-              >
-                <Button
-                  onClick={() => {
-                    handleLogin(profile);
-                  }}
-                  style={{
-                    backgroundImage: `${
-                      imgUrl
-                        ? `url(${imgUrl})`
-                        : "url(/images/default-profile.jpg)"
-                    }`,
-                  }}
-                  className={`bg-cover bg-center bg-no-repeat min-w-[200px] min-h-[200px] p-4 rounded shadow hover:scale-105 transition-transform duration-300 cursor-pointer`}
-                ></Button>
-                <h2 className="text-xl text-center">{profile.name}</h2>
-              </div>
-            );
-          })}
-          <Link
-            to="/profile/create"
-            className="bg-white/10 size-full min-w-[200px] max-h-[200px] p-4 rounded shadow hover:scale-105 transition-transform duration-300 cursor-pointer flex items-center justify-center mb-auto"
-          >
-            <PlusCircle
-              size={80}
-              fill="transparent"
-              className="text-gray-400"
-            />
-          </Link>
-        </div>
+    <div className="flex flex-col items-center justify-center w-full min-h-screen bg-black px-4 py-8">
+      <Typography
+        responsiveSize={{ base: "text-xl", sm: "text-2xl", md: "text-3xl" }}
+        weight="font-bold"
+        className="mb-6 text-center"
+      >
+        Choose Your Profile
+      </Typography>
+
+      {(isLoading || isFetching) ? (
+        <ProfileLoadingAnimation />
       ) : (
-        <div className="flex justify-center items-center">
-          <Link
-            to="/profile/create"
-            className="bg-white/10 size-full min-w-[200px] min-h-[200px] p-4 rounded shadow hover:scale-105 transition-transform duration-300 cursor-pointer flex items-center justify-center mb-auto"
-          >
-            <PlusCircle
-              size={80}
-              fill="transparent"
-              className="text-gray-400"
-            />
-          </Link>
-        </div>
-      )}
-      {isLogging && (
-        <div className="absolute top-0 left0 size-full flex items-center justify-center bg-black/40 z-50">
-          Logging please wait...
-        </div>
+        <ProfileGrid profiles={profiles} />
       )}
     </div>
   );

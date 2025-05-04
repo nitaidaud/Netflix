@@ -20,9 +20,10 @@ function Input({ className, type, error, ...props }: InputProps) {
         )}
         {...props}
       />
-      {error && <p className="text-red-400 text-sm mt-1 px-2">{error}</p>}
+      {/* {error && <FormError message={error} />} */}
     </>
   );
 }
 
 export { Input };
+

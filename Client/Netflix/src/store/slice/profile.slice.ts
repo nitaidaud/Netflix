@@ -9,9 +9,8 @@ import {
   removeMovieFromFavoriteListRequest,
   updateProfileRequest,
 } from "@/api/api";
-import IBaseMovie from "@/api/interfaces/IBaseMovie";
-import IProfile from "@/api/interfaces/IProfile";
-import IProfileData from "@/api/interfaces/IProfileData";
+import IBaseMovie from "@/api/interfaces/movie/IBaseMovie";
+import IProfile from "@/api/interfaces/profile/IProfile";
 import { ProfileFormData } from "@/schemas/profile.schema";
 import { getErrorMessage } from "@/utils/axios.error.handler";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
@@ -20,12 +19,14 @@ interface ProfileState {
   profile: IProfile | null;
   isProfileLoggedIn: boolean;
   error: string | null;
+  isSuccess: boolean;
 }
 
 const initialState: ProfileState = {
   profile: null,
   isProfileLoggedIn: false,
   error: null,
+  isSuccess: false,
 };
 
 export const createNewProfile = createAsyncThunk(
@@ -45,7 +46,7 @@ export const createNewProfile = createAsyncThunk(
       return {
         name: profile.name,
         image: profile.image,
-        moviesFavoriteList: profile.moviesFavoriteList,
+        favoriteList: profile.favoriteList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
@@ -64,7 +65,7 @@ export const loginProfile = createAsyncThunk(
       return {
         name: newProfile.name,
         image: newProfile.image,
-        moviesFavoriteList: newProfile.moviesFavoriteList,
+        favoriteList: newProfile.favoriteList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
@@ -94,7 +95,7 @@ export const checkLoggedInProfile = createAsyncThunk(
       return {
         name: profile.name,
         image: profile.image,
-        moviesFavoriteList: profile.moviesFavoriteList,
+        favoriteList: profile.favoriteList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
@@ -111,7 +112,7 @@ export const getProfileById = createAsyncThunk(
       return {
         name: profile.name,
         image: profile.image,
-        moviesFavoriteList: profile.moviesFavoriteList,
+        favoriteList: profile.favoriteList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
@@ -122,13 +123,14 @@ export const getProfileById = createAsyncThunk(
 
 export const updateProfile = createAsyncThunk(
   "profile/updateProfile",
-  async (profileData: IProfileData, { rejectWithValue }) => {
+  async (profileData: ProfileFormData, { rejectWithValue }) => {
     try {
-      const res = await updateProfileRequest(profileData);
+      const { profile } = await updateProfileRequest(profileData);
+
       return {
-        name: res.name,
-        image: res.image,
-        moviesFavoriteList: res.moviesFavoriteList,
+        name: profile.name,
+        image: profile.image,
+        favoriteList: profile.favoriteList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
@@ -143,7 +145,7 @@ export const addMovieToFavoriteList = createAsyncThunk(
     try {
       const res = await addMovieToFavoriteListRequest(movie);
       return {
-        moviesFavoriteList: res.myList,
+        favoriteList: res.myList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
@@ -159,7 +161,7 @@ export const removeMovieFromFavoriteList = createAsyncThunk(
       const res = await removeMovieFromFavoriteListRequest(movieId);
 
       return {
-        moviesFavoriteList: res.myList,
+        favoriteList: res.myList,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
@@ -170,14 +172,9 @@ export const removeMovieFromFavoriteList = createAsyncThunk(
 
 export const deleteProfile = createAsyncThunk(
   "profile/deleteProfile",
-  async (_, { rejectWithValue }) => {
+  async (profileName: string, { rejectWithValue }) => {
     try {
-      const res = await deleteProfileRequest();
-      return {
-        name: res.name,
-        image: res.image,
-        moviesFavoriteList: res.moviesFavoriteList,
-      };
+      await deleteProfileRequest(profileName);
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
       return rejectWithValue(errorMessage);
@@ -188,108 +185,135 @@ export const deleteProfile = createAsyncThunk(
 const profileSlice = createSlice({
   name: "profile",
   initialState,
-  reducers: {},
+  reducers: {
+    clearProfileErrors: (state) => {
+      state.error = null;
+      state.isSuccess = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
+      .addCase(createNewProfile.pending, (state) => {
+        state.error = null;
+        state.isSuccess = false;
+      })
       .addCase(createNewProfile.fulfilled, (state, action) => {
         state.profile = action.payload;
         state.isProfileLoggedIn = true;
         state.error = null;
+        state.isSuccess = true;
       })
       .addCase(createNewProfile.rejected, (state, action) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
         state.error = action.payload as string;
+        state.isSuccess = false;
       })
       .addCase(loginProfile.fulfilled, (state, action) => {
         state.profile = action.payload;
         state.isProfileLoggedIn = true;
         state.error = null;
+        state.isSuccess = true;
       })
       .addCase(loginProfile.rejected, (state, action) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
         state.error = action.payload as string;
+        state.isSuccess = false;
       })
       .addCase(logoutProfile.fulfilled, (state) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
         state.error = null;
+        state.isSuccess = true;
       })
       .addCase(logoutProfile.rejected, (state, action) => {
         state.error = action.payload as string;
+        state.isSuccess = false;
       })
       .addCase(checkLoggedInProfile.fulfilled, (state, action) => {
-        console.log("action payload", action.payload);
-
         state.profile = action.payload;
         state.isProfileLoggedIn = true;
         state.error = null;
+        state.isSuccess = true;
       })
-      .addCase(checkLoggedInProfile.rejected, (state, action) => {
+      .addCase(checkLoggedInProfile.rejected, (state) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
-        state.error = action.payload as string;
+        state.error = null;
+        state.isSuccess = false;
       })
       .addCase(getProfileById.fulfilled, (state, action) => {
         state.profile = action.payload;
         state.isProfileLoggedIn = true;
         state.error = null;
+        state.isSuccess = true;
       })
       .addCase(getProfileById.rejected, (state, action) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
         state.error = action.payload as string;
+        state.isSuccess = false;
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.profile = action.payload;
         state.isProfileLoggedIn = true;
         state.error = null;
+        state.isSuccess = true;
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
         state.error = action.payload as string;
+        state.isSuccess = false;
       })
       .addCase(addMovieToFavoriteList.fulfilled, (state, action) => {
         const updatedProfile = state.profile;
         if (updatedProfile) {
-          updatedProfile.moviesFavoriteList = action.payload.moviesFavoriteList;
+          updatedProfile.favoriteList = action.payload.favoriteList;
         }
         state.profile = updatedProfile;
         state.isProfileLoggedIn = true;
         state.error = null;
+        state.isSuccess = true;
       })
       .addCase(addMovieToFavoriteList.rejected, (state, action) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
         state.error = action.payload as string;
+        state.isSuccess = false;
       })
       .addCase(removeMovieFromFavoriteList.fulfilled, (state, action) => {
         const updatedProfile = state.profile;
         if (updatedProfile) {
-          updatedProfile.moviesFavoriteList = action.payload.moviesFavoriteList;
+          updatedProfile.favoriteList = action.payload.favoriteList;
         }
         state.profile = updatedProfile;
         state.isProfileLoggedIn = true;
         state.error = null;
+        state.isSuccess = true;
       })
       .addCase(removeMovieFromFavoriteList.rejected, (state, action) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
         state.error = action.payload as string;
+        state.isSuccess = false;
       })
       .addCase(deleteProfile.fulfilled, (state) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
         state.error = null;
+        state.isSuccess = true;
       })
       .addCase(deleteProfile.rejected, (state, action) => {
         state.profile = null;
         state.isProfileLoggedIn = false;
         state.error = action.payload as string;
+        state.isSuccess = false;
       });
   },
 });
+
+export const { clearProfileErrors } = profileSlice.actions;
 
 export default profileSlice.reducer;

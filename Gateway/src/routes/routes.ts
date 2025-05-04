@@ -1,31 +1,32 @@
 import { Router } from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
+import {
+  MOVIES_SERVICE_URL,
+  PAYMENTS_SERVICE_URL,
+  PROFILES_SERVICE_URL,
+  STREAMING_SERVICE_URL,
+  USER_SERVICE_URL,
+} from "../env_exports";
+import { checkAuthMiddleware } from "../middleware/auth.middleware";
 
-const USER_SERVICE_URL = "http://users:3000";
-const MOVIES_SERVICE_URL = "http://movies:3001";
-const PROFILES_SERVICE_URL = "http://profile:3002";
-
-// Create router instances
 const userRoutes = Router();
 const movieRoutes = Router();
 const profileRoutes = Router();
+const streamRoutes = Router();
+const paymentsRoutes = Router();
 
-// Apply proxy middleware to each router
 userRoutes.use(
   "/",
-  async (req, res, next) => {
-    console.log("Request received:", req.method, req.originalUrl);
-    next();
-  },
+  checkAuthMiddleware,
   createProxyMiddleware({
     target: USER_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
-      "": "/api/users", // This ensures the path is correctly preserved
+      "": "/api/users",
     },
     on: {
       error: (err, req, res) => {
-        console.error("Proxy error:", err);
+        // console.error("Proxy error:", err);
       },
       proxyReq: (proxyReq, req, res) => {
         console.log("Proxying request to:", USER_SERVICE_URL + req.url);
@@ -39,19 +40,16 @@ userRoutes.use(
 
 movieRoutes.use(
   "/",
-  async (req, res, next) => {
-    console.log("Request received:", req.method, req.originalUrl);
-    next();
-  },
+  checkAuthMiddleware,
   createProxyMiddleware({
     target: MOVIES_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
-      "": "/api/movies", // This ensures the path is correctly preserved
+      "": "/api/movies",
     },
     on: {
       error: (err, req, res) => {
-        console.error("Proxy error:", err);
+        // console.error("Proxy error:", err);
       },
       proxyReq: (proxyReq, req, res) => {
         console.log("Proxying request to:", MOVIES_SERVICE_URL + req.url);
@@ -65,19 +63,16 @@ movieRoutes.use(
 
 profileRoutes.use(
   "/",
-  async (req, res, next) => {
-    console.log("Request received:", req.method, req.originalUrl);
-    next();
-  },
+  checkAuthMiddleware,
   createProxyMiddleware({
     target: PROFILES_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
-      "": "/api/profile", // This ensures the path is correctly preserved
+      "": "/api/profile",
     },
     on: {
       error: (err, req, res) => {
-        console.error("Proxy error:", err);
+        // console.error("Proxy error:", err);
       },
       proxyReq: (proxyReq, req, res) => {
         console.log("Proxying request to:", PROFILES_SERVICE_URL + req.url);
@@ -89,4 +84,50 @@ profileRoutes.use(
   }),
 );
 
-export { movieRoutes, userRoutes, profileRoutes };
+streamRoutes.use(
+  "/",
+  checkAuthMiddleware,
+  createProxyMiddleware({
+    target: STREAMING_SERVICE_URL,
+    changeOrigin: true,
+    pathRewrite: {
+      "": "/api/stream",
+    },
+    on: {
+      error: (err, req, res) => {
+        // console.error("Proxy error:", err);
+      },
+      proxyReq: (proxyReq, req, res) => {
+        console.log("Proxying request to:", STREAMING_SERVICE_URL + req.url);
+      },
+      proxyRes: (proxyRes, req, res) => {
+        console.log("Received response with status:", proxyRes.statusCode);
+      },
+    },
+  }),
+);
+
+paymentsRoutes.use(
+  "/",
+  checkAuthMiddleware,
+  createProxyMiddleware({
+    target: PAYMENTS_SERVICE_URL,
+    changeOrigin: true,
+    pathRewrite: {
+      "": "/api/payments",
+    },
+    on: {
+      error: (err, req, res) => {
+        // console.error("Proxy error:", err);
+      },
+      proxyReq: (proxyReq, req, res) => {
+        console.log("Proxying request to:", PAYMENTS_SERVICE_URL + req.url);
+      },
+      proxyRes: (proxyRes, req, res) => {
+        console.log("Received response with status:", proxyRes.statusCode);
+      },
+    },
+  }),
+);
+
+export { movieRoutes, profileRoutes, streamRoutes, userRoutes, paymentsRoutes };

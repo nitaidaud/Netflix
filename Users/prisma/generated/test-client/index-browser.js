@@ -153,21 +153,29 @@ exports.Prisma.ProfileScalarFieldEnum = {
   userId: 'userId'
 };
 
-exports.Prisma.MovieFavoriteListScalarFieldEnum = {
+exports.Prisma.FavoriteListScalarFieldEnum = {
   id: 'id',
   profileId: 'profileId'
 };
 
-exports.Prisma.MovieScalarFieldEnum = {
+exports.Prisma.FavoriteItemScalarFieldEnum = {
   id: 'id',
   title: 'title',
   release_date: 'release_date',
-  genre_ids: 'genre_ids',
   poster_path: 'poster_path',
   backdrop_path: 'backdrop_path',
   overview: 'overview',
   popularity: 'popularity',
-  adult: 'adult'
+  adult: 'adult',
+  type: 'type'
+};
+
+exports.Prisma.OrderScalarFieldEnum = {
+  id: 'id',
+  orderStatus: 'orderStatus',
+  plan: 'plan',
+  price: 'price',
+  userId: 'userId'
 };
 
 exports.Prisma.SortOrder = {
@@ -184,15 +192,34 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.Type = exports.$Enums.Type = {
+  Movie: 'Movie',
+  Show: 'Show'
+};
 
+exports.OrderStatus = exports.$Enums.OrderStatus = {
+  CREATED: 'CREATED',
+  SAVED: 'SAVED',
+  APPROVED: 'APPROVED',
+  VOIDED: 'VOIDED',
+  COMPLETED: 'COMPLETED',
+  PAYER_ACTION_REQUIRED: 'PAYER_ACTION_REQUIRED'
+};
+
+exports.Plan = exports.$Enums.Plan = {
+  Basic: 'Basic',
+  Standard: 'Standard',
+  Premium: 'Premium'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Profile: 'Profile',
-  MovieFavoriteList: 'MovieFavoriteList',
-  Movie: 'Movie'
+  FavoriteList: 'FavoriteList',
+  FavoriteItem: 'FavoriteItem',
+  Order: 'Order'
 };
 
 /**

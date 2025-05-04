@@ -6,8 +6,8 @@ import { Button } from "../ui/button";
 const LogoutButton = () => {
   const dispatch = useAppDispatch();
   const handleClick = async () => {
-    await dispatch(logoutUser());
     await dispatch(logoutProfile());
+    await dispatch(logoutUser());
   };
 
   return (

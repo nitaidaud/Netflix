@@ -1,11 +1,10 @@
-import IBaseMovie from "@/api/interfaces/IBaseMovie";
+import IBaseMovie from "@/api/interfaces/movie/IBaseMovie";
 
 type ActionsMoviesProps = {
   movies: IBaseMovie[];
 };
 
 const ActionsMovies = ({ movies }: ActionsMoviesProps) => {
-  console.log("movies", movies);
 
   return (
     <div className="grid grid-cols-6 h-full mt-32 gap-5">

@@ -69,11 +69,7 @@ export class VerificationTokenService implements IVerificationTokenService {
   }
 
   async verifyEmail(tokenId: string): Promise<IVerifyResponse> {
-    console.log("tokenId", tokenId);
-
     const token = await this.verificationTokenRepository.findById(tokenId);
-
-    console.log("token", token);
 
     if (!token) {
       return { success: false, message: "Invalid token" };
@@ -103,12 +99,15 @@ export class VerificationTokenService implements IVerificationTokenService {
 
   async resetPasswordToken(email: string): Promise<string | null> {
     const user = await this.userRepository.findByEmail(email);
-
     if (!user) throw new Error("User not found");
 
-    const resetPasswordToken = await bcrypt.genSalt();
-    const resetPasswordExpiresAt = new Date(Date.now() + 1 * 60 * 60 * 1000); //1 hour
+    // Generate the token
+    let resetPasswordToken = await bcrypt.genSalt();
 
+    // Replace unwanted characters
+    resetPasswordToken = resetPasswordToken.replace(/[/\\]/g, "");
+
+    const resetPasswordExpiresAt = new Date(Date.now() + 1 * 60 * 60 * 1000); //1 hour
     const resetPasswordTokenId = await this.userRepository.resetPasswordToken(
       user.id,
       {
@@ -116,9 +115,7 @@ export class VerificationTokenService implements IVerificationTokenService {
         resetPasswordExpiresAt,
       },
     );
-
     if (!resetPasswordTokenId) throw new Error("Error in update user");
-
     return resetPasswordTokenId;
   }
 }

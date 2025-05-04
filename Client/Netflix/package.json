@@ -1,7 +1,7 @@
 {
   "name": "netflix",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -23,6 +23,7 @@
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.6.3",
+    "hls.js": "^1.6.2",
     "lucide-react": "^0.483.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -32,6 +33,7 @@
     "react-player": "^2.16.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.4.0",
+    "react-toastify": "^11.0.5",
     "redux-persist": "^6.0.0",
     "tailwind-merge": "^3.0.2",
     "tw-animate-css": "^1.2.4",

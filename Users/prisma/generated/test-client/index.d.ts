@@ -34,21 +34,55 @@ export type VerificationToken = $Result.DefaultSelection<Prisma.$VerificationTok
  */
 export type Profile = $Result.DefaultSelection<Prisma.$ProfilePayload>
 /**
- * Model MovieFavoriteList
+ * Model FavoriteList
  * 
  */
-export type MovieFavoriteList = $Result.DefaultSelection<Prisma.$MovieFavoriteListPayload>
+export type FavoriteList = $Result.DefaultSelection<Prisma.$FavoriteListPayload>
 /**
- * Model Movie
+ * Model FavoriteItem
  * 
  */
-export type Movie = $Result.DefaultSelection<Prisma.$MoviePayload>
+export type FavoriteItem = $Result.DefaultSelection<Prisma.$FavoriteItemPayload>
+/**
+ * Model Order
+ * 
+ */
+export type Order = $Result.DefaultSelection<Prisma.$OrderPayload>
 
 /**
  * Enums
  */
 export namespace $Enums {
-  export const Genre: {
+  export const OrderStatus: {
+  CREATED: 'CREATED',
+  SAVED: 'SAVED',
+  APPROVED: 'APPROVED',
+  VOIDED: 'VOIDED',
+  COMPLETED: 'COMPLETED',
+  PAYER_ACTION_REQUIRED: 'PAYER_ACTION_REQUIRED'
+};
+
+export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
+
+
+export const Plan: {
+  Basic: 'Basic',
+  Standard: 'Standard',
+  Premium: 'Premium'
+};
+
+export type Plan = (typeof Plan)[keyof typeof Plan]
+
+
+export const Type: {
+  Movie: 'Movie',
+  Show: 'Show'
+};
+
+export type Type = (typeof Type)[keyof typeof Type]
+
+
+export const Genre: {
   Action: 'Action',
   Adventure: 'Adventure',
   Animation: 'Animation',
@@ -73,6 +107,18 @@ export namespace $Enums {
 export type Genre = (typeof Genre)[keyof typeof Genre]
 
 }
+
+export type OrderStatus = $Enums.OrderStatus
+
+export const OrderStatus: typeof $Enums.OrderStatus
+
+export type Plan = $Enums.Plan
+
+export const Plan: typeof $Enums.Plan
+
+export type Type = $Enums.Type
+
+export const Type: typeof $Enums.Type
 
 export type Genre = $Enums.Genre
 
@@ -244,24 +290,34 @@ export class PrismaClient<
   get profile(): Prisma.ProfileDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.movieFavoriteList`: Exposes CRUD operations for the **MovieFavoriteList** model.
+   * `prisma.favoriteList`: Exposes CRUD operations for the **FavoriteList** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more MovieFavoriteLists
-    * const movieFavoriteLists = await prisma.movieFavoriteList.findMany()
+    * // Fetch zero or more FavoriteLists
+    * const favoriteLists = await prisma.favoriteList.findMany()
     * ```
     */
-  get movieFavoriteList(): Prisma.MovieFavoriteListDelegate<ExtArgs, ClientOptions>;
+  get favoriteList(): Prisma.FavoriteListDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.movie`: Exposes CRUD operations for the **Movie** model.
+   * `prisma.favoriteItem`: Exposes CRUD operations for the **FavoriteItem** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Movies
-    * const movies = await prisma.movie.findMany()
+    * // Fetch zero or more FavoriteItems
+    * const favoriteItems = await prisma.favoriteItem.findMany()
     * ```
     */
-  get movie(): Prisma.MovieDelegate<ExtArgs, ClientOptions>;
+  get favoriteItem(): Prisma.FavoriteItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.order`: Exposes CRUD operations for the **Order** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Orders
+    * const orders = await prisma.order.findMany()
+    * ```
+    */
+  get order(): Prisma.OrderDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -706,8 +762,9 @@ export namespace Prisma {
     Session: 'Session',
     VerificationToken: 'VerificationToken',
     Profile: 'Profile',
-    MovieFavoriteList: 'MovieFavoriteList',
-    Movie: 'Movie'
+    FavoriteList: 'FavoriteList',
+    FavoriteItem: 'FavoriteItem',
+    Order: 'Order'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -726,7 +783,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "verificationToken" | "profile" | "movieFavoriteList" | "movie"
+      modelProps: "user" | "session" | "verificationToken" | "profile" | "favoriteList" | "favoriteItem" | "order"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1026,151 +1083,225 @@ export namespace Prisma {
           }
         }
       }
-      MovieFavoriteList: {
-        payload: Prisma.$MovieFavoriteListPayload<ExtArgs>
-        fields: Prisma.MovieFavoriteListFieldRefs
+      FavoriteList: {
+        payload: Prisma.$FavoriteListPayload<ExtArgs>
+        fields: Prisma.FavoriteListFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.MovieFavoriteListFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MovieFavoriteListPayload> | null
+            args: Prisma.FavoriteListFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteListPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.MovieFavoriteListFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MovieFavoriteListPayload>
+            args: Prisma.FavoriteListFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteListPayload>
           }
           findFirst: {
-            args: Prisma.MovieFavoriteListFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MovieFavoriteListPayload> | null
+            args: Prisma.FavoriteListFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteListPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.MovieFavoriteListFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MovieFavoriteListPayload>
+            args: Prisma.FavoriteListFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteListPayload>
           }
           findMany: {
-            args: Prisma.MovieFavoriteListFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MovieFavoriteListPayload>[]
+            args: Prisma.FavoriteListFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteListPayload>[]
           }
           create: {
-            args: Prisma.MovieFavoriteListCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MovieFavoriteListPayload>
+            args: Prisma.FavoriteListCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteListPayload>
           }
           createMany: {
-            args: Prisma.MovieFavoriteListCreateManyArgs<ExtArgs>
+            args: Prisma.FavoriteListCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.MovieFavoriteListCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MovieFavoriteListPayload>[]
+            args: Prisma.FavoriteListCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteListPayload>[]
           }
           delete: {
-            args: Prisma.MovieFavoriteListDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MovieFavoriteListPayload>
+            args: Prisma.FavoriteListDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteListPayload>
           }
           update: {
-            args: Prisma.MovieFavoriteListUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MovieFavoriteListPayload>
+            args: Prisma.FavoriteListUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteListPayload>
           }
           deleteMany: {
-            args: Prisma.MovieFavoriteListDeleteManyArgs<ExtArgs>
+            args: Prisma.FavoriteListDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.MovieFavoriteListUpdateManyArgs<ExtArgs>
+            args: Prisma.FavoriteListUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.MovieFavoriteListUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MovieFavoriteListPayload>[]
+            args: Prisma.FavoriteListUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteListPayload>[]
           }
           upsert: {
-            args: Prisma.MovieFavoriteListUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MovieFavoriteListPayload>
+            args: Prisma.FavoriteListUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteListPayload>
           }
           aggregate: {
-            args: Prisma.MovieFavoriteListAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateMovieFavoriteList>
+            args: Prisma.FavoriteListAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFavoriteList>
           }
           groupBy: {
-            args: Prisma.MovieFavoriteListGroupByArgs<ExtArgs>
-            result: $Utils.Optional<MovieFavoriteListGroupByOutputType>[]
+            args: Prisma.FavoriteListGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FavoriteListGroupByOutputType>[]
           }
           count: {
-            args: Prisma.MovieFavoriteListCountArgs<ExtArgs>
-            result: $Utils.Optional<MovieFavoriteListCountAggregateOutputType> | number
+            args: Prisma.FavoriteListCountArgs<ExtArgs>
+            result: $Utils.Optional<FavoriteListCountAggregateOutputType> | number
           }
         }
       }
-      Movie: {
-        payload: Prisma.$MoviePayload<ExtArgs>
-        fields: Prisma.MovieFieldRefs
+      FavoriteItem: {
+        payload: Prisma.$FavoriteItemPayload<ExtArgs>
+        fields: Prisma.FavoriteItemFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.MovieFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MoviePayload> | null
+            args: Prisma.FavoriteItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteItemPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.MovieFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MoviePayload>
+            args: Prisma.FavoriteItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteItemPayload>
           }
           findFirst: {
-            args: Prisma.MovieFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MoviePayload> | null
+            args: Prisma.FavoriteItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteItemPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.MovieFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MoviePayload>
+            args: Prisma.FavoriteItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteItemPayload>
           }
           findMany: {
-            args: Prisma.MovieFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MoviePayload>[]
+            args: Prisma.FavoriteItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteItemPayload>[]
           }
           create: {
-            args: Prisma.MovieCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MoviePayload>
+            args: Prisma.FavoriteItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteItemPayload>
           }
           createMany: {
-            args: Prisma.MovieCreateManyArgs<ExtArgs>
+            args: Prisma.FavoriteItemCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.MovieCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MoviePayload>[]
+            args: Prisma.FavoriteItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteItemPayload>[]
           }
           delete: {
-            args: Prisma.MovieDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MoviePayload>
+            args: Prisma.FavoriteItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteItemPayload>
           }
           update: {
-            args: Prisma.MovieUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MoviePayload>
+            args: Prisma.FavoriteItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteItemPayload>
           }
           deleteMany: {
-            args: Prisma.MovieDeleteManyArgs<ExtArgs>
+            args: Prisma.FavoriteItemDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.MovieUpdateManyArgs<ExtArgs>
+            args: Prisma.FavoriteItemUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.MovieUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MoviePayload>[]
+            args: Prisma.FavoriteItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteItemPayload>[]
           }
           upsert: {
-            args: Prisma.MovieUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MoviePayload>
+            args: Prisma.FavoriteItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteItemPayload>
           }
           aggregate: {
-            args: Prisma.MovieAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateMovie>
+            args: Prisma.FavoriteItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFavoriteItem>
           }
           groupBy: {
-            args: Prisma.MovieGroupByArgs<ExtArgs>
-            result: $Utils.Optional<MovieGroupByOutputType>[]
+            args: Prisma.FavoriteItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FavoriteItemGroupByOutputType>[]
           }
           count: {
-            args: Prisma.MovieCountArgs<ExtArgs>
-            result: $Utils.Optional<MovieCountAggregateOutputType> | number
+            args: Prisma.FavoriteItemCountArgs<ExtArgs>
+            result: $Utils.Optional<FavoriteItemCountAggregateOutputType> | number
+          }
+        }
+      }
+      Order: {
+        payload: Prisma.$OrderPayload<ExtArgs>
+        fields: Prisma.OrderFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.OrderFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.OrderFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderPayload>
+          }
+          findFirst: {
+            args: Prisma.OrderFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.OrderFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderPayload>
+          }
+          findMany: {
+            args: Prisma.OrderFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderPayload>[]
+          }
+          create: {
+            args: Prisma.OrderCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderPayload>
+          }
+          createMany: {
+            args: Prisma.OrderCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.OrderCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderPayload>[]
+          }
+          delete: {
+            args: Prisma.OrderDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderPayload>
+          }
+          update: {
+            args: Prisma.OrderUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderPayload>
+          }
+          deleteMany: {
+            args: Prisma.OrderDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.OrderUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.OrderUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderPayload>[]
+          }
+          upsert: {
+            args: Prisma.OrderUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderPayload>
+          }
+          aggregate: {
+            args: Prisma.OrderAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateOrder>
+          }
+          groupBy: {
+            args: Prisma.OrderGroupByArgs<ExtArgs>
+            result: $Utils.Optional<OrderGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.OrderCountArgs<ExtArgs>
+            result: $Utils.Optional<OrderCountAggregateOutputType> | number
           }
         }
       }
@@ -1262,8 +1393,9 @@ export namespace Prisma {
     session?: SessionOmit
     verificationToken?: VerificationTokenOmit
     profile?: ProfileOmit
-    movieFavoriteList?: MovieFavoriteListOmit
-    movie?: MovieOmit
+    favoriteList?: FavoriteListOmit
+    favoriteItem?: FavoriteItemOmit
+    order?: OrderOmit
   }
 
   /* Types for Logging */
@@ -1394,64 +1526,64 @@ export namespace Prisma {
 
 
   /**
-   * Count Type MovieFavoriteListCountOutputType
+   * Count Type FavoriteListCountOutputType
    */
 
-  export type MovieFavoriteListCountOutputType = {
-    movies: number
+  export type FavoriteListCountOutputType = {
+    favoriteList: number
   }
 
-  export type MovieFavoriteListCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    movies?: boolean | MovieFavoriteListCountOutputTypeCountMoviesArgs
+  export type FavoriteListCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    favoriteList?: boolean | FavoriteListCountOutputTypeCountFavoriteListArgs
   }
 
   // Custom InputTypes
   /**
-   * MovieFavoriteListCountOutputType without action
+   * FavoriteListCountOutputType without action
    */
-  export type MovieFavoriteListCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the MovieFavoriteListCountOutputType
+     * Select specific fields to fetch from the FavoriteListCountOutputType
      */
-    select?: MovieFavoriteListCountOutputTypeSelect<ExtArgs> | null
+    select?: FavoriteListCountOutputTypeSelect<ExtArgs> | null
   }
 
   /**
-   * MovieFavoriteListCountOutputType without action
+   * FavoriteListCountOutputType without action
    */
-  export type MovieFavoriteListCountOutputTypeCountMoviesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MovieWhereInput
+  export type FavoriteListCountOutputTypeCountFavoriteListArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FavoriteItemWhereInput
   }
 
 
   /**
-   * Count Type MovieCountOutputType
+   * Count Type FavoriteItemCountOutputType
    */
 
-  export type MovieCountOutputType = {
+  export type FavoriteItemCountOutputType = {
     favoriteLists: number
   }
 
-  export type MovieCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    favoriteLists?: boolean | MovieCountOutputTypeCountFavoriteListsArgs
+  export type FavoriteItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    favoriteLists?: boolean | FavoriteItemCountOutputTypeCountFavoriteListsArgs
   }
 
   // Custom InputTypes
   /**
-   * MovieCountOutputType without action
+   * FavoriteItemCountOutputType without action
    */
-  export type MovieCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteItemCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the MovieCountOutputType
+     * Select specific fields to fetch from the FavoriteItemCountOutputType
      */
-    select?: MovieCountOutputTypeSelect<ExtArgs> | null
+    select?: FavoriteItemCountOutputTypeSelect<ExtArgs> | null
   }
 
   /**
-   * MovieCountOutputType without action
+   * FavoriteItemCountOutputType without action
    */
-  export type MovieCountOutputTypeCountFavoriteListsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MovieFavoriteListWhereInput
+  export type FavoriteItemCountOutputTypeCountFavoriteListsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FavoriteListWhereInput
   }
 
 
@@ -1665,6 +1797,7 @@ export namespace Prisma {
     resetPasswordExpiresAt?: boolean
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     profiles?: boolean | User$profilesArgs<ExtArgs>
+    orders?: boolean | User$ordersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1711,6 +1844,7 @@ export namespace Prisma {
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     profiles?: boolean | User$profilesArgs<ExtArgs>
+    orders?: boolean | User$ordersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1721,6 +1855,7 @@ export namespace Prisma {
     objects: {
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       profiles: Prisma.$ProfilePayload<ExtArgs>[]
+      orders: Prisma.$OrderPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2129,6 +2264,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     profiles<T extends User$profilesArgs<ExtArgs> = {}>(args?: Subset<T, User$profilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    orders<T extends User$ordersArgs<ExtArgs> = {}>(args?: Subset<T, User$ordersArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2601,6 +2737,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ProfileScalarFieldEnum | ProfileScalarFieldEnum[]
+  }
+
+  /**
+   * User.orders
+   */
+  export type User$ordersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    where?: OrderWhereInput
   }
 
   /**
@@ -4832,7 +4987,7 @@ export namespace Prisma {
     image?: boolean
     userId?: boolean
     User?: boolean | UserDefaultArgs<ExtArgs>
-    moviesFavoriteList?: boolean | Profile$moviesFavoriteListArgs<ExtArgs>
+    favoriteList?: boolean | Profile$favoriteListArgs<ExtArgs>
   }, ExtArgs["result"]["profile"]>
 
   export type ProfileSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4861,7 +5016,7 @@ export namespace Prisma {
   export type ProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "image" | "userId", ExtArgs["result"]["profile"]>
   export type ProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     User?: boolean | UserDefaultArgs<ExtArgs>
-    moviesFavoriteList?: boolean | Profile$moviesFavoriteListArgs<ExtArgs>
+    favoriteList?: boolean | Profile$favoriteListArgs<ExtArgs>
   }
   export type ProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     User?: boolean | UserDefaultArgs<ExtArgs>
@@ -4874,7 +5029,7 @@ export namespace Prisma {
     name: "Profile"
     objects: {
       User: Prisma.$UserPayload<ExtArgs>
-      moviesFavoriteList: Prisma.$MovieFavoriteListPayload<ExtArgs> | null
+      favoriteList: Prisma.$FavoriteListPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5276,7 +5431,7 @@ export namespace Prisma {
   export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     User<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    moviesFavoriteList<T extends Profile$moviesFavoriteListArgs<ExtArgs> = {}>(args?: Subset<T, Profile$moviesFavoriteListArgs<ExtArgs>>): Prisma__MovieFavoriteListClient<$Result.GetResult<Prisma.$MovieFavoriteListPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    favoriteList<T extends Profile$favoriteListArgs<ExtArgs> = {}>(args?: Subset<T, Profile$favoriteListArgs<ExtArgs>>): Prisma__FavoriteListClient<$Result.GetResult<Prisma.$FavoriteListPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5706,22 +5861,22 @@ export namespace Prisma {
   }
 
   /**
-   * Profile.moviesFavoriteList
+   * Profile.favoriteList
    */
-  export type Profile$moviesFavoriteListArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Profile$favoriteListArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the MovieFavoriteList
+     * Select specific fields to fetch from the FavoriteList
      */
-    select?: MovieFavoriteListSelect<ExtArgs> | null
+    select?: FavoriteListSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the MovieFavoriteList
+     * Omit specific fields from the FavoriteList
      */
-    omit?: MovieFavoriteListOmit<ExtArgs> | null
+    omit?: FavoriteListOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieFavoriteListInclude<ExtArgs> | null
-    where?: MovieFavoriteListWhereInput
+    include?: FavoriteListInclude<ExtArgs> | null
+    where?: FavoriteListWhereInput
   }
 
   /**
@@ -5744,319 +5899,319 @@ export namespace Prisma {
 
 
   /**
-   * Model MovieFavoriteList
+   * Model FavoriteList
    */
 
-  export type AggregateMovieFavoriteList = {
-    _count: MovieFavoriteListCountAggregateOutputType | null
-    _min: MovieFavoriteListMinAggregateOutputType | null
-    _max: MovieFavoriteListMaxAggregateOutputType | null
+  export type AggregateFavoriteList = {
+    _count: FavoriteListCountAggregateOutputType | null
+    _min: FavoriteListMinAggregateOutputType | null
+    _max: FavoriteListMaxAggregateOutputType | null
   }
 
-  export type MovieFavoriteListMinAggregateOutputType = {
+  export type FavoriteListMinAggregateOutputType = {
     id: string | null
     profileId: string | null
   }
 
-  export type MovieFavoriteListMaxAggregateOutputType = {
+  export type FavoriteListMaxAggregateOutputType = {
     id: string | null
     profileId: string | null
   }
 
-  export type MovieFavoriteListCountAggregateOutputType = {
+  export type FavoriteListCountAggregateOutputType = {
     id: number
     profileId: number
     _all: number
   }
 
 
-  export type MovieFavoriteListMinAggregateInputType = {
+  export type FavoriteListMinAggregateInputType = {
     id?: true
     profileId?: true
   }
 
-  export type MovieFavoriteListMaxAggregateInputType = {
+  export type FavoriteListMaxAggregateInputType = {
     id?: true
     profileId?: true
   }
 
-  export type MovieFavoriteListCountAggregateInputType = {
+  export type FavoriteListCountAggregateInputType = {
     id?: true
     profileId?: true
     _all?: true
   }
 
-  export type MovieFavoriteListAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which MovieFavoriteList to aggregate.
+     * Filter which FavoriteList to aggregate.
      */
-    where?: MovieFavoriteListWhereInput
+    where?: FavoriteListWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of MovieFavoriteLists to fetch.
+     * Determine the order of FavoriteLists to fetch.
      */
-    orderBy?: MovieFavoriteListOrderByWithRelationInput | MovieFavoriteListOrderByWithRelationInput[]
+    orderBy?: FavoriteListOrderByWithRelationInput | FavoriteListOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: MovieFavoriteListWhereUniqueInput
+    cursor?: FavoriteListWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` MovieFavoriteLists from the position of the cursor.
+     * Take `±n` FavoriteLists from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` MovieFavoriteLists.
+     * Skip the first `n` FavoriteLists.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned MovieFavoriteLists
+     * Count returned FavoriteLists
     **/
-    _count?: true | MovieFavoriteListCountAggregateInputType
+    _count?: true | FavoriteListCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: MovieFavoriteListMinAggregateInputType
+    _min?: FavoriteListMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: MovieFavoriteListMaxAggregateInputType
+    _max?: FavoriteListMaxAggregateInputType
   }
 
-  export type GetMovieFavoriteListAggregateType<T extends MovieFavoriteListAggregateArgs> = {
-        [P in keyof T & keyof AggregateMovieFavoriteList]: P extends '_count' | 'count'
+  export type GetFavoriteListAggregateType<T extends FavoriteListAggregateArgs> = {
+        [P in keyof T & keyof AggregateFavoriteList]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateMovieFavoriteList[P]>
-      : GetScalarType<T[P], AggregateMovieFavoriteList[P]>
+        : GetScalarType<T[P], AggregateFavoriteList[P]>
+      : GetScalarType<T[P], AggregateFavoriteList[P]>
   }
 
 
 
 
-  export type MovieFavoriteListGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MovieFavoriteListWhereInput
-    orderBy?: MovieFavoriteListOrderByWithAggregationInput | MovieFavoriteListOrderByWithAggregationInput[]
-    by: MovieFavoriteListScalarFieldEnum[] | MovieFavoriteListScalarFieldEnum
-    having?: MovieFavoriteListScalarWhereWithAggregatesInput
+  export type FavoriteListGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FavoriteListWhereInput
+    orderBy?: FavoriteListOrderByWithAggregationInput | FavoriteListOrderByWithAggregationInput[]
+    by: FavoriteListScalarFieldEnum[] | FavoriteListScalarFieldEnum
+    having?: FavoriteListScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: MovieFavoriteListCountAggregateInputType | true
-    _min?: MovieFavoriteListMinAggregateInputType
-    _max?: MovieFavoriteListMaxAggregateInputType
+    _count?: FavoriteListCountAggregateInputType | true
+    _min?: FavoriteListMinAggregateInputType
+    _max?: FavoriteListMaxAggregateInputType
   }
 
-  export type MovieFavoriteListGroupByOutputType = {
+  export type FavoriteListGroupByOutputType = {
     id: string
     profileId: string
-    _count: MovieFavoriteListCountAggregateOutputType | null
-    _min: MovieFavoriteListMinAggregateOutputType | null
-    _max: MovieFavoriteListMaxAggregateOutputType | null
+    _count: FavoriteListCountAggregateOutputType | null
+    _min: FavoriteListMinAggregateOutputType | null
+    _max: FavoriteListMaxAggregateOutputType | null
   }
 
-  type GetMovieFavoriteListGroupByPayload<T extends MovieFavoriteListGroupByArgs> = Prisma.PrismaPromise<
+  type GetFavoriteListGroupByPayload<T extends FavoriteListGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<MovieFavoriteListGroupByOutputType, T['by']> &
+      PickEnumerable<FavoriteListGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof MovieFavoriteListGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof FavoriteListGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], MovieFavoriteListGroupByOutputType[P]>
-            : GetScalarType<T[P], MovieFavoriteListGroupByOutputType[P]>
+              : GetScalarType<T[P], FavoriteListGroupByOutputType[P]>
+            : GetScalarType<T[P], FavoriteListGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type MovieFavoriteListSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type FavoriteListSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     profileId?: boolean
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
-    movies?: boolean | MovieFavoriteList$moviesArgs<ExtArgs>
-    _count?: boolean | MovieFavoriteListCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["movieFavoriteList"]>
+    favoriteList?: boolean | FavoriteList$favoriteListArgs<ExtArgs>
+    _count?: boolean | FavoriteListCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["favoriteList"]>
 
-  export type MovieFavoriteListSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type FavoriteListSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     profileId?: boolean
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["movieFavoriteList"]>
+  }, ExtArgs["result"]["favoriteList"]>
 
-  export type MovieFavoriteListSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type FavoriteListSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     profileId?: boolean
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["movieFavoriteList"]>
+  }, ExtArgs["result"]["favoriteList"]>
 
-  export type MovieFavoriteListSelectScalar = {
+  export type FavoriteListSelectScalar = {
     id?: boolean
     profileId?: boolean
   }
 
-  export type MovieFavoriteListOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId", ExtArgs["result"]["movieFavoriteList"]>
-  export type MovieFavoriteListInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId", ExtArgs["result"]["favoriteList"]>
+  export type FavoriteListInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
-    movies?: boolean | MovieFavoriteList$moviesArgs<ExtArgs>
-    _count?: boolean | MovieFavoriteListCountOutputTypeDefaultArgs<ExtArgs>
+    favoriteList?: boolean | FavoriteList$favoriteListArgs<ExtArgs>
+    _count?: boolean | FavoriteListCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type MovieFavoriteListIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
   }
-  export type MovieFavoriteListIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
   }
 
-  export type $MovieFavoriteListPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "MovieFavoriteList"
+  export type $FavoriteListPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FavoriteList"
     objects: {
       profile: Prisma.$ProfilePayload<ExtArgs>
-      movies: Prisma.$MoviePayload<ExtArgs>[]
+      favoriteList: Prisma.$FavoriteItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       profileId: string
-    }, ExtArgs["result"]["movieFavoriteList"]>
+    }, ExtArgs["result"]["favoriteList"]>
     composites: {}
   }
 
-  type MovieFavoriteListGetPayload<S extends boolean | null | undefined | MovieFavoriteListDefaultArgs> = $Result.GetResult<Prisma.$MovieFavoriteListPayload, S>
+  type FavoriteListGetPayload<S extends boolean | null | undefined | FavoriteListDefaultArgs> = $Result.GetResult<Prisma.$FavoriteListPayload, S>
 
-  type MovieFavoriteListCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<MovieFavoriteListFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: MovieFavoriteListCountAggregateInputType | true
+  type FavoriteListCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FavoriteListFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FavoriteListCountAggregateInputType | true
     }
 
-  export interface MovieFavoriteListDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MovieFavoriteList'], meta: { name: 'MovieFavoriteList' } }
+  export interface FavoriteListDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FavoriteList'], meta: { name: 'FavoriteList' } }
     /**
-     * Find zero or one MovieFavoriteList that matches the filter.
-     * @param {MovieFavoriteListFindUniqueArgs} args - Arguments to find a MovieFavoriteList
+     * Find zero or one FavoriteList that matches the filter.
+     * @param {FavoriteListFindUniqueArgs} args - Arguments to find a FavoriteList
      * @example
-     * // Get one MovieFavoriteList
-     * const movieFavoriteList = await prisma.movieFavoriteList.findUnique({
+     * // Get one FavoriteList
+     * const favoriteList = await prisma.favoriteList.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends MovieFavoriteListFindUniqueArgs>(args: SelectSubset<T, MovieFavoriteListFindUniqueArgs<ExtArgs>>): Prisma__MovieFavoriteListClient<$Result.GetResult<Prisma.$MovieFavoriteListPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends FavoriteListFindUniqueArgs>(args: SelectSubset<T, FavoriteListFindUniqueArgs<ExtArgs>>): Prisma__FavoriteListClient<$Result.GetResult<Prisma.$FavoriteListPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one MovieFavoriteList that matches the filter or throw an error with `error.code='P2025'`
+     * Find one FavoriteList that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {MovieFavoriteListFindUniqueOrThrowArgs} args - Arguments to find a MovieFavoriteList
+     * @param {FavoriteListFindUniqueOrThrowArgs} args - Arguments to find a FavoriteList
      * @example
-     * // Get one MovieFavoriteList
-     * const movieFavoriteList = await prisma.movieFavoriteList.findUniqueOrThrow({
+     * // Get one FavoriteList
+     * const favoriteList = await prisma.favoriteList.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends MovieFavoriteListFindUniqueOrThrowArgs>(args: SelectSubset<T, MovieFavoriteListFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MovieFavoriteListClient<$Result.GetResult<Prisma.$MovieFavoriteListPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends FavoriteListFindUniqueOrThrowArgs>(args: SelectSubset<T, FavoriteListFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FavoriteListClient<$Result.GetResult<Prisma.$FavoriteListPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first MovieFavoriteList that matches the filter.
+     * Find the first FavoriteList that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MovieFavoriteListFindFirstArgs} args - Arguments to find a MovieFavoriteList
+     * @param {FavoriteListFindFirstArgs} args - Arguments to find a FavoriteList
      * @example
-     * // Get one MovieFavoriteList
-     * const movieFavoriteList = await prisma.movieFavoriteList.findFirst({
+     * // Get one FavoriteList
+     * const favoriteList = await prisma.favoriteList.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends MovieFavoriteListFindFirstArgs>(args?: SelectSubset<T, MovieFavoriteListFindFirstArgs<ExtArgs>>): Prisma__MovieFavoriteListClient<$Result.GetResult<Prisma.$MovieFavoriteListPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends FavoriteListFindFirstArgs>(args?: SelectSubset<T, FavoriteListFindFirstArgs<ExtArgs>>): Prisma__FavoriteListClient<$Result.GetResult<Prisma.$FavoriteListPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first MovieFavoriteList that matches the filter or
+     * Find the first FavoriteList that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MovieFavoriteListFindFirstOrThrowArgs} args - Arguments to find a MovieFavoriteList
+     * @param {FavoriteListFindFirstOrThrowArgs} args - Arguments to find a FavoriteList
      * @example
-     * // Get one MovieFavoriteList
-     * const movieFavoriteList = await prisma.movieFavoriteList.findFirstOrThrow({
+     * // Get one FavoriteList
+     * const favoriteList = await prisma.favoriteList.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends MovieFavoriteListFindFirstOrThrowArgs>(args?: SelectSubset<T, MovieFavoriteListFindFirstOrThrowArgs<ExtArgs>>): Prisma__MovieFavoriteListClient<$Result.GetResult<Prisma.$MovieFavoriteListPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends FavoriteListFindFirstOrThrowArgs>(args?: SelectSubset<T, FavoriteListFindFirstOrThrowArgs<ExtArgs>>): Prisma__FavoriteListClient<$Result.GetResult<Prisma.$FavoriteListPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more MovieFavoriteLists that matches the filter.
+     * Find zero or more FavoriteLists that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MovieFavoriteListFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {FavoriteListFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all MovieFavoriteLists
-     * const movieFavoriteLists = await prisma.movieFavoriteList.findMany()
+     * // Get all FavoriteLists
+     * const favoriteLists = await prisma.favoriteList.findMany()
      * 
-     * // Get first 10 MovieFavoriteLists
-     * const movieFavoriteLists = await prisma.movieFavoriteList.findMany({ take: 10 })
+     * // Get first 10 FavoriteLists
+     * const favoriteLists = await prisma.favoriteList.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const movieFavoriteListWithIdOnly = await prisma.movieFavoriteList.findMany({ select: { id: true } })
+     * const favoriteListWithIdOnly = await prisma.favoriteList.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends MovieFavoriteListFindManyArgs>(args?: SelectSubset<T, MovieFavoriteListFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MovieFavoriteListPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends FavoriteListFindManyArgs>(args?: SelectSubset<T, FavoriteListFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteListPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a MovieFavoriteList.
-     * @param {MovieFavoriteListCreateArgs} args - Arguments to create a MovieFavoriteList.
+     * Create a FavoriteList.
+     * @param {FavoriteListCreateArgs} args - Arguments to create a FavoriteList.
      * @example
-     * // Create one MovieFavoriteList
-     * const MovieFavoriteList = await prisma.movieFavoriteList.create({
+     * // Create one FavoriteList
+     * const FavoriteList = await prisma.favoriteList.create({
      *   data: {
-     *     // ... data to create a MovieFavoriteList
+     *     // ... data to create a FavoriteList
      *   }
      * })
      * 
      */
-    create<T extends MovieFavoriteListCreateArgs>(args: SelectSubset<T, MovieFavoriteListCreateArgs<ExtArgs>>): Prisma__MovieFavoriteListClient<$Result.GetResult<Prisma.$MovieFavoriteListPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends FavoriteListCreateArgs>(args: SelectSubset<T, FavoriteListCreateArgs<ExtArgs>>): Prisma__FavoriteListClient<$Result.GetResult<Prisma.$FavoriteListPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many MovieFavoriteLists.
-     * @param {MovieFavoriteListCreateManyArgs} args - Arguments to create many MovieFavoriteLists.
+     * Create many FavoriteLists.
+     * @param {FavoriteListCreateManyArgs} args - Arguments to create many FavoriteLists.
      * @example
-     * // Create many MovieFavoriteLists
-     * const movieFavoriteList = await prisma.movieFavoriteList.createMany({
+     * // Create many FavoriteLists
+     * const favoriteList = await prisma.favoriteList.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends MovieFavoriteListCreateManyArgs>(args?: SelectSubset<T, MovieFavoriteListCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends FavoriteListCreateManyArgs>(args?: SelectSubset<T, FavoriteListCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many MovieFavoriteLists and returns the data saved in the database.
-     * @param {MovieFavoriteListCreateManyAndReturnArgs} args - Arguments to create many MovieFavoriteLists.
+     * Create many FavoriteLists and returns the data saved in the database.
+     * @param {FavoriteListCreateManyAndReturnArgs} args - Arguments to create many FavoriteLists.
      * @example
-     * // Create many MovieFavoriteLists
-     * const movieFavoriteList = await prisma.movieFavoriteList.createManyAndReturn({
+     * // Create many FavoriteLists
+     * const favoriteList = await prisma.favoriteList.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many MovieFavoriteLists and only return the `id`
-     * const movieFavoriteListWithIdOnly = await prisma.movieFavoriteList.createManyAndReturn({
+     * // Create many FavoriteLists and only return the `id`
+     * const favoriteListWithIdOnly = await prisma.favoriteList.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -6066,28 +6221,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends MovieFavoriteListCreateManyAndReturnArgs>(args?: SelectSubset<T, MovieFavoriteListCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MovieFavoriteListPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends FavoriteListCreateManyAndReturnArgs>(args?: SelectSubset<T, FavoriteListCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteListPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a MovieFavoriteList.
-     * @param {MovieFavoriteListDeleteArgs} args - Arguments to delete one MovieFavoriteList.
+     * Delete a FavoriteList.
+     * @param {FavoriteListDeleteArgs} args - Arguments to delete one FavoriteList.
      * @example
-     * // Delete one MovieFavoriteList
-     * const MovieFavoriteList = await prisma.movieFavoriteList.delete({
+     * // Delete one FavoriteList
+     * const FavoriteList = await prisma.favoriteList.delete({
      *   where: {
-     *     // ... filter to delete one MovieFavoriteList
+     *     // ... filter to delete one FavoriteList
      *   }
      * })
      * 
      */
-    delete<T extends MovieFavoriteListDeleteArgs>(args: SelectSubset<T, MovieFavoriteListDeleteArgs<ExtArgs>>): Prisma__MovieFavoriteListClient<$Result.GetResult<Prisma.$MovieFavoriteListPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends FavoriteListDeleteArgs>(args: SelectSubset<T, FavoriteListDeleteArgs<ExtArgs>>): Prisma__FavoriteListClient<$Result.GetResult<Prisma.$FavoriteListPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one MovieFavoriteList.
-     * @param {MovieFavoriteListUpdateArgs} args - Arguments to update one MovieFavoriteList.
+     * Update one FavoriteList.
+     * @param {FavoriteListUpdateArgs} args - Arguments to update one FavoriteList.
      * @example
-     * // Update one MovieFavoriteList
-     * const movieFavoriteList = await prisma.movieFavoriteList.update({
+     * // Update one FavoriteList
+     * const favoriteList = await prisma.favoriteList.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -6097,30 +6252,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends MovieFavoriteListUpdateArgs>(args: SelectSubset<T, MovieFavoriteListUpdateArgs<ExtArgs>>): Prisma__MovieFavoriteListClient<$Result.GetResult<Prisma.$MovieFavoriteListPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends FavoriteListUpdateArgs>(args: SelectSubset<T, FavoriteListUpdateArgs<ExtArgs>>): Prisma__FavoriteListClient<$Result.GetResult<Prisma.$FavoriteListPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more MovieFavoriteLists.
-     * @param {MovieFavoriteListDeleteManyArgs} args - Arguments to filter MovieFavoriteLists to delete.
+     * Delete zero or more FavoriteLists.
+     * @param {FavoriteListDeleteManyArgs} args - Arguments to filter FavoriteLists to delete.
      * @example
-     * // Delete a few MovieFavoriteLists
-     * const { count } = await prisma.movieFavoriteList.deleteMany({
+     * // Delete a few FavoriteLists
+     * const { count } = await prisma.favoriteList.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends MovieFavoriteListDeleteManyArgs>(args?: SelectSubset<T, MovieFavoriteListDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends FavoriteListDeleteManyArgs>(args?: SelectSubset<T, FavoriteListDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more MovieFavoriteLists.
+     * Update zero or more FavoriteLists.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MovieFavoriteListUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {FavoriteListUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many MovieFavoriteLists
-     * const movieFavoriteList = await prisma.movieFavoriteList.updateMany({
+     * // Update many FavoriteLists
+     * const favoriteList = await prisma.favoriteList.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -6130,14 +6285,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends MovieFavoriteListUpdateManyArgs>(args: SelectSubset<T, MovieFavoriteListUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends FavoriteListUpdateManyArgs>(args: SelectSubset<T, FavoriteListUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more MovieFavoriteLists and returns the data updated in the database.
-     * @param {MovieFavoriteListUpdateManyAndReturnArgs} args - Arguments to update many MovieFavoriteLists.
+     * Update zero or more FavoriteLists and returns the data updated in the database.
+     * @param {FavoriteListUpdateManyAndReturnArgs} args - Arguments to update many FavoriteLists.
      * @example
-     * // Update many MovieFavoriteLists
-     * const movieFavoriteList = await prisma.movieFavoriteList.updateManyAndReturn({
+     * // Update many FavoriteLists
+     * const favoriteList = await prisma.favoriteList.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -6146,8 +6301,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more MovieFavoriteLists and only return the `id`
-     * const movieFavoriteListWithIdOnly = await prisma.movieFavoriteList.updateManyAndReturn({
+     * // Update zero or more FavoriteLists and only return the `id`
+     * const favoriteListWithIdOnly = await prisma.favoriteList.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -6160,56 +6315,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends MovieFavoriteListUpdateManyAndReturnArgs>(args: SelectSubset<T, MovieFavoriteListUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MovieFavoriteListPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends FavoriteListUpdateManyAndReturnArgs>(args: SelectSubset<T, FavoriteListUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteListPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one MovieFavoriteList.
-     * @param {MovieFavoriteListUpsertArgs} args - Arguments to update or create a MovieFavoriteList.
+     * Create or update one FavoriteList.
+     * @param {FavoriteListUpsertArgs} args - Arguments to update or create a FavoriteList.
      * @example
-     * // Update or create a MovieFavoriteList
-     * const movieFavoriteList = await prisma.movieFavoriteList.upsert({
+     * // Update or create a FavoriteList
+     * const favoriteList = await prisma.favoriteList.upsert({
      *   create: {
-     *     // ... data to create a MovieFavoriteList
+     *     // ... data to create a FavoriteList
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the MovieFavoriteList we want to update
+     *     // ... the filter for the FavoriteList we want to update
      *   }
      * })
      */
-    upsert<T extends MovieFavoriteListUpsertArgs>(args: SelectSubset<T, MovieFavoriteListUpsertArgs<ExtArgs>>): Prisma__MovieFavoriteListClient<$Result.GetResult<Prisma.$MovieFavoriteListPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends FavoriteListUpsertArgs>(args: SelectSubset<T, FavoriteListUpsertArgs<ExtArgs>>): Prisma__FavoriteListClient<$Result.GetResult<Prisma.$FavoriteListPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of MovieFavoriteLists.
+     * Count the number of FavoriteLists.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MovieFavoriteListCountArgs} args - Arguments to filter MovieFavoriteLists to count.
+     * @param {FavoriteListCountArgs} args - Arguments to filter FavoriteLists to count.
      * @example
-     * // Count the number of MovieFavoriteLists
-     * const count = await prisma.movieFavoriteList.count({
+     * // Count the number of FavoriteLists
+     * const count = await prisma.favoriteList.count({
      *   where: {
-     *     // ... the filter for the MovieFavoriteLists we want to count
+     *     // ... the filter for the FavoriteLists we want to count
      *   }
      * })
     **/
-    count<T extends MovieFavoriteListCountArgs>(
-      args?: Subset<T, MovieFavoriteListCountArgs>,
+    count<T extends FavoriteListCountArgs>(
+      args?: Subset<T, FavoriteListCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], MovieFavoriteListCountAggregateOutputType>
+          : GetScalarType<T['select'], FavoriteListCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a MovieFavoriteList.
+     * Allows you to perform aggregations operations on a FavoriteList.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MovieFavoriteListAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {FavoriteListAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -6229,13 +6384,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends MovieFavoriteListAggregateArgs>(args: Subset<T, MovieFavoriteListAggregateArgs>): Prisma.PrismaPromise<GetMovieFavoriteListAggregateType<T>>
+    aggregate<T extends FavoriteListAggregateArgs>(args: Subset<T, FavoriteListAggregateArgs>): Prisma.PrismaPromise<GetFavoriteListAggregateType<T>>
 
     /**
-     * Group by MovieFavoriteList.
+     * Group by FavoriteList.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MovieFavoriteListGroupByArgs} args - Group by arguments.
+     * @param {FavoriteListGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -6250,14 +6405,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends MovieFavoriteListGroupByArgs,
+      T extends FavoriteListGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: MovieFavoriteListGroupByArgs['orderBy'] }
-        : { orderBy?: MovieFavoriteListGroupByArgs['orderBy'] },
+        ? { orderBy: FavoriteListGroupByArgs['orderBy'] }
+        : { orderBy?: FavoriteListGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -6306,23 +6461,23 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, MovieFavoriteListGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMovieFavoriteListGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, FavoriteListGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFavoriteListGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the MovieFavoriteList model
+   * Fields of the FavoriteList model
    */
-  readonly fields: MovieFavoriteListFieldRefs;
+  readonly fields: FavoriteListFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for MovieFavoriteList.
+   * The delegate class that acts as a "Promise-like" for FavoriteList.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__MovieFavoriteListClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__FavoriteListClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     profile<T extends ProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfileDefaultArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    movies<T extends MovieFavoriteList$moviesArgs<ExtArgs> = {}>(args?: Subset<T, MovieFavoriteList$moviesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    favoriteList<T extends FavoriteList$favoriteListArgs<ExtArgs> = {}>(args?: Subset<T, FavoriteList$favoriteListArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6349,474 +6504,472 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the MovieFavoriteList model
+   * Fields of the FavoriteList model
    */ 
-  interface MovieFavoriteListFieldRefs {
-    readonly id: FieldRef<"MovieFavoriteList", 'String'>
-    readonly profileId: FieldRef<"MovieFavoriteList", 'String'>
+  interface FavoriteListFieldRefs {
+    readonly id: FieldRef<"FavoriteList", 'String'>
+    readonly profileId: FieldRef<"FavoriteList", 'String'>
   }
     
 
   // Custom InputTypes
   /**
-   * MovieFavoriteList findUnique
+   * FavoriteList findUnique
    */
-  export type MovieFavoriteListFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the MovieFavoriteList
+     * Select specific fields to fetch from the FavoriteList
      */
-    select?: MovieFavoriteListSelect<ExtArgs> | null
+    select?: FavoriteListSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the MovieFavoriteList
+     * Omit specific fields from the FavoriteList
      */
-    omit?: MovieFavoriteListOmit<ExtArgs> | null
+    omit?: FavoriteListOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieFavoriteListInclude<ExtArgs> | null
+    include?: FavoriteListInclude<ExtArgs> | null
     /**
-     * Filter, which MovieFavoriteList to fetch.
+     * Filter, which FavoriteList to fetch.
      */
-    where: MovieFavoriteListWhereUniqueInput
+    where: FavoriteListWhereUniqueInput
   }
 
   /**
-   * MovieFavoriteList findUniqueOrThrow
+   * FavoriteList findUniqueOrThrow
    */
-  export type MovieFavoriteListFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the MovieFavoriteList
+     * Select specific fields to fetch from the FavoriteList
      */
-    select?: MovieFavoriteListSelect<ExtArgs> | null
+    select?: FavoriteListSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the MovieFavoriteList
+     * Omit specific fields from the FavoriteList
      */
-    omit?: MovieFavoriteListOmit<ExtArgs> | null
+    omit?: FavoriteListOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieFavoriteListInclude<ExtArgs> | null
+    include?: FavoriteListInclude<ExtArgs> | null
     /**
-     * Filter, which MovieFavoriteList to fetch.
+     * Filter, which FavoriteList to fetch.
      */
-    where: MovieFavoriteListWhereUniqueInput
+    where: FavoriteListWhereUniqueInput
   }
 
   /**
-   * MovieFavoriteList findFirst
+   * FavoriteList findFirst
    */
-  export type MovieFavoriteListFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the MovieFavoriteList
+     * Select specific fields to fetch from the FavoriteList
      */
-    select?: MovieFavoriteListSelect<ExtArgs> | null
+    select?: FavoriteListSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the MovieFavoriteList
+     * Omit specific fields from the FavoriteList
      */
-    omit?: MovieFavoriteListOmit<ExtArgs> | null
+    omit?: FavoriteListOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieFavoriteListInclude<ExtArgs> | null
+    include?: FavoriteListInclude<ExtArgs> | null
     /**
-     * Filter, which MovieFavoriteList to fetch.
+     * Filter, which FavoriteList to fetch.
      */
-    where?: MovieFavoriteListWhereInput
+    where?: FavoriteListWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of MovieFavoriteLists to fetch.
+     * Determine the order of FavoriteLists to fetch.
      */
-    orderBy?: MovieFavoriteListOrderByWithRelationInput | MovieFavoriteListOrderByWithRelationInput[]
+    orderBy?: FavoriteListOrderByWithRelationInput | FavoriteListOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for MovieFavoriteLists.
+     * Sets the position for searching for FavoriteLists.
      */
-    cursor?: MovieFavoriteListWhereUniqueInput
+    cursor?: FavoriteListWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` MovieFavoriteLists from the position of the cursor.
+     * Take `±n` FavoriteLists from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` MovieFavoriteLists.
+     * Skip the first `n` FavoriteLists.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of MovieFavoriteLists.
+     * Filter by unique combinations of FavoriteLists.
      */
-    distinct?: MovieFavoriteListScalarFieldEnum | MovieFavoriteListScalarFieldEnum[]
+    distinct?: FavoriteListScalarFieldEnum | FavoriteListScalarFieldEnum[]
   }
 
   /**
-   * MovieFavoriteList findFirstOrThrow
+   * FavoriteList findFirstOrThrow
    */
-  export type MovieFavoriteListFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the MovieFavoriteList
+     * Select specific fields to fetch from the FavoriteList
      */
-    select?: MovieFavoriteListSelect<ExtArgs> | null
+    select?: FavoriteListSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the MovieFavoriteList
+     * Omit specific fields from the FavoriteList
      */
-    omit?: MovieFavoriteListOmit<ExtArgs> | null
+    omit?: FavoriteListOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieFavoriteListInclude<ExtArgs> | null
+    include?: FavoriteListInclude<ExtArgs> | null
     /**
-     * Filter, which MovieFavoriteList to fetch.
+     * Filter, which FavoriteList to fetch.
      */
-    where?: MovieFavoriteListWhereInput
+    where?: FavoriteListWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of MovieFavoriteLists to fetch.
+     * Determine the order of FavoriteLists to fetch.
      */
-    orderBy?: MovieFavoriteListOrderByWithRelationInput | MovieFavoriteListOrderByWithRelationInput[]
+    orderBy?: FavoriteListOrderByWithRelationInput | FavoriteListOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for MovieFavoriteLists.
+     * Sets the position for searching for FavoriteLists.
      */
-    cursor?: MovieFavoriteListWhereUniqueInput
+    cursor?: FavoriteListWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` MovieFavoriteLists from the position of the cursor.
+     * Take `±n` FavoriteLists from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` MovieFavoriteLists.
+     * Skip the first `n` FavoriteLists.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of MovieFavoriteLists.
+     * Filter by unique combinations of FavoriteLists.
      */
-    distinct?: MovieFavoriteListScalarFieldEnum | MovieFavoriteListScalarFieldEnum[]
+    distinct?: FavoriteListScalarFieldEnum | FavoriteListScalarFieldEnum[]
   }
 
   /**
-   * MovieFavoriteList findMany
+   * FavoriteList findMany
    */
-  export type MovieFavoriteListFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the MovieFavoriteList
+     * Select specific fields to fetch from the FavoriteList
      */
-    select?: MovieFavoriteListSelect<ExtArgs> | null
+    select?: FavoriteListSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the MovieFavoriteList
+     * Omit specific fields from the FavoriteList
      */
-    omit?: MovieFavoriteListOmit<ExtArgs> | null
+    omit?: FavoriteListOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieFavoriteListInclude<ExtArgs> | null
+    include?: FavoriteListInclude<ExtArgs> | null
     /**
-     * Filter, which MovieFavoriteLists to fetch.
+     * Filter, which FavoriteLists to fetch.
      */
-    where?: MovieFavoriteListWhereInput
+    where?: FavoriteListWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of MovieFavoriteLists to fetch.
+     * Determine the order of FavoriteLists to fetch.
      */
-    orderBy?: MovieFavoriteListOrderByWithRelationInput | MovieFavoriteListOrderByWithRelationInput[]
+    orderBy?: FavoriteListOrderByWithRelationInput | FavoriteListOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing MovieFavoriteLists.
+     * Sets the position for listing FavoriteLists.
      */
-    cursor?: MovieFavoriteListWhereUniqueInput
+    cursor?: FavoriteListWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` MovieFavoriteLists from the position of the cursor.
+     * Take `±n` FavoriteLists from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` MovieFavoriteLists.
+     * Skip the first `n` FavoriteLists.
      */
     skip?: number
-    distinct?: MovieFavoriteListScalarFieldEnum | MovieFavoriteListScalarFieldEnum[]
+    distinct?: FavoriteListScalarFieldEnum | FavoriteListScalarFieldEnum[]
   }
 
   /**
-   * MovieFavoriteList create
+   * FavoriteList create
    */
-  export type MovieFavoriteListCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the MovieFavoriteList
+     * Select specific fields to fetch from the FavoriteList
      */
-    select?: MovieFavoriteListSelect<ExtArgs> | null
+    select?: FavoriteListSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the MovieFavoriteList
+     * Omit specific fields from the FavoriteList
      */
-    omit?: MovieFavoriteListOmit<ExtArgs> | null
+    omit?: FavoriteListOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieFavoriteListInclude<ExtArgs> | null
+    include?: FavoriteListInclude<ExtArgs> | null
     /**
-     * The data needed to create a MovieFavoriteList.
+     * The data needed to create a FavoriteList.
      */
-    data: XOR<MovieFavoriteListCreateInput, MovieFavoriteListUncheckedCreateInput>
+    data: XOR<FavoriteListCreateInput, FavoriteListUncheckedCreateInput>
   }
 
   /**
-   * MovieFavoriteList createMany
+   * FavoriteList createMany
    */
-  export type MovieFavoriteListCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many MovieFavoriteLists.
+     * The data used to create many FavoriteLists.
      */
-    data: MovieFavoriteListCreateManyInput | MovieFavoriteListCreateManyInput[]
+    data: FavoriteListCreateManyInput | FavoriteListCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * MovieFavoriteList createManyAndReturn
+   * FavoriteList createManyAndReturn
    */
-  export type MovieFavoriteListCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the MovieFavoriteList
+     * Select specific fields to fetch from the FavoriteList
      */
-    select?: MovieFavoriteListSelectCreateManyAndReturn<ExtArgs> | null
+    select?: FavoriteListSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the MovieFavoriteList
+     * Omit specific fields from the FavoriteList
      */
-    omit?: MovieFavoriteListOmit<ExtArgs> | null
+    omit?: FavoriteListOmit<ExtArgs> | null
     /**
-     * The data used to create many MovieFavoriteLists.
+     * The data used to create many FavoriteLists.
      */
-    data: MovieFavoriteListCreateManyInput | MovieFavoriteListCreateManyInput[]
+    data: FavoriteListCreateManyInput | FavoriteListCreateManyInput[]
     skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieFavoriteListIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: FavoriteListIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * MovieFavoriteList update
+   * FavoriteList update
    */
-  export type MovieFavoriteListUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the MovieFavoriteList
+     * Select specific fields to fetch from the FavoriteList
      */
-    select?: MovieFavoriteListSelect<ExtArgs> | null
+    select?: FavoriteListSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the MovieFavoriteList
+     * Omit specific fields from the FavoriteList
      */
-    omit?: MovieFavoriteListOmit<ExtArgs> | null
+    omit?: FavoriteListOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieFavoriteListInclude<ExtArgs> | null
+    include?: FavoriteListInclude<ExtArgs> | null
     /**
-     * The data needed to update a MovieFavoriteList.
+     * The data needed to update a FavoriteList.
      */
-    data: XOR<MovieFavoriteListUpdateInput, MovieFavoriteListUncheckedUpdateInput>
+    data: XOR<FavoriteListUpdateInput, FavoriteListUncheckedUpdateInput>
     /**
-     * Choose, which MovieFavoriteList to update.
+     * Choose, which FavoriteList to update.
      */
-    where: MovieFavoriteListWhereUniqueInput
+    where: FavoriteListWhereUniqueInput
   }
 
   /**
-   * MovieFavoriteList updateMany
+   * FavoriteList updateMany
    */
-  export type MovieFavoriteListUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update MovieFavoriteLists.
+     * The data used to update FavoriteLists.
      */
-    data: XOR<MovieFavoriteListUpdateManyMutationInput, MovieFavoriteListUncheckedUpdateManyInput>
+    data: XOR<FavoriteListUpdateManyMutationInput, FavoriteListUncheckedUpdateManyInput>
     /**
-     * Filter which MovieFavoriteLists to update
+     * Filter which FavoriteLists to update
      */
-    where?: MovieFavoriteListWhereInput
+    where?: FavoriteListWhereInput
     /**
-     * Limit how many MovieFavoriteLists to update.
+     * Limit how many FavoriteLists to update.
      */
     limit?: number
   }
 
   /**
-   * MovieFavoriteList updateManyAndReturn
+   * FavoriteList updateManyAndReturn
    */
-  export type MovieFavoriteListUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the MovieFavoriteList
+     * Select specific fields to fetch from the FavoriteList
      */
-    select?: MovieFavoriteListSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: FavoriteListSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the MovieFavoriteList
+     * Omit specific fields from the FavoriteList
      */
-    omit?: MovieFavoriteListOmit<ExtArgs> | null
+    omit?: FavoriteListOmit<ExtArgs> | null
     /**
-     * The data used to update MovieFavoriteLists.
+     * The data used to update FavoriteLists.
      */
-    data: XOR<MovieFavoriteListUpdateManyMutationInput, MovieFavoriteListUncheckedUpdateManyInput>
+    data: XOR<FavoriteListUpdateManyMutationInput, FavoriteListUncheckedUpdateManyInput>
     /**
-     * Filter which MovieFavoriteLists to update
+     * Filter which FavoriteLists to update
      */
-    where?: MovieFavoriteListWhereInput
+    where?: FavoriteListWhereInput
     /**
-     * Limit how many MovieFavoriteLists to update.
+     * Limit how many FavoriteLists to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieFavoriteListIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: FavoriteListIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * MovieFavoriteList upsert
+   * FavoriteList upsert
    */
-  export type MovieFavoriteListUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the MovieFavoriteList
+     * Select specific fields to fetch from the FavoriteList
      */
-    select?: MovieFavoriteListSelect<ExtArgs> | null
+    select?: FavoriteListSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the MovieFavoriteList
+     * Omit specific fields from the FavoriteList
      */
-    omit?: MovieFavoriteListOmit<ExtArgs> | null
+    omit?: FavoriteListOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieFavoriteListInclude<ExtArgs> | null
+    include?: FavoriteListInclude<ExtArgs> | null
     /**
-     * The filter to search for the MovieFavoriteList to update in case it exists.
+     * The filter to search for the FavoriteList to update in case it exists.
      */
-    where: MovieFavoriteListWhereUniqueInput
+    where: FavoriteListWhereUniqueInput
     /**
-     * In case the MovieFavoriteList found by the `where` argument doesn't exist, create a new MovieFavoriteList with this data.
+     * In case the FavoriteList found by the `where` argument doesn't exist, create a new FavoriteList with this data.
      */
-    create: XOR<MovieFavoriteListCreateInput, MovieFavoriteListUncheckedCreateInput>
+    create: XOR<FavoriteListCreateInput, FavoriteListUncheckedCreateInput>
     /**
-     * In case the MovieFavoriteList was found with the provided `where` argument, update it with this data.
+     * In case the FavoriteList was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<MovieFavoriteListUpdateInput, MovieFavoriteListUncheckedUpdateInput>
+    update: XOR<FavoriteListUpdateInput, FavoriteListUncheckedUpdateInput>
   }
 
   /**
-   * MovieFavoriteList delete
+   * FavoriteList delete
    */
-  export type MovieFavoriteListDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the MovieFavoriteList
+     * Select specific fields to fetch from the FavoriteList
      */
-    select?: MovieFavoriteListSelect<ExtArgs> | null
+    select?: FavoriteListSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the MovieFavoriteList
+     * Omit specific fields from the FavoriteList
      */
-    omit?: MovieFavoriteListOmit<ExtArgs> | null
+    omit?: FavoriteListOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieFavoriteListInclude<ExtArgs> | null
+    include?: FavoriteListInclude<ExtArgs> | null
     /**
-     * Filter which MovieFavoriteList to delete.
+     * Filter which FavoriteList to delete.
      */
-    where: MovieFavoriteListWhereUniqueInput
+    where: FavoriteListWhereUniqueInput
   }
 
   /**
-   * MovieFavoriteList deleteMany
+   * FavoriteList deleteMany
    */
-  export type MovieFavoriteListDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which MovieFavoriteLists to delete
+     * Filter which FavoriteLists to delete
      */
-    where?: MovieFavoriteListWhereInput
+    where?: FavoriteListWhereInput
     /**
-     * Limit how many MovieFavoriteLists to delete.
+     * Limit how many FavoriteLists to delete.
      */
     limit?: number
   }
 
   /**
-   * MovieFavoriteList.movies
+   * FavoriteList.favoriteList
    */
-  export type MovieFavoriteList$moviesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteList$favoriteListArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Movie
+     * Select specific fields to fetch from the FavoriteItem
      */
-    select?: MovieSelect<ExtArgs> | null
+    select?: FavoriteItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Movie
+     * Omit specific fields from the FavoriteItem
      */
-    omit?: MovieOmit<ExtArgs> | null
+    omit?: FavoriteItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieInclude<ExtArgs> | null
-    where?: MovieWhereInput
-    orderBy?: MovieOrderByWithRelationInput | MovieOrderByWithRelationInput[]
-    cursor?: MovieWhereUniqueInput
+    include?: FavoriteItemInclude<ExtArgs> | null
+    where?: FavoriteItemWhereInput
+    orderBy?: FavoriteItemOrderByWithRelationInput | FavoriteItemOrderByWithRelationInput[]
+    cursor?: FavoriteItemWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: MovieScalarFieldEnum | MovieScalarFieldEnum[]
+    distinct?: FavoriteItemScalarFieldEnum | FavoriteItemScalarFieldEnum[]
   }
 
   /**
-   * MovieFavoriteList without action
+   * FavoriteList without action
    */
-  export type MovieFavoriteListDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteListDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the MovieFavoriteList
+     * Select specific fields to fetch from the FavoriteList
      */
-    select?: MovieFavoriteListSelect<ExtArgs> | null
+    select?: FavoriteListSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the MovieFavoriteList
+     * Omit specific fields from the FavoriteList
      */
-    omit?: MovieFavoriteListOmit<ExtArgs> | null
+    omit?: FavoriteListOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieFavoriteListInclude<ExtArgs> | null
+    include?: FavoriteListInclude<ExtArgs> | null
   }
 
 
   /**
-   * Model Movie
+   * Model FavoriteItem
    */
 
-  export type AggregateMovie = {
-    _count: MovieCountAggregateOutputType | null
-    _avg: MovieAvgAggregateOutputType | null
-    _sum: MovieSumAggregateOutputType | null
-    _min: MovieMinAggregateOutputType | null
-    _max: MovieMaxAggregateOutputType | null
+  export type AggregateFavoriteItem = {
+    _count: FavoriteItemCountAggregateOutputType | null
+    _avg: FavoriteItemAvgAggregateOutputType | null
+    _sum: FavoriteItemSumAggregateOutputType | null
+    _min: FavoriteItemMinAggregateOutputType | null
+    _max: FavoriteItemMaxAggregateOutputType | null
   }
 
-  export type MovieAvgAggregateOutputType = {
+  export type FavoriteItemAvgAggregateOutputType = {
     id: number | null
-    genre_ids: number | null
     popularity: number | null
   }
 
-  export type MovieSumAggregateOutputType = {
+  export type FavoriteItemSumAggregateOutputType = {
     id: number | null
-    genre_ids: number[]
     popularity: number | null
   }
 
-  export type MovieMinAggregateOutputType = {
+  export type FavoriteItemMinAggregateOutputType = {
     id: number | null
     title: string | null
     release_date: string | null
@@ -6825,9 +6978,10 @@ export namespace Prisma {
     overview: string | null
     popularity: number | null
     adult: boolean | null
+    type: $Enums.Type | null
   }
 
-  export type MovieMaxAggregateOutputType = {
+  export type FavoriteItemMaxAggregateOutputType = {
     id: number | null
     title: string | null
     release_date: string | null
@@ -6836,35 +6990,34 @@ export namespace Prisma {
     overview: string | null
     popularity: number | null
     adult: boolean | null
+    type: $Enums.Type | null
   }
 
-  export type MovieCountAggregateOutputType = {
+  export type FavoriteItemCountAggregateOutputType = {
     id: number
     title: number
     release_date: number
-    genre_ids: number
     poster_path: number
     backdrop_path: number
     overview: number
     popularity: number
     adult: number
+    type: number
     _all: number
   }
 
 
-  export type MovieAvgAggregateInputType = {
+  export type FavoriteItemAvgAggregateInputType = {
     id?: true
-    genre_ids?: true
     popularity?: true
   }
 
-  export type MovieSumAggregateInputType = {
+  export type FavoriteItemSumAggregateInputType = {
     id?: true
-    genre_ids?: true
     popularity?: true
   }
 
-  export type MovieMinAggregateInputType = {
+  export type FavoriteItemMinAggregateInputType = {
     id?: true
     title?: true
     release_date?: true
@@ -6873,9 +7026,10 @@ export namespace Prisma {
     overview?: true
     popularity?: true
     adult?: true
+    type?: true
   }
 
-  export type MovieMaxAggregateInputType = {
+  export type FavoriteItemMaxAggregateInputType = {
     id?: true
     title?: true
     release_date?: true
@@ -6884,341 +7038,342 @@ export namespace Prisma {
     overview?: true
     popularity?: true
     adult?: true
+    type?: true
   }
 
-  export type MovieCountAggregateInputType = {
+  export type FavoriteItemCountAggregateInputType = {
     id?: true
     title?: true
     release_date?: true
-    genre_ids?: true
     poster_path?: true
     backdrop_path?: true
     overview?: true
     popularity?: true
     adult?: true
+    type?: true
     _all?: true
   }
 
-  export type MovieAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Movie to aggregate.
+     * Filter which FavoriteItem to aggregate.
      */
-    where?: MovieWhereInput
+    where?: FavoriteItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Movies to fetch.
+     * Determine the order of FavoriteItems to fetch.
      */
-    orderBy?: MovieOrderByWithRelationInput | MovieOrderByWithRelationInput[]
+    orderBy?: FavoriteItemOrderByWithRelationInput | FavoriteItemOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: MovieWhereUniqueInput
+    cursor?: FavoriteItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Movies from the position of the cursor.
+     * Take `±n` FavoriteItems from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Movies.
+     * Skip the first `n` FavoriteItems.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Movies
+     * Count returned FavoriteItems
     **/
-    _count?: true | MovieCountAggregateInputType
+    _count?: true | FavoriteItemCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: MovieAvgAggregateInputType
+    _avg?: FavoriteItemAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: MovieSumAggregateInputType
+    _sum?: FavoriteItemSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: MovieMinAggregateInputType
+    _min?: FavoriteItemMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: MovieMaxAggregateInputType
+    _max?: FavoriteItemMaxAggregateInputType
   }
 
-  export type GetMovieAggregateType<T extends MovieAggregateArgs> = {
-        [P in keyof T & keyof AggregateMovie]: P extends '_count' | 'count'
+  export type GetFavoriteItemAggregateType<T extends FavoriteItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateFavoriteItem]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateMovie[P]>
-      : GetScalarType<T[P], AggregateMovie[P]>
+        : GetScalarType<T[P], AggregateFavoriteItem[P]>
+      : GetScalarType<T[P], AggregateFavoriteItem[P]>
   }
 
 
 
 
-  export type MovieGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MovieWhereInput
-    orderBy?: MovieOrderByWithAggregationInput | MovieOrderByWithAggregationInput[]
-    by: MovieScalarFieldEnum[] | MovieScalarFieldEnum
-    having?: MovieScalarWhereWithAggregatesInput
+  export type FavoriteItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FavoriteItemWhereInput
+    orderBy?: FavoriteItemOrderByWithAggregationInput | FavoriteItemOrderByWithAggregationInput[]
+    by: FavoriteItemScalarFieldEnum[] | FavoriteItemScalarFieldEnum
+    having?: FavoriteItemScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: MovieCountAggregateInputType | true
-    _avg?: MovieAvgAggregateInputType
-    _sum?: MovieSumAggregateInputType
-    _min?: MovieMinAggregateInputType
-    _max?: MovieMaxAggregateInputType
+    _count?: FavoriteItemCountAggregateInputType | true
+    _avg?: FavoriteItemAvgAggregateInputType
+    _sum?: FavoriteItemSumAggregateInputType
+    _min?: FavoriteItemMinAggregateInputType
+    _max?: FavoriteItemMaxAggregateInputType
   }
 
-  export type MovieGroupByOutputType = {
+  export type FavoriteItemGroupByOutputType = {
     id: number
     title: string
     release_date: string
-    genre_ids: number[]
     poster_path: string
     backdrop_path: string
     overview: string
     popularity: number
     adult: boolean
-    _count: MovieCountAggregateOutputType | null
-    _avg: MovieAvgAggregateOutputType | null
-    _sum: MovieSumAggregateOutputType | null
-    _min: MovieMinAggregateOutputType | null
-    _max: MovieMaxAggregateOutputType | null
+    type: $Enums.Type
+    _count: FavoriteItemCountAggregateOutputType | null
+    _avg: FavoriteItemAvgAggregateOutputType | null
+    _sum: FavoriteItemSumAggregateOutputType | null
+    _min: FavoriteItemMinAggregateOutputType | null
+    _max: FavoriteItemMaxAggregateOutputType | null
   }
 
-  type GetMovieGroupByPayload<T extends MovieGroupByArgs> = Prisma.PrismaPromise<
+  type GetFavoriteItemGroupByPayload<T extends FavoriteItemGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<MovieGroupByOutputType, T['by']> &
+      PickEnumerable<FavoriteItemGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof MovieGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof FavoriteItemGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], MovieGroupByOutputType[P]>
-            : GetScalarType<T[P], MovieGroupByOutputType[P]>
+              : GetScalarType<T[P], FavoriteItemGroupByOutputType[P]>
+            : GetScalarType<T[P], FavoriteItemGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type MovieSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type FavoriteItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
     release_date?: boolean
-    genre_ids?: boolean
     poster_path?: boolean
     backdrop_path?: boolean
     overview?: boolean
     popularity?: boolean
     adult?: boolean
-    favoriteLists?: boolean | Movie$favoriteListsArgs<ExtArgs>
-    _count?: boolean | MovieCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["movie"]>
+    type?: boolean
+    favoriteLists?: boolean | FavoriteItem$favoriteListsArgs<ExtArgs>
+    _count?: boolean | FavoriteItemCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["favoriteItem"]>
 
-  export type MovieSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type FavoriteItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
     release_date?: boolean
-    genre_ids?: boolean
     poster_path?: boolean
     backdrop_path?: boolean
     overview?: boolean
     popularity?: boolean
     adult?: boolean
-  }, ExtArgs["result"]["movie"]>
+    type?: boolean
+  }, ExtArgs["result"]["favoriteItem"]>
 
-  export type MovieSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type FavoriteItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
     release_date?: boolean
-    genre_ids?: boolean
     poster_path?: boolean
     backdrop_path?: boolean
     overview?: boolean
     popularity?: boolean
     adult?: boolean
-  }, ExtArgs["result"]["movie"]>
+    type?: boolean
+  }, ExtArgs["result"]["favoriteItem"]>
 
-  export type MovieSelectScalar = {
+  export type FavoriteItemSelectScalar = {
     id?: boolean
     title?: boolean
     release_date?: boolean
-    genre_ids?: boolean
     poster_path?: boolean
     backdrop_path?: boolean
     overview?: boolean
     popularity?: boolean
     adult?: boolean
+    type?: boolean
   }
 
-  export type MovieOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "release_date" | "genre_ids" | "poster_path" | "backdrop_path" | "overview" | "popularity" | "adult", ExtArgs["result"]["movie"]>
-  export type MovieInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    favoriteLists?: boolean | Movie$favoriteListsArgs<ExtArgs>
-    _count?: boolean | MovieCountOutputTypeDefaultArgs<ExtArgs>
+  export type FavoriteItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "release_date" | "poster_path" | "backdrop_path" | "overview" | "popularity" | "adult" | "type", ExtArgs["result"]["favoriteItem"]>
+  export type FavoriteItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    favoriteLists?: boolean | FavoriteItem$favoriteListsArgs<ExtArgs>
+    _count?: boolean | FavoriteItemCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type MovieIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type MovieIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type FavoriteItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type FavoriteItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
-  export type $MoviePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Movie"
+  export type $FavoriteItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FavoriteItem"
     objects: {
-      favoriteLists: Prisma.$MovieFavoriteListPayload<ExtArgs>[]
+      favoriteLists: Prisma.$FavoriteListPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       title: string
       release_date: string
-      genre_ids: number[]
       poster_path: string
       backdrop_path: string
       overview: string
       popularity: number
       adult: boolean
-    }, ExtArgs["result"]["movie"]>
+      type: $Enums.Type
+    }, ExtArgs["result"]["favoriteItem"]>
     composites: {}
   }
 
-  type MovieGetPayload<S extends boolean | null | undefined | MovieDefaultArgs> = $Result.GetResult<Prisma.$MoviePayload, S>
+  type FavoriteItemGetPayload<S extends boolean | null | undefined | FavoriteItemDefaultArgs> = $Result.GetResult<Prisma.$FavoriteItemPayload, S>
 
-  type MovieCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<MovieFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: MovieCountAggregateInputType | true
+  type FavoriteItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FavoriteItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FavoriteItemCountAggregateInputType | true
     }
 
-  export interface MovieDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Movie'], meta: { name: 'Movie' } }
+  export interface FavoriteItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FavoriteItem'], meta: { name: 'FavoriteItem' } }
     /**
-     * Find zero or one Movie that matches the filter.
-     * @param {MovieFindUniqueArgs} args - Arguments to find a Movie
+     * Find zero or one FavoriteItem that matches the filter.
+     * @param {FavoriteItemFindUniqueArgs} args - Arguments to find a FavoriteItem
      * @example
-     * // Get one Movie
-     * const movie = await prisma.movie.findUnique({
+     * // Get one FavoriteItem
+     * const favoriteItem = await prisma.favoriteItem.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends MovieFindUniqueArgs>(args: SelectSubset<T, MovieFindUniqueArgs<ExtArgs>>): Prisma__MovieClient<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends FavoriteItemFindUniqueArgs>(args: SelectSubset<T, FavoriteItemFindUniqueArgs<ExtArgs>>): Prisma__FavoriteItemClient<$Result.GetResult<Prisma.$FavoriteItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one Movie that matches the filter or throw an error with `error.code='P2025'`
+     * Find one FavoriteItem that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {MovieFindUniqueOrThrowArgs} args - Arguments to find a Movie
+     * @param {FavoriteItemFindUniqueOrThrowArgs} args - Arguments to find a FavoriteItem
      * @example
-     * // Get one Movie
-     * const movie = await prisma.movie.findUniqueOrThrow({
+     * // Get one FavoriteItem
+     * const favoriteItem = await prisma.favoriteItem.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends MovieFindUniqueOrThrowArgs>(args: SelectSubset<T, MovieFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MovieClient<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends FavoriteItemFindUniqueOrThrowArgs>(args: SelectSubset<T, FavoriteItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FavoriteItemClient<$Result.GetResult<Prisma.$FavoriteItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Movie that matches the filter.
+     * Find the first FavoriteItem that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MovieFindFirstArgs} args - Arguments to find a Movie
+     * @param {FavoriteItemFindFirstArgs} args - Arguments to find a FavoriteItem
      * @example
-     * // Get one Movie
-     * const movie = await prisma.movie.findFirst({
+     * // Get one FavoriteItem
+     * const favoriteItem = await prisma.favoriteItem.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends MovieFindFirstArgs>(args?: SelectSubset<T, MovieFindFirstArgs<ExtArgs>>): Prisma__MovieClient<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends FavoriteItemFindFirstArgs>(args?: SelectSubset<T, FavoriteItemFindFirstArgs<ExtArgs>>): Prisma__FavoriteItemClient<$Result.GetResult<Prisma.$FavoriteItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Movie that matches the filter or
+     * Find the first FavoriteItem that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MovieFindFirstOrThrowArgs} args - Arguments to find a Movie
+     * @param {FavoriteItemFindFirstOrThrowArgs} args - Arguments to find a FavoriteItem
      * @example
-     * // Get one Movie
-     * const movie = await prisma.movie.findFirstOrThrow({
+     * // Get one FavoriteItem
+     * const favoriteItem = await prisma.favoriteItem.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends MovieFindFirstOrThrowArgs>(args?: SelectSubset<T, MovieFindFirstOrThrowArgs<ExtArgs>>): Prisma__MovieClient<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends FavoriteItemFindFirstOrThrowArgs>(args?: SelectSubset<T, FavoriteItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__FavoriteItemClient<$Result.GetResult<Prisma.$FavoriteItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more Movies that matches the filter.
+     * Find zero or more FavoriteItems that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MovieFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {FavoriteItemFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Movies
-     * const movies = await prisma.movie.findMany()
+     * // Get all FavoriteItems
+     * const favoriteItems = await prisma.favoriteItem.findMany()
      * 
-     * // Get first 10 Movies
-     * const movies = await prisma.movie.findMany({ take: 10 })
+     * // Get first 10 FavoriteItems
+     * const favoriteItems = await prisma.favoriteItem.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const movieWithIdOnly = await prisma.movie.findMany({ select: { id: true } })
+     * const favoriteItemWithIdOnly = await prisma.favoriteItem.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends MovieFindManyArgs>(args?: SelectSubset<T, MovieFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends FavoriteItemFindManyArgs>(args?: SelectSubset<T, FavoriteItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a Movie.
-     * @param {MovieCreateArgs} args - Arguments to create a Movie.
+     * Create a FavoriteItem.
+     * @param {FavoriteItemCreateArgs} args - Arguments to create a FavoriteItem.
      * @example
-     * // Create one Movie
-     * const Movie = await prisma.movie.create({
+     * // Create one FavoriteItem
+     * const FavoriteItem = await prisma.favoriteItem.create({
      *   data: {
-     *     // ... data to create a Movie
+     *     // ... data to create a FavoriteItem
      *   }
      * })
      * 
      */
-    create<T extends MovieCreateArgs>(args: SelectSubset<T, MovieCreateArgs<ExtArgs>>): Prisma__MovieClient<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends FavoriteItemCreateArgs>(args: SelectSubset<T, FavoriteItemCreateArgs<ExtArgs>>): Prisma__FavoriteItemClient<$Result.GetResult<Prisma.$FavoriteItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many Movies.
-     * @param {MovieCreateManyArgs} args - Arguments to create many Movies.
+     * Create many FavoriteItems.
+     * @param {FavoriteItemCreateManyArgs} args - Arguments to create many FavoriteItems.
      * @example
-     * // Create many Movies
-     * const movie = await prisma.movie.createMany({
+     * // Create many FavoriteItems
+     * const favoriteItem = await prisma.favoriteItem.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends MovieCreateManyArgs>(args?: SelectSubset<T, MovieCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends FavoriteItemCreateManyArgs>(args?: SelectSubset<T, FavoriteItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many Movies and returns the data saved in the database.
-     * @param {MovieCreateManyAndReturnArgs} args - Arguments to create many Movies.
+     * Create many FavoriteItems and returns the data saved in the database.
+     * @param {FavoriteItemCreateManyAndReturnArgs} args - Arguments to create many FavoriteItems.
      * @example
-     * // Create many Movies
-     * const movie = await prisma.movie.createManyAndReturn({
+     * // Create many FavoriteItems
+     * const favoriteItem = await prisma.favoriteItem.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many Movies and only return the `id`
-     * const movieWithIdOnly = await prisma.movie.createManyAndReturn({
+     * // Create many FavoriteItems and only return the `id`
+     * const favoriteItemWithIdOnly = await prisma.favoriteItem.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -7228,28 +7383,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends MovieCreateManyAndReturnArgs>(args?: SelectSubset<T, MovieCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends FavoriteItemCreateManyAndReturnArgs>(args?: SelectSubset<T, FavoriteItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a Movie.
-     * @param {MovieDeleteArgs} args - Arguments to delete one Movie.
+     * Delete a FavoriteItem.
+     * @param {FavoriteItemDeleteArgs} args - Arguments to delete one FavoriteItem.
      * @example
-     * // Delete one Movie
-     * const Movie = await prisma.movie.delete({
+     * // Delete one FavoriteItem
+     * const FavoriteItem = await prisma.favoriteItem.delete({
      *   where: {
-     *     // ... filter to delete one Movie
+     *     // ... filter to delete one FavoriteItem
      *   }
      * })
      * 
      */
-    delete<T extends MovieDeleteArgs>(args: SelectSubset<T, MovieDeleteArgs<ExtArgs>>): Prisma__MovieClient<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends FavoriteItemDeleteArgs>(args: SelectSubset<T, FavoriteItemDeleteArgs<ExtArgs>>): Prisma__FavoriteItemClient<$Result.GetResult<Prisma.$FavoriteItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one Movie.
-     * @param {MovieUpdateArgs} args - Arguments to update one Movie.
+     * Update one FavoriteItem.
+     * @param {FavoriteItemUpdateArgs} args - Arguments to update one FavoriteItem.
      * @example
-     * // Update one Movie
-     * const movie = await prisma.movie.update({
+     * // Update one FavoriteItem
+     * const favoriteItem = await prisma.favoriteItem.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -7259,30 +7414,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends MovieUpdateArgs>(args: SelectSubset<T, MovieUpdateArgs<ExtArgs>>): Prisma__MovieClient<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends FavoriteItemUpdateArgs>(args: SelectSubset<T, FavoriteItemUpdateArgs<ExtArgs>>): Prisma__FavoriteItemClient<$Result.GetResult<Prisma.$FavoriteItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more Movies.
-     * @param {MovieDeleteManyArgs} args - Arguments to filter Movies to delete.
+     * Delete zero or more FavoriteItems.
+     * @param {FavoriteItemDeleteManyArgs} args - Arguments to filter FavoriteItems to delete.
      * @example
-     * // Delete a few Movies
-     * const { count } = await prisma.movie.deleteMany({
+     * // Delete a few FavoriteItems
+     * const { count } = await prisma.favoriteItem.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends MovieDeleteManyArgs>(args?: SelectSubset<T, MovieDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends FavoriteItemDeleteManyArgs>(args?: SelectSubset<T, FavoriteItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Movies.
+     * Update zero or more FavoriteItems.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MovieUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {FavoriteItemUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Movies
-     * const movie = await prisma.movie.updateMany({
+     * // Update many FavoriteItems
+     * const favoriteItem = await prisma.favoriteItem.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -7292,14 +7447,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends MovieUpdateManyArgs>(args: SelectSubset<T, MovieUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends FavoriteItemUpdateManyArgs>(args: SelectSubset<T, FavoriteItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Movies and returns the data updated in the database.
-     * @param {MovieUpdateManyAndReturnArgs} args - Arguments to update many Movies.
+     * Update zero or more FavoriteItems and returns the data updated in the database.
+     * @param {FavoriteItemUpdateManyAndReturnArgs} args - Arguments to update many FavoriteItems.
      * @example
-     * // Update many Movies
-     * const movie = await prisma.movie.updateManyAndReturn({
+     * // Update many FavoriteItems
+     * const favoriteItem = await prisma.favoriteItem.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -7308,8 +7463,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Movies and only return the `id`
-     * const movieWithIdOnly = await prisma.movie.updateManyAndReturn({
+     * // Update zero or more FavoriteItems and only return the `id`
+     * const favoriteItemWithIdOnly = await prisma.favoriteItem.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -7322,56 +7477,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends MovieUpdateManyAndReturnArgs>(args: SelectSubset<T, MovieUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends FavoriteItemUpdateManyAndReturnArgs>(args: SelectSubset<T, FavoriteItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one Movie.
-     * @param {MovieUpsertArgs} args - Arguments to update or create a Movie.
+     * Create or update one FavoriteItem.
+     * @param {FavoriteItemUpsertArgs} args - Arguments to update or create a FavoriteItem.
      * @example
-     * // Update or create a Movie
-     * const movie = await prisma.movie.upsert({
+     * // Update or create a FavoriteItem
+     * const favoriteItem = await prisma.favoriteItem.upsert({
      *   create: {
-     *     // ... data to create a Movie
+     *     // ... data to create a FavoriteItem
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Movie we want to update
+     *     // ... the filter for the FavoriteItem we want to update
      *   }
      * })
      */
-    upsert<T extends MovieUpsertArgs>(args: SelectSubset<T, MovieUpsertArgs<ExtArgs>>): Prisma__MovieClient<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends FavoriteItemUpsertArgs>(args: SelectSubset<T, FavoriteItemUpsertArgs<ExtArgs>>): Prisma__FavoriteItemClient<$Result.GetResult<Prisma.$FavoriteItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of Movies.
+     * Count the number of FavoriteItems.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MovieCountArgs} args - Arguments to filter Movies to count.
+     * @param {FavoriteItemCountArgs} args - Arguments to filter FavoriteItems to count.
      * @example
-     * // Count the number of Movies
-     * const count = await prisma.movie.count({
+     * // Count the number of FavoriteItems
+     * const count = await prisma.favoriteItem.count({
      *   where: {
-     *     // ... the filter for the Movies we want to count
+     *     // ... the filter for the FavoriteItems we want to count
      *   }
      * })
     **/
-    count<T extends MovieCountArgs>(
-      args?: Subset<T, MovieCountArgs>,
+    count<T extends FavoriteItemCountArgs>(
+      args?: Subset<T, FavoriteItemCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], MovieCountAggregateOutputType>
+          : GetScalarType<T['select'], FavoriteItemCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Movie.
+     * Allows you to perform aggregations operations on a FavoriteItem.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MovieAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {FavoriteItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -7391,13 +7546,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends MovieAggregateArgs>(args: Subset<T, MovieAggregateArgs>): Prisma.PrismaPromise<GetMovieAggregateType<T>>
+    aggregate<T extends FavoriteItemAggregateArgs>(args: Subset<T, FavoriteItemAggregateArgs>): Prisma.PrismaPromise<GetFavoriteItemAggregateType<T>>
 
     /**
-     * Group by Movie.
+     * Group by FavoriteItem.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MovieGroupByArgs} args - Group by arguments.
+     * @param {FavoriteItemGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -7412,14 +7567,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends MovieGroupByArgs,
+      T extends FavoriteItemGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: MovieGroupByArgs['orderBy'] }
-        : { orderBy?: MovieGroupByArgs['orderBy'] },
+        ? { orderBy: FavoriteItemGroupByArgs['orderBy'] }
+        : { orderBy?: FavoriteItemGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -7468,22 +7623,22 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, MovieGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMovieGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, FavoriteItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFavoriteItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the Movie model
+   * Fields of the FavoriteItem model
    */
-  readonly fields: MovieFieldRefs;
+  readonly fields: FavoriteItemFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Movie.
+   * The delegate class that acts as a "Promise-like" for FavoriteItem.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__MovieClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__FavoriteItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    favoriteLists<T extends Movie$favoriteListsArgs<ExtArgs> = {}>(args?: Subset<T, Movie$favoriteListsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MovieFavoriteListPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    favoriteLists<T extends FavoriteItem$favoriteListsArgs<ExtArgs> = {}>(args?: Subset<T, FavoriteItem$favoriteListsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteListPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7510,445 +7665,1537 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the Movie model
+   * Fields of the FavoriteItem model
    */ 
-  interface MovieFieldRefs {
-    readonly id: FieldRef<"Movie", 'Int'>
-    readonly title: FieldRef<"Movie", 'String'>
-    readonly release_date: FieldRef<"Movie", 'String'>
-    readonly genre_ids: FieldRef<"Movie", 'Int[]'>
-    readonly poster_path: FieldRef<"Movie", 'String'>
-    readonly backdrop_path: FieldRef<"Movie", 'String'>
-    readonly overview: FieldRef<"Movie", 'String'>
-    readonly popularity: FieldRef<"Movie", 'Float'>
-    readonly adult: FieldRef<"Movie", 'Boolean'>
+  interface FavoriteItemFieldRefs {
+    readonly id: FieldRef<"FavoriteItem", 'Int'>
+    readonly title: FieldRef<"FavoriteItem", 'String'>
+    readonly release_date: FieldRef<"FavoriteItem", 'String'>
+    readonly poster_path: FieldRef<"FavoriteItem", 'String'>
+    readonly backdrop_path: FieldRef<"FavoriteItem", 'String'>
+    readonly overview: FieldRef<"FavoriteItem", 'String'>
+    readonly popularity: FieldRef<"FavoriteItem", 'Float'>
+    readonly adult: FieldRef<"FavoriteItem", 'Boolean'>
+    readonly type: FieldRef<"FavoriteItem", 'Type'>
   }
     
 
   // Custom InputTypes
   /**
-   * Movie findUnique
+   * FavoriteItem findUnique
    */
-  export type MovieFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Movie
+     * Select specific fields to fetch from the FavoriteItem
      */
-    select?: MovieSelect<ExtArgs> | null
+    select?: FavoriteItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Movie
+     * Omit specific fields from the FavoriteItem
      */
-    omit?: MovieOmit<ExtArgs> | null
+    omit?: FavoriteItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieInclude<ExtArgs> | null
+    include?: FavoriteItemInclude<ExtArgs> | null
     /**
-     * Filter, which Movie to fetch.
+     * Filter, which FavoriteItem to fetch.
      */
-    where: MovieWhereUniqueInput
+    where: FavoriteItemWhereUniqueInput
   }
 
   /**
-   * Movie findUniqueOrThrow
+   * FavoriteItem findUniqueOrThrow
    */
-  export type MovieFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Movie
+     * Select specific fields to fetch from the FavoriteItem
      */
-    select?: MovieSelect<ExtArgs> | null
+    select?: FavoriteItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Movie
+     * Omit specific fields from the FavoriteItem
      */
-    omit?: MovieOmit<ExtArgs> | null
+    omit?: FavoriteItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieInclude<ExtArgs> | null
+    include?: FavoriteItemInclude<ExtArgs> | null
     /**
-     * Filter, which Movie to fetch.
+     * Filter, which FavoriteItem to fetch.
      */
-    where: MovieWhereUniqueInput
+    where: FavoriteItemWhereUniqueInput
   }
 
   /**
-   * Movie findFirst
+   * FavoriteItem findFirst
    */
-  export type MovieFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Movie
+     * Select specific fields to fetch from the FavoriteItem
      */
-    select?: MovieSelect<ExtArgs> | null
+    select?: FavoriteItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Movie
+     * Omit specific fields from the FavoriteItem
      */
-    omit?: MovieOmit<ExtArgs> | null
+    omit?: FavoriteItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieInclude<ExtArgs> | null
+    include?: FavoriteItemInclude<ExtArgs> | null
     /**
-     * Filter, which Movie to fetch.
+     * Filter, which FavoriteItem to fetch.
      */
-    where?: MovieWhereInput
+    where?: FavoriteItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Movies to fetch.
+     * Determine the order of FavoriteItems to fetch.
      */
-    orderBy?: MovieOrderByWithRelationInput | MovieOrderByWithRelationInput[]
+    orderBy?: FavoriteItemOrderByWithRelationInput | FavoriteItemOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Movies.
+     * Sets the position for searching for FavoriteItems.
      */
-    cursor?: MovieWhereUniqueInput
+    cursor?: FavoriteItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Movies from the position of the cursor.
+     * Take `±n` FavoriteItems from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Movies.
+     * Skip the first `n` FavoriteItems.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Movies.
+     * Filter by unique combinations of FavoriteItems.
      */
-    distinct?: MovieScalarFieldEnum | MovieScalarFieldEnum[]
+    distinct?: FavoriteItemScalarFieldEnum | FavoriteItemScalarFieldEnum[]
   }
 
   /**
-   * Movie findFirstOrThrow
+   * FavoriteItem findFirstOrThrow
    */
-  export type MovieFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Movie
+     * Select specific fields to fetch from the FavoriteItem
      */
-    select?: MovieSelect<ExtArgs> | null
+    select?: FavoriteItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Movie
+     * Omit specific fields from the FavoriteItem
      */
-    omit?: MovieOmit<ExtArgs> | null
+    omit?: FavoriteItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieInclude<ExtArgs> | null
+    include?: FavoriteItemInclude<ExtArgs> | null
     /**
-     * Filter, which Movie to fetch.
+     * Filter, which FavoriteItem to fetch.
      */
-    where?: MovieWhereInput
+    where?: FavoriteItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Movies to fetch.
+     * Determine the order of FavoriteItems to fetch.
      */
-    orderBy?: MovieOrderByWithRelationInput | MovieOrderByWithRelationInput[]
+    orderBy?: FavoriteItemOrderByWithRelationInput | FavoriteItemOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Movies.
+     * Sets the position for searching for FavoriteItems.
      */
-    cursor?: MovieWhereUniqueInput
+    cursor?: FavoriteItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Movies from the position of the cursor.
+     * Take `±n` FavoriteItems from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Movies.
+     * Skip the first `n` FavoriteItems.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Movies.
+     * Filter by unique combinations of FavoriteItems.
      */
-    distinct?: MovieScalarFieldEnum | MovieScalarFieldEnum[]
+    distinct?: FavoriteItemScalarFieldEnum | FavoriteItemScalarFieldEnum[]
   }
 
   /**
-   * Movie findMany
+   * FavoriteItem findMany
    */
-  export type MovieFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Movie
+     * Select specific fields to fetch from the FavoriteItem
      */
-    select?: MovieSelect<ExtArgs> | null
+    select?: FavoriteItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Movie
+     * Omit specific fields from the FavoriteItem
      */
-    omit?: MovieOmit<ExtArgs> | null
+    omit?: FavoriteItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieInclude<ExtArgs> | null
+    include?: FavoriteItemInclude<ExtArgs> | null
     /**
-     * Filter, which Movies to fetch.
+     * Filter, which FavoriteItems to fetch.
      */
-    where?: MovieWhereInput
+    where?: FavoriteItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Movies to fetch.
+     * Determine the order of FavoriteItems to fetch.
      */
-    orderBy?: MovieOrderByWithRelationInput | MovieOrderByWithRelationInput[]
+    orderBy?: FavoriteItemOrderByWithRelationInput | FavoriteItemOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Movies.
+     * Sets the position for listing FavoriteItems.
      */
-    cursor?: MovieWhereUniqueInput
+    cursor?: FavoriteItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Movies from the position of the cursor.
+     * Take `±n` FavoriteItems from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Movies.
+     * Skip the first `n` FavoriteItems.
      */
     skip?: number
-    distinct?: MovieScalarFieldEnum | MovieScalarFieldEnum[]
+    distinct?: FavoriteItemScalarFieldEnum | FavoriteItemScalarFieldEnum[]
   }
 
   /**
-   * Movie create
+   * FavoriteItem create
    */
-  export type MovieCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Movie
+     * Select specific fields to fetch from the FavoriteItem
      */
-    select?: MovieSelect<ExtArgs> | null
+    select?: FavoriteItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Movie
+     * Omit specific fields from the FavoriteItem
      */
-    omit?: MovieOmit<ExtArgs> | null
+    omit?: FavoriteItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieInclude<ExtArgs> | null
+    include?: FavoriteItemInclude<ExtArgs> | null
     /**
-     * The data needed to create a Movie.
+     * The data needed to create a FavoriteItem.
      */
-    data: XOR<MovieCreateInput, MovieUncheckedCreateInput>
+    data: XOR<FavoriteItemCreateInput, FavoriteItemUncheckedCreateInput>
   }
 
   /**
-   * Movie createMany
+   * FavoriteItem createMany
    */
-  export type MovieCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many Movies.
+     * The data used to create many FavoriteItems.
      */
-    data: MovieCreateManyInput | MovieCreateManyInput[]
+    data: FavoriteItemCreateManyInput | FavoriteItemCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * Movie createManyAndReturn
+   * FavoriteItem createManyAndReturn
    */
-  export type MovieCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Movie
+     * Select specific fields to fetch from the FavoriteItem
      */
-    select?: MovieSelectCreateManyAndReturn<ExtArgs> | null
+    select?: FavoriteItemSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Movie
+     * Omit specific fields from the FavoriteItem
      */
-    omit?: MovieOmit<ExtArgs> | null
+    omit?: FavoriteItemOmit<ExtArgs> | null
     /**
-     * The data used to create many Movies.
+     * The data used to create many FavoriteItems.
      */
-    data: MovieCreateManyInput | MovieCreateManyInput[]
+    data: FavoriteItemCreateManyInput | FavoriteItemCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * Movie update
+   * FavoriteItem update
    */
-  export type MovieUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Movie
+     * Select specific fields to fetch from the FavoriteItem
      */
-    select?: MovieSelect<ExtArgs> | null
+    select?: FavoriteItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Movie
+     * Omit specific fields from the FavoriteItem
      */
-    omit?: MovieOmit<ExtArgs> | null
+    omit?: FavoriteItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieInclude<ExtArgs> | null
+    include?: FavoriteItemInclude<ExtArgs> | null
     /**
-     * The data needed to update a Movie.
+     * The data needed to update a FavoriteItem.
      */
-    data: XOR<MovieUpdateInput, MovieUncheckedUpdateInput>
+    data: XOR<FavoriteItemUpdateInput, FavoriteItemUncheckedUpdateInput>
     /**
-     * Choose, which Movie to update.
+     * Choose, which FavoriteItem to update.
      */
-    where: MovieWhereUniqueInput
+    where: FavoriteItemWhereUniqueInput
   }
 
   /**
-   * Movie updateMany
+   * FavoriteItem updateMany
    */
-  export type MovieUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update Movies.
+     * The data used to update FavoriteItems.
      */
-    data: XOR<MovieUpdateManyMutationInput, MovieUncheckedUpdateManyInput>
+    data: XOR<FavoriteItemUpdateManyMutationInput, FavoriteItemUncheckedUpdateManyInput>
     /**
-     * Filter which Movies to update
+     * Filter which FavoriteItems to update
      */
-    where?: MovieWhereInput
+    where?: FavoriteItemWhereInput
     /**
-     * Limit how many Movies to update.
+     * Limit how many FavoriteItems to update.
      */
     limit?: number
   }
 
   /**
-   * Movie updateManyAndReturn
+   * FavoriteItem updateManyAndReturn
    */
-  export type MovieUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Movie
+     * Select specific fields to fetch from the FavoriteItem
      */
-    select?: MovieSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: FavoriteItemSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Movie
+     * Omit specific fields from the FavoriteItem
      */
-    omit?: MovieOmit<ExtArgs> | null
+    omit?: FavoriteItemOmit<ExtArgs> | null
     /**
-     * The data used to update Movies.
+     * The data used to update FavoriteItems.
      */
-    data: XOR<MovieUpdateManyMutationInput, MovieUncheckedUpdateManyInput>
+    data: XOR<FavoriteItemUpdateManyMutationInput, FavoriteItemUncheckedUpdateManyInput>
     /**
-     * Filter which Movies to update
+     * Filter which FavoriteItems to update
      */
-    where?: MovieWhereInput
+    where?: FavoriteItemWhereInput
     /**
-     * Limit how many Movies to update.
+     * Limit how many FavoriteItems to update.
      */
     limit?: number
   }
 
   /**
-   * Movie upsert
+   * FavoriteItem upsert
    */
-  export type MovieUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Movie
+     * Select specific fields to fetch from the FavoriteItem
      */
-    select?: MovieSelect<ExtArgs> | null
+    select?: FavoriteItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Movie
+     * Omit specific fields from the FavoriteItem
      */
-    omit?: MovieOmit<ExtArgs> | null
+    omit?: FavoriteItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieInclude<ExtArgs> | null
+    include?: FavoriteItemInclude<ExtArgs> | null
     /**
-     * The filter to search for the Movie to update in case it exists.
+     * The filter to search for the FavoriteItem to update in case it exists.
      */
-    where: MovieWhereUniqueInput
+    where: FavoriteItemWhereUniqueInput
     /**
-     * In case the Movie found by the `where` argument doesn't exist, create a new Movie with this data.
+     * In case the FavoriteItem found by the `where` argument doesn't exist, create a new FavoriteItem with this data.
      */
-    create: XOR<MovieCreateInput, MovieUncheckedCreateInput>
+    create: XOR<FavoriteItemCreateInput, FavoriteItemUncheckedCreateInput>
     /**
-     * In case the Movie was found with the provided `where` argument, update it with this data.
+     * In case the FavoriteItem was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<MovieUpdateInput, MovieUncheckedUpdateInput>
+    update: XOR<FavoriteItemUpdateInput, FavoriteItemUncheckedUpdateInput>
   }
 
   /**
-   * Movie delete
+   * FavoriteItem delete
    */
-  export type MovieDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Movie
+     * Select specific fields to fetch from the FavoriteItem
      */
-    select?: MovieSelect<ExtArgs> | null
+    select?: FavoriteItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Movie
+     * Omit specific fields from the FavoriteItem
      */
-    omit?: MovieOmit<ExtArgs> | null
+    omit?: FavoriteItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieInclude<ExtArgs> | null
+    include?: FavoriteItemInclude<ExtArgs> | null
     /**
-     * Filter which Movie to delete.
+     * Filter which FavoriteItem to delete.
      */
-    where: MovieWhereUniqueInput
+    where: FavoriteItemWhereUniqueInput
   }
 
   /**
-   * Movie deleteMany
+   * FavoriteItem deleteMany
    */
-  export type MovieDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Movies to delete
+     * Filter which FavoriteItems to delete
      */
-    where?: MovieWhereInput
+    where?: FavoriteItemWhereInput
     /**
-     * Limit how many Movies to delete.
+     * Limit how many FavoriteItems to delete.
      */
     limit?: number
   }
 
   /**
-   * Movie.favoriteLists
+   * FavoriteItem.favoriteLists
    */
-  export type Movie$favoriteListsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteItem$favoriteListsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the MovieFavoriteList
+     * Select specific fields to fetch from the FavoriteList
      */
-    select?: MovieFavoriteListSelect<ExtArgs> | null
+    select?: FavoriteListSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the MovieFavoriteList
+     * Omit specific fields from the FavoriteList
      */
-    omit?: MovieFavoriteListOmit<ExtArgs> | null
+    omit?: FavoriteListOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieFavoriteListInclude<ExtArgs> | null
-    where?: MovieFavoriteListWhereInput
-    orderBy?: MovieFavoriteListOrderByWithRelationInput | MovieFavoriteListOrderByWithRelationInput[]
-    cursor?: MovieFavoriteListWhereUniqueInput
+    include?: FavoriteListInclude<ExtArgs> | null
+    where?: FavoriteListWhereInput
+    orderBy?: FavoriteListOrderByWithRelationInput | FavoriteListOrderByWithRelationInput[]
+    cursor?: FavoriteListWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: MovieFavoriteListScalarFieldEnum | MovieFavoriteListScalarFieldEnum[]
+    distinct?: FavoriteListScalarFieldEnum | FavoriteListScalarFieldEnum[]
   }
 
   /**
-   * Movie without action
+   * FavoriteItem without action
    */
-  export type MovieDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FavoriteItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Movie
+     * Select specific fields to fetch from the FavoriteItem
      */
-    select?: MovieSelect<ExtArgs> | null
+    select?: FavoriteItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Movie
+     * Omit specific fields from the FavoriteItem
      */
-    omit?: MovieOmit<ExtArgs> | null
+    omit?: FavoriteItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MovieInclude<ExtArgs> | null
+    include?: FavoriteItemInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Order
+   */
+
+  export type AggregateOrder = {
+    _count: OrderCountAggregateOutputType | null
+    _avg: OrderAvgAggregateOutputType | null
+    _sum: OrderSumAggregateOutputType | null
+    _min: OrderMinAggregateOutputType | null
+    _max: OrderMaxAggregateOutputType | null
+  }
+
+  export type OrderAvgAggregateOutputType = {
+    price: number | null
+  }
+
+  export type OrderSumAggregateOutputType = {
+    price: number | null
+  }
+
+  export type OrderMinAggregateOutputType = {
+    id: string | null
+    orderStatus: $Enums.OrderStatus | null
+    plan: $Enums.Plan | null
+    price: number | null
+    userId: string | null
+  }
+
+  export type OrderMaxAggregateOutputType = {
+    id: string | null
+    orderStatus: $Enums.OrderStatus | null
+    plan: $Enums.Plan | null
+    price: number | null
+    userId: string | null
+  }
+
+  export type OrderCountAggregateOutputType = {
+    id: number
+    orderStatus: number
+    plan: number
+    price: number
+    userId: number
+    _all: number
+  }
+
+
+  export type OrderAvgAggregateInputType = {
+    price?: true
+  }
+
+  export type OrderSumAggregateInputType = {
+    price?: true
+  }
+
+  export type OrderMinAggregateInputType = {
+    id?: true
+    orderStatus?: true
+    plan?: true
+    price?: true
+    userId?: true
+  }
+
+  export type OrderMaxAggregateInputType = {
+    id?: true
+    orderStatus?: true
+    plan?: true
+    price?: true
+    userId?: true
+  }
+
+  export type OrderCountAggregateInputType = {
+    id?: true
+    orderStatus?: true
+    plan?: true
+    price?: true
+    userId?: true
+    _all?: true
+  }
+
+  export type OrderAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Order to aggregate.
+     */
+    where?: OrderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Orders to fetch.
+     */
+    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: OrderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Orders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Orders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Orders
+    **/
+    _count?: true | OrderCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: OrderAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: OrderSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: OrderMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: OrderMaxAggregateInputType
+  }
+
+  export type GetOrderAggregateType<T extends OrderAggregateArgs> = {
+        [P in keyof T & keyof AggregateOrder]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateOrder[P]>
+      : GetScalarType<T[P], AggregateOrder[P]>
+  }
+
+
+
+
+  export type OrderGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrderWhereInput
+    orderBy?: OrderOrderByWithAggregationInput | OrderOrderByWithAggregationInput[]
+    by: OrderScalarFieldEnum[] | OrderScalarFieldEnum
+    having?: OrderScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: OrderCountAggregateInputType | true
+    _avg?: OrderAvgAggregateInputType
+    _sum?: OrderSumAggregateInputType
+    _min?: OrderMinAggregateInputType
+    _max?: OrderMaxAggregateInputType
+  }
+
+  export type OrderGroupByOutputType = {
+    id: string
+    orderStatus: $Enums.OrderStatus
+    plan: $Enums.Plan
+    price: number
+    userId: string
+    _count: OrderCountAggregateOutputType | null
+    _avg: OrderAvgAggregateOutputType | null
+    _sum: OrderSumAggregateOutputType | null
+    _min: OrderMinAggregateOutputType | null
+    _max: OrderMaxAggregateOutputType | null
+  }
+
+  type GetOrderGroupByPayload<T extends OrderGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<OrderGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof OrderGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], OrderGroupByOutputType[P]>
+            : GetScalarType<T[P], OrderGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type OrderSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderStatus?: boolean
+    plan?: boolean
+    price?: boolean
+    userId?: boolean
+    User?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["order"]>
+
+  export type OrderSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderStatus?: boolean
+    plan?: boolean
+    price?: boolean
+    userId?: boolean
+    User?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["order"]>
+
+  export type OrderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    orderStatus?: boolean
+    plan?: boolean
+    price?: boolean
+    userId?: boolean
+    User?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["order"]>
+
+  export type OrderSelectScalar = {
+    id?: boolean
+    orderStatus?: boolean
+    plan?: boolean
+    price?: boolean
+    userId?: boolean
+  }
+
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderStatus" | "plan" | "price" | "userId", ExtArgs["result"]["order"]>
+  export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    User?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type OrderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    User?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type OrderIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    User?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $OrderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Order"
+    objects: {
+      User: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      orderStatus: $Enums.OrderStatus
+      plan: $Enums.Plan
+      price: number
+      userId: string
+    }, ExtArgs["result"]["order"]>
+    composites: {}
+  }
+
+  type OrderGetPayload<S extends boolean | null | undefined | OrderDefaultArgs> = $Result.GetResult<Prisma.$OrderPayload, S>
+
+  type OrderCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<OrderFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: OrderCountAggregateInputType | true
+    }
+
+  export interface OrderDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Order'], meta: { name: 'Order' } }
+    /**
+     * Find zero or one Order that matches the filter.
+     * @param {OrderFindUniqueArgs} args - Arguments to find a Order
+     * @example
+     * // Get one Order
+     * const order = await prisma.order.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends OrderFindUniqueArgs>(args: SelectSubset<T, OrderFindUniqueArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Order that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {OrderFindUniqueOrThrowArgs} args - Arguments to find a Order
+     * @example
+     * // Get one Order
+     * const order = await prisma.order.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends OrderFindUniqueOrThrowArgs>(args: SelectSubset<T, OrderFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Order that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrderFindFirstArgs} args - Arguments to find a Order
+     * @example
+     * // Get one Order
+     * const order = await prisma.order.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends OrderFindFirstArgs>(args?: SelectSubset<T, OrderFindFirstArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Order that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrderFindFirstOrThrowArgs} args - Arguments to find a Order
+     * @example
+     * // Get one Order
+     * const order = await prisma.order.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends OrderFindFirstOrThrowArgs>(args?: SelectSubset<T, OrderFindFirstOrThrowArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Orders that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrderFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Orders
+     * const orders = await prisma.order.findMany()
+     * 
+     * // Get first 10 Orders
+     * const orders = await prisma.order.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const orderWithIdOnly = await prisma.order.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends OrderFindManyArgs>(args?: SelectSubset<T, OrderFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Order.
+     * @param {OrderCreateArgs} args - Arguments to create a Order.
+     * @example
+     * // Create one Order
+     * const Order = await prisma.order.create({
+     *   data: {
+     *     // ... data to create a Order
+     *   }
+     * })
+     * 
+     */
+    create<T extends OrderCreateArgs>(args: SelectSubset<T, OrderCreateArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Orders.
+     * @param {OrderCreateManyArgs} args - Arguments to create many Orders.
+     * @example
+     * // Create many Orders
+     * const order = await prisma.order.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends OrderCreateManyArgs>(args?: SelectSubset<T, OrderCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Orders and returns the data saved in the database.
+     * @param {OrderCreateManyAndReturnArgs} args - Arguments to create many Orders.
+     * @example
+     * // Create many Orders
+     * const order = await prisma.order.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Orders and only return the `id`
+     * const orderWithIdOnly = await prisma.order.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends OrderCreateManyAndReturnArgs>(args?: SelectSubset<T, OrderCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Order.
+     * @param {OrderDeleteArgs} args - Arguments to delete one Order.
+     * @example
+     * // Delete one Order
+     * const Order = await prisma.order.delete({
+     *   where: {
+     *     // ... filter to delete one Order
+     *   }
+     * })
+     * 
+     */
+    delete<T extends OrderDeleteArgs>(args: SelectSubset<T, OrderDeleteArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Order.
+     * @param {OrderUpdateArgs} args - Arguments to update one Order.
+     * @example
+     * // Update one Order
+     * const order = await prisma.order.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends OrderUpdateArgs>(args: SelectSubset<T, OrderUpdateArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Orders.
+     * @param {OrderDeleteManyArgs} args - Arguments to filter Orders to delete.
+     * @example
+     * // Delete a few Orders
+     * const { count } = await prisma.order.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends OrderDeleteManyArgs>(args?: SelectSubset<T, OrderDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Orders.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrderUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Orders
+     * const order = await prisma.order.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends OrderUpdateManyArgs>(args: SelectSubset<T, OrderUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Orders and returns the data updated in the database.
+     * @param {OrderUpdateManyAndReturnArgs} args - Arguments to update many Orders.
+     * @example
+     * // Update many Orders
+     * const order = await prisma.order.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Orders and only return the `id`
+     * const orderWithIdOnly = await prisma.order.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends OrderUpdateManyAndReturnArgs>(args: SelectSubset<T, OrderUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Order.
+     * @param {OrderUpsertArgs} args - Arguments to update or create a Order.
+     * @example
+     * // Update or create a Order
+     * const order = await prisma.order.upsert({
+     *   create: {
+     *     // ... data to create a Order
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Order we want to update
+     *   }
+     * })
+     */
+    upsert<T extends OrderUpsertArgs>(args: SelectSubset<T, OrderUpsertArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Orders.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrderCountArgs} args - Arguments to filter Orders to count.
+     * @example
+     * // Count the number of Orders
+     * const count = await prisma.order.count({
+     *   where: {
+     *     // ... the filter for the Orders we want to count
+     *   }
+     * })
+    **/
+    count<T extends OrderCountArgs>(
+      args?: Subset<T, OrderCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], OrderCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Order.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrderAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends OrderAggregateArgs>(args: Subset<T, OrderAggregateArgs>): Prisma.PrismaPromise<GetOrderAggregateType<T>>
+
+    /**
+     * Group by Order.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrderGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends OrderGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: OrderGroupByArgs['orderBy'] }
+        : { orderBy?: OrderGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, OrderGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOrderGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Order model
+   */
+  readonly fields: OrderFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Order.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__OrderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    User<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Order model
+   */ 
+  interface OrderFieldRefs {
+    readonly id: FieldRef<"Order", 'String'>
+    readonly orderStatus: FieldRef<"Order", 'OrderStatus'>
+    readonly plan: FieldRef<"Order", 'Plan'>
+    readonly price: FieldRef<"Order", 'Float'>
+    readonly userId: FieldRef<"Order", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Order findUnique
+   */
+  export type OrderFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    /**
+     * Filter, which Order to fetch.
+     */
+    where: OrderWhereUniqueInput
+  }
+
+  /**
+   * Order findUniqueOrThrow
+   */
+  export type OrderFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    /**
+     * Filter, which Order to fetch.
+     */
+    where: OrderWhereUniqueInput
+  }
+
+  /**
+   * Order findFirst
+   */
+  export type OrderFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    /**
+     * Filter, which Order to fetch.
+     */
+    where?: OrderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Orders to fetch.
+     */
+    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Orders.
+     */
+    cursor?: OrderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Orders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Orders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Orders.
+     */
+    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
+  }
+
+  /**
+   * Order findFirstOrThrow
+   */
+  export type OrderFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    /**
+     * Filter, which Order to fetch.
+     */
+    where?: OrderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Orders to fetch.
+     */
+    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Orders.
+     */
+    cursor?: OrderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Orders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Orders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Orders.
+     */
+    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
+  }
+
+  /**
+   * Order findMany
+   */
+  export type OrderFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    /**
+     * Filter, which Orders to fetch.
+     */
+    where?: OrderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Orders to fetch.
+     */
+    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Orders.
+     */
+    cursor?: OrderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Orders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Orders.
+     */
+    skip?: number
+    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
+  }
+
+  /**
+   * Order create
+   */
+  export type OrderCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Order.
+     */
+    data: XOR<OrderCreateInput, OrderUncheckedCreateInput>
+  }
+
+  /**
+   * Order createMany
+   */
+  export type OrderCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Orders.
+     */
+    data: OrderCreateManyInput | OrderCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Order createManyAndReturn
+   */
+  export type OrderCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * The data used to create many Orders.
+     */
+    data: OrderCreateManyInput | OrderCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Order update
+   */
+  export type OrderUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Order.
+     */
+    data: XOR<OrderUpdateInput, OrderUncheckedUpdateInput>
+    /**
+     * Choose, which Order to update.
+     */
+    where: OrderWhereUniqueInput
+  }
+
+  /**
+   * Order updateMany
+   */
+  export type OrderUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Orders.
+     */
+    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyInput>
+    /**
+     * Filter which Orders to update
+     */
+    where?: OrderWhereInput
+    /**
+     * Limit how many Orders to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Order updateManyAndReturn
+   */
+  export type OrderUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * The data used to update Orders.
+     */
+    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyInput>
+    /**
+     * Filter which Orders to update
+     */
+    where?: OrderWhereInput
+    /**
+     * Limit how many Orders to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Order upsert
+   */
+  export type OrderUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Order to update in case it exists.
+     */
+    where: OrderWhereUniqueInput
+    /**
+     * In case the Order found by the `where` argument doesn't exist, create a new Order with this data.
+     */
+    create: XOR<OrderCreateInput, OrderUncheckedCreateInput>
+    /**
+     * In case the Order was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<OrderUpdateInput, OrderUncheckedUpdateInput>
+  }
+
+  /**
+   * Order delete
+   */
+  export type OrderDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    /**
+     * Filter which Order to delete.
+     */
+    where: OrderWhereUniqueInput
+  }
+
+  /**
+   * Order deleteMany
+   */
+  export type OrderDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Orders to delete
+     */
+    where?: OrderWhereInput
+    /**
+     * Limit how many Orders to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Order without action
+   */
+  export type OrderDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
   }
 
 
@@ -8014,27 +9261,38 @@ export namespace Prisma {
   export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
 
 
-  export const MovieFavoriteListScalarFieldEnum: {
+  export const FavoriteListScalarFieldEnum: {
     id: 'id',
     profileId: 'profileId'
   };
 
-  export type MovieFavoriteListScalarFieldEnum = (typeof MovieFavoriteListScalarFieldEnum)[keyof typeof MovieFavoriteListScalarFieldEnum]
+  export type FavoriteListScalarFieldEnum = (typeof FavoriteListScalarFieldEnum)[keyof typeof FavoriteListScalarFieldEnum]
 
 
-  export const MovieScalarFieldEnum: {
+  export const FavoriteItemScalarFieldEnum: {
     id: 'id',
     title: 'title',
     release_date: 'release_date',
-    genre_ids: 'genre_ids',
     poster_path: 'poster_path',
     backdrop_path: 'backdrop_path',
     overview: 'overview',
     popularity: 'popularity',
-    adult: 'adult'
+    adult: 'adult',
+    type: 'type'
   };
 
-  export type MovieScalarFieldEnum = (typeof MovieScalarFieldEnum)[keyof typeof MovieScalarFieldEnum]
+  export type FavoriteItemScalarFieldEnum = (typeof FavoriteItemScalarFieldEnum)[keyof typeof FavoriteItemScalarFieldEnum]
+
+
+  export const OrderScalarFieldEnum: {
+    id: 'id',
+    orderStatus: 'orderStatus',
+    plan: 'plan',
+    price: 'price',
+    userId: 'userId'
+  };
+
+  export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -8127,6 +9385,48 @@ export namespace Prisma {
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
+
+
+  /**
+   * Reference to a field of type 'Type'
+   */
+  export type EnumTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Type'>
+    
+
+
+  /**
+   * Reference to a field of type 'Type[]'
+   */
+  export type ListEnumTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Type[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'OrderStatus'
+   */
+  export type EnumOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrderStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'OrderStatus[]'
+   */
+  export type ListEnumOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrderStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Plan'
+   */
+  export type EnumPlanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Plan'>
+    
+
+
+  /**
+   * Reference to a field of type 'Plan[]'
+   */
+  export type ListEnumPlanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Plan[]'>
+    
   /**
    * Deep Input Types
    */
@@ -8148,6 +9448,7 @@ export namespace Prisma {
     resetPasswordExpiresAt?: DateTimeNullableFilter<"User"> | Date | string | null
     sessions?: SessionListRelationFilter
     profiles?: ProfileListRelationFilter
+    orders?: XOR<OrderNullableScalarRelationFilter, OrderWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -8163,6 +9464,7 @@ export namespace Prisma {
     resetPasswordExpiresAt?: SortOrderInput | SortOrder
     sessions?: SessionOrderByRelationAggregateInput
     profiles?: ProfileOrderByRelationAggregateInput
+    orders?: OrderOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -8181,6 +9483,7 @@ export namespace Prisma {
     resetPasswordExpiresAt?: DateTimeNullableFilter<"User"> | Date | string | null
     sessions?: SessionListRelationFilter
     profiles?: ProfileListRelationFilter
+    orders?: XOR<OrderNullableScalarRelationFilter, OrderWhereInput> | null
   }, "id" | "email" | "resetPasswordToken">
 
   export type UserOrderByWithAggregationInput = {
@@ -8331,7 +9634,7 @@ export namespace Prisma {
     image?: StringNullableFilter<"Profile"> | string | null
     userId?: StringFilter<"Profile"> | string
     User?: XOR<UserScalarRelationFilter, UserWhereInput>
-    moviesFavoriteList?: XOR<MovieFavoriteListNullableScalarRelationFilter, MovieFavoriteListWhereInput> | null
+    favoriteList?: XOR<FavoriteListNullableScalarRelationFilter, FavoriteListWhereInput> | null
   }
 
   export type ProfileOrderByWithRelationInput = {
@@ -8340,20 +9643,20 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     userId?: SortOrder
     User?: UserOrderByWithRelationInput
-    moviesFavoriteList?: MovieFavoriteListOrderByWithRelationInput
+    favoriteList?: FavoriteListOrderByWithRelationInput
   }
 
   export type ProfileWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    name?: string
     AND?: ProfileWhereInput | ProfileWhereInput[]
     OR?: ProfileWhereInput[]
     NOT?: ProfileWhereInput | ProfileWhereInput[]
-    name?: StringFilter<"Profile"> | string
     image?: StringNullableFilter<"Profile"> | string | null
     userId?: StringFilter<"Profile"> | string
     User?: XOR<UserScalarRelationFilter, UserWhereInput>
-    moviesFavoriteList?: XOR<MovieFavoriteListNullableScalarRelationFilter, MovieFavoriteListWhereInput> | null
-  }, "id">
+    favoriteList?: XOR<FavoriteListNullableScalarRelationFilter, FavoriteListWhereInput> | null
+  }, "id" | "name">
 
   export type ProfileOrderByWithAggregationInput = {
     id?: SortOrder
@@ -8375,124 +9678,181 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"Profile"> | string
   }
 
-  export type MovieFavoriteListWhereInput = {
-    AND?: MovieFavoriteListWhereInput | MovieFavoriteListWhereInput[]
-    OR?: MovieFavoriteListWhereInput[]
-    NOT?: MovieFavoriteListWhereInput | MovieFavoriteListWhereInput[]
-    id?: StringFilter<"MovieFavoriteList"> | string
-    profileId?: StringFilter<"MovieFavoriteList"> | string
+  export type FavoriteListWhereInput = {
+    AND?: FavoriteListWhereInput | FavoriteListWhereInput[]
+    OR?: FavoriteListWhereInput[]
+    NOT?: FavoriteListWhereInput | FavoriteListWhereInput[]
+    id?: StringFilter<"FavoriteList"> | string
+    profileId?: StringFilter<"FavoriteList"> | string
     profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
-    movies?: MovieListRelationFilter
+    favoriteList?: FavoriteItemListRelationFilter
   }
 
-  export type MovieFavoriteListOrderByWithRelationInput = {
+  export type FavoriteListOrderByWithRelationInput = {
     id?: SortOrder
     profileId?: SortOrder
     profile?: ProfileOrderByWithRelationInput
-    movies?: MovieOrderByRelationAggregateInput
+    favoriteList?: FavoriteItemOrderByRelationAggregateInput
   }
 
-  export type MovieFavoriteListWhereUniqueInput = Prisma.AtLeast<{
+  export type FavoriteListWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     profileId?: string
-    AND?: MovieFavoriteListWhereInput | MovieFavoriteListWhereInput[]
-    OR?: MovieFavoriteListWhereInput[]
-    NOT?: MovieFavoriteListWhereInput | MovieFavoriteListWhereInput[]
+    AND?: FavoriteListWhereInput | FavoriteListWhereInput[]
+    OR?: FavoriteListWhereInput[]
+    NOT?: FavoriteListWhereInput | FavoriteListWhereInput[]
     profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
-    movies?: MovieListRelationFilter
+    favoriteList?: FavoriteItemListRelationFilter
   }, "id" | "profileId">
 
-  export type MovieFavoriteListOrderByWithAggregationInput = {
+  export type FavoriteListOrderByWithAggregationInput = {
     id?: SortOrder
     profileId?: SortOrder
-    _count?: MovieFavoriteListCountOrderByAggregateInput
-    _max?: MovieFavoriteListMaxOrderByAggregateInput
-    _min?: MovieFavoriteListMinOrderByAggregateInput
+    _count?: FavoriteListCountOrderByAggregateInput
+    _max?: FavoriteListMaxOrderByAggregateInput
+    _min?: FavoriteListMinOrderByAggregateInput
   }
 
-  export type MovieFavoriteListScalarWhereWithAggregatesInput = {
-    AND?: MovieFavoriteListScalarWhereWithAggregatesInput | MovieFavoriteListScalarWhereWithAggregatesInput[]
-    OR?: MovieFavoriteListScalarWhereWithAggregatesInput[]
-    NOT?: MovieFavoriteListScalarWhereWithAggregatesInput | MovieFavoriteListScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"MovieFavoriteList"> | string
-    profileId?: StringWithAggregatesFilter<"MovieFavoriteList"> | string
+  export type FavoriteListScalarWhereWithAggregatesInput = {
+    AND?: FavoriteListScalarWhereWithAggregatesInput | FavoriteListScalarWhereWithAggregatesInput[]
+    OR?: FavoriteListScalarWhereWithAggregatesInput[]
+    NOT?: FavoriteListScalarWhereWithAggregatesInput | FavoriteListScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FavoriteList"> | string
+    profileId?: StringWithAggregatesFilter<"FavoriteList"> | string
   }
 
-  export type MovieWhereInput = {
-    AND?: MovieWhereInput | MovieWhereInput[]
-    OR?: MovieWhereInput[]
-    NOT?: MovieWhereInput | MovieWhereInput[]
-    id?: IntFilter<"Movie"> | number
-    title?: StringFilter<"Movie"> | string
-    release_date?: StringFilter<"Movie"> | string
-    genre_ids?: IntNullableListFilter<"Movie">
-    poster_path?: StringFilter<"Movie"> | string
-    backdrop_path?: StringFilter<"Movie"> | string
-    overview?: StringFilter<"Movie"> | string
-    popularity?: FloatFilter<"Movie"> | number
-    adult?: BoolFilter<"Movie"> | boolean
-    favoriteLists?: MovieFavoriteListListRelationFilter
+  export type FavoriteItemWhereInput = {
+    AND?: FavoriteItemWhereInput | FavoriteItemWhereInput[]
+    OR?: FavoriteItemWhereInput[]
+    NOT?: FavoriteItemWhereInput | FavoriteItemWhereInput[]
+    id?: IntFilter<"FavoriteItem"> | number
+    title?: StringFilter<"FavoriteItem"> | string
+    release_date?: StringFilter<"FavoriteItem"> | string
+    poster_path?: StringFilter<"FavoriteItem"> | string
+    backdrop_path?: StringFilter<"FavoriteItem"> | string
+    overview?: StringFilter<"FavoriteItem"> | string
+    popularity?: FloatFilter<"FavoriteItem"> | number
+    adult?: BoolFilter<"FavoriteItem"> | boolean
+    type?: EnumTypeFilter<"FavoriteItem"> | $Enums.Type
+    favoriteLists?: FavoriteListListRelationFilter
   }
 
-  export type MovieOrderByWithRelationInput = {
+  export type FavoriteItemOrderByWithRelationInput = {
     id?: SortOrder
     title?: SortOrder
     release_date?: SortOrder
-    genre_ids?: SortOrder
     poster_path?: SortOrder
     backdrop_path?: SortOrder
     overview?: SortOrder
     popularity?: SortOrder
     adult?: SortOrder
-    favoriteLists?: MovieFavoriteListOrderByRelationAggregateInput
+    type?: SortOrder
+    favoriteLists?: FavoriteListOrderByRelationAggregateInput
   }
 
-  export type MovieWhereUniqueInput = Prisma.AtLeast<{
+  export type FavoriteItemWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    AND?: MovieWhereInput | MovieWhereInput[]
-    OR?: MovieWhereInput[]
-    NOT?: MovieWhereInput | MovieWhereInput[]
-    title?: StringFilter<"Movie"> | string
-    release_date?: StringFilter<"Movie"> | string
-    genre_ids?: IntNullableListFilter<"Movie">
-    poster_path?: StringFilter<"Movie"> | string
-    backdrop_path?: StringFilter<"Movie"> | string
-    overview?: StringFilter<"Movie"> | string
-    popularity?: FloatFilter<"Movie"> | number
-    adult?: BoolFilter<"Movie"> | boolean
-    favoriteLists?: MovieFavoriteListListRelationFilter
+    AND?: FavoriteItemWhereInput | FavoriteItemWhereInput[]
+    OR?: FavoriteItemWhereInput[]
+    NOT?: FavoriteItemWhereInput | FavoriteItemWhereInput[]
+    title?: StringFilter<"FavoriteItem"> | string
+    release_date?: StringFilter<"FavoriteItem"> | string
+    poster_path?: StringFilter<"FavoriteItem"> | string
+    backdrop_path?: StringFilter<"FavoriteItem"> | string
+    overview?: StringFilter<"FavoriteItem"> | string
+    popularity?: FloatFilter<"FavoriteItem"> | number
+    adult?: BoolFilter<"FavoriteItem"> | boolean
+    type?: EnumTypeFilter<"FavoriteItem"> | $Enums.Type
+    favoriteLists?: FavoriteListListRelationFilter
   }, "id">
 
-  export type MovieOrderByWithAggregationInput = {
+  export type FavoriteItemOrderByWithAggregationInput = {
     id?: SortOrder
     title?: SortOrder
     release_date?: SortOrder
-    genre_ids?: SortOrder
     poster_path?: SortOrder
     backdrop_path?: SortOrder
     overview?: SortOrder
     popularity?: SortOrder
     adult?: SortOrder
-    _count?: MovieCountOrderByAggregateInput
-    _avg?: MovieAvgOrderByAggregateInput
-    _max?: MovieMaxOrderByAggregateInput
-    _min?: MovieMinOrderByAggregateInput
-    _sum?: MovieSumOrderByAggregateInput
+    type?: SortOrder
+    _count?: FavoriteItemCountOrderByAggregateInput
+    _avg?: FavoriteItemAvgOrderByAggregateInput
+    _max?: FavoriteItemMaxOrderByAggregateInput
+    _min?: FavoriteItemMinOrderByAggregateInput
+    _sum?: FavoriteItemSumOrderByAggregateInput
   }
 
-  export type MovieScalarWhereWithAggregatesInput = {
-    AND?: MovieScalarWhereWithAggregatesInput | MovieScalarWhereWithAggregatesInput[]
-    OR?: MovieScalarWhereWithAggregatesInput[]
-    NOT?: MovieScalarWhereWithAggregatesInput | MovieScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Movie"> | number
-    title?: StringWithAggregatesFilter<"Movie"> | string
-    release_date?: StringWithAggregatesFilter<"Movie"> | string
-    genre_ids?: IntNullableListFilter<"Movie">
-    poster_path?: StringWithAggregatesFilter<"Movie"> | string
-    backdrop_path?: StringWithAggregatesFilter<"Movie"> | string
-    overview?: StringWithAggregatesFilter<"Movie"> | string
-    popularity?: FloatWithAggregatesFilter<"Movie"> | number
-    adult?: BoolWithAggregatesFilter<"Movie"> | boolean
+  export type FavoriteItemScalarWhereWithAggregatesInput = {
+    AND?: FavoriteItemScalarWhereWithAggregatesInput | FavoriteItemScalarWhereWithAggregatesInput[]
+    OR?: FavoriteItemScalarWhereWithAggregatesInput[]
+    NOT?: FavoriteItemScalarWhereWithAggregatesInput | FavoriteItemScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"FavoriteItem"> | number
+    title?: StringWithAggregatesFilter<"FavoriteItem"> | string
+    release_date?: StringWithAggregatesFilter<"FavoriteItem"> | string
+    poster_path?: StringWithAggregatesFilter<"FavoriteItem"> | string
+    backdrop_path?: StringWithAggregatesFilter<"FavoriteItem"> | string
+    overview?: StringWithAggregatesFilter<"FavoriteItem"> | string
+    popularity?: FloatWithAggregatesFilter<"FavoriteItem"> | number
+    adult?: BoolWithAggregatesFilter<"FavoriteItem"> | boolean
+    type?: EnumTypeWithAggregatesFilter<"FavoriteItem"> | $Enums.Type
+  }
+
+  export type OrderWhereInput = {
+    AND?: OrderWhereInput | OrderWhereInput[]
+    OR?: OrderWhereInput[]
+    NOT?: OrderWhereInput | OrderWhereInput[]
+    id?: StringFilter<"Order"> | string
+    orderStatus?: EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
+    plan?: EnumPlanFilter<"Order"> | $Enums.Plan
+    price?: FloatFilter<"Order"> | number
+    userId?: StringFilter<"Order"> | string
+    User?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type OrderOrderByWithRelationInput = {
+    id?: SortOrder
+    orderStatus?: SortOrder
+    plan?: SortOrder
+    price?: SortOrder
+    userId?: SortOrder
+    User?: UserOrderByWithRelationInput
+  }
+
+  export type OrderWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId?: string
+    AND?: OrderWhereInput | OrderWhereInput[]
+    OR?: OrderWhereInput[]
+    NOT?: OrderWhereInput | OrderWhereInput[]
+    orderStatus?: EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
+    plan?: EnumPlanFilter<"Order"> | $Enums.Plan
+    price?: FloatFilter<"Order"> | number
+    User?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId">
+
+  export type OrderOrderByWithAggregationInput = {
+    id?: SortOrder
+    orderStatus?: SortOrder
+    plan?: SortOrder
+    price?: SortOrder
+    userId?: SortOrder
+    _count?: OrderCountOrderByAggregateInput
+    _avg?: OrderAvgOrderByAggregateInput
+    _max?: OrderMaxOrderByAggregateInput
+    _min?: OrderMinOrderByAggregateInput
+    _sum?: OrderSumOrderByAggregateInput
+  }
+
+  export type OrderScalarWhereWithAggregatesInput = {
+    AND?: OrderScalarWhereWithAggregatesInput | OrderScalarWhereWithAggregatesInput[]
+    OR?: OrderScalarWhereWithAggregatesInput[]
+    NOT?: OrderScalarWhereWithAggregatesInput | OrderScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Order"> | string
+    orderStatus?: EnumOrderStatusWithAggregatesFilter<"Order"> | $Enums.OrderStatus
+    plan?: EnumPlanWithAggregatesFilter<"Order"> | $Enums.Plan
+    price?: FloatWithAggregatesFilter<"Order"> | number
+    userId?: StringWithAggregatesFilter<"Order"> | string
   }
 
   export type UserCreateInput = {
@@ -8508,6 +9868,7 @@ export namespace Prisma {
     resetPasswordExpiresAt?: Date | string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
     profiles?: ProfileCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -8523,6 +9884,7 @@ export namespace Prisma {
     resetPasswordExpiresAt?: Date | string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     profiles?: ProfileUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -8538,6 +9900,7 @@ export namespace Prisma {
     resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
     profiles?: ProfileUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -8553,6 +9916,7 @@ export namespace Prisma {
     resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     profiles?: ProfileUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -8710,7 +10074,7 @@ export namespace Prisma {
     name: string
     image?: string | null
     User: UserCreateNestedOneWithoutProfilesInput
-    moviesFavoriteList?: MovieFavoriteListCreateNestedOneWithoutProfileInput
+    favoriteList?: FavoriteListCreateNestedOneWithoutProfileInput
   }
 
   export type ProfileUncheckedCreateInput = {
@@ -8718,7 +10082,7 @@ export namespace Prisma {
     name: string
     image?: string | null
     userId: string
-    moviesFavoriteList?: MovieFavoriteListUncheckedCreateNestedOneWithoutProfileInput
+    favoriteList?: FavoriteListUncheckedCreateNestedOneWithoutProfileInput
   }
 
   export type ProfileUpdateInput = {
@@ -8726,7 +10090,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     User?: UserUpdateOneRequiredWithoutProfilesNestedInput
-    moviesFavoriteList?: MovieFavoriteListUpdateOneWithoutProfileNestedInput
+    favoriteList?: FavoriteListUpdateOneWithoutProfileNestedInput
   }
 
   export type ProfileUncheckedUpdateInput = {
@@ -8734,7 +10098,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
-    moviesFavoriteList?: MovieFavoriteListUncheckedUpdateOneWithoutProfileNestedInput
+    favoriteList?: FavoriteListUncheckedUpdateOneWithoutProfileNestedInput
   }
 
   export type ProfileCreateManyInput = {
@@ -8757,130 +10121,185 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type MovieFavoriteListCreateInput = {
+  export type FavoriteListCreateInput = {
     id?: string
-    profile: ProfileCreateNestedOneWithoutMoviesFavoriteListInput
-    movies?: MovieCreateNestedManyWithoutFavoriteListsInput
+    profile: ProfileCreateNestedOneWithoutFavoriteListInput
+    favoriteList?: FavoriteItemCreateNestedManyWithoutFavoriteListsInput
   }
 
-  export type MovieFavoriteListUncheckedCreateInput = {
-    id?: string
-    profileId: string
-    movies?: MovieUncheckedCreateNestedManyWithoutFavoriteListsInput
-  }
-
-  export type MovieFavoriteListUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    profile?: ProfileUpdateOneRequiredWithoutMoviesFavoriteListNestedInput
-    movies?: MovieUpdateManyWithoutFavoriteListsNestedInput
-  }
-
-  export type MovieFavoriteListUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
-    movies?: MovieUncheckedUpdateManyWithoutFavoriteListsNestedInput
-  }
-
-  export type MovieFavoriteListCreateManyInput = {
+  export type FavoriteListUncheckedCreateInput = {
     id?: string
     profileId: string
+    favoriteList?: FavoriteItemUncheckedCreateNestedManyWithoutFavoriteListsInput
   }
 
-  export type MovieFavoriteListUpdateManyMutationInput = {
+  export type FavoriteListUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    profile?: ProfileUpdateOneRequiredWithoutFavoriteListNestedInput
+    favoriteList?: FavoriteItemUpdateManyWithoutFavoriteListsNestedInput
+  }
+
+  export type FavoriteListUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    profileId?: StringFieldUpdateOperationsInput | string
+    favoriteList?: FavoriteItemUncheckedUpdateManyWithoutFavoriteListsNestedInput
+  }
+
+  export type FavoriteListCreateManyInput = {
+    id?: string
+    profileId: string
+  }
+
+  export type FavoriteListUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
   }
 
-  export type MovieFavoriteListUncheckedUpdateManyInput = {
+  export type FavoriteListUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type MovieCreateInput = {
+  export type FavoriteItemCreateInput = {
     id?: number
     title: string
     release_date: string
-    genre_ids?: MovieCreategenre_idsInput | number[]
     poster_path: string
     backdrop_path: string
     overview: string
     popularity: number
     adult: boolean
-    favoriteLists?: MovieFavoriteListCreateNestedManyWithoutMoviesInput
+    type: $Enums.Type
+    favoriteLists?: FavoriteListCreateNestedManyWithoutFavoriteListInput
   }
 
-  export type MovieUncheckedCreateInput = {
+  export type FavoriteItemUncheckedCreateInput = {
     id?: number
     title: string
     release_date: string
-    genre_ids?: MovieCreategenre_idsInput | number[]
     poster_path: string
     backdrop_path: string
     overview: string
     popularity: number
     adult: boolean
-    favoriteLists?: MovieFavoriteListUncheckedCreateNestedManyWithoutMoviesInput
+    type: $Enums.Type
+    favoriteLists?: FavoriteListUncheckedCreateNestedManyWithoutFavoriteListInput
   }
 
-  export type MovieUpdateInput = {
+  export type FavoriteItemUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
-    genre_ids?: MovieUpdategenre_idsInput | number[]
     poster_path?: StringFieldUpdateOperationsInput | string
     backdrop_path?: StringFieldUpdateOperationsInput | string
     overview?: StringFieldUpdateOperationsInput | string
     popularity?: FloatFieldUpdateOperationsInput | number
     adult?: BoolFieldUpdateOperationsInput | boolean
-    favoriteLists?: MovieFavoriteListUpdateManyWithoutMoviesNestedInput
+    type?: EnumTypeFieldUpdateOperationsInput | $Enums.Type
+    favoriteLists?: FavoriteListUpdateManyWithoutFavoriteListNestedInput
   }
 
-  export type MovieUncheckedUpdateInput = {
+  export type FavoriteItemUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
-    genre_ids?: MovieUpdategenre_idsInput | number[]
     poster_path?: StringFieldUpdateOperationsInput | string
     backdrop_path?: StringFieldUpdateOperationsInput | string
     overview?: StringFieldUpdateOperationsInput | string
     popularity?: FloatFieldUpdateOperationsInput | number
     adult?: BoolFieldUpdateOperationsInput | boolean
-    favoriteLists?: MovieFavoriteListUncheckedUpdateManyWithoutMoviesNestedInput
+    type?: EnumTypeFieldUpdateOperationsInput | $Enums.Type
+    favoriteLists?: FavoriteListUncheckedUpdateManyWithoutFavoriteListNestedInput
   }
 
-  export type MovieCreateManyInput = {
+  export type FavoriteItemCreateManyInput = {
     id?: number
     title: string
     release_date: string
-    genre_ids?: MovieCreategenre_idsInput | number[]
     poster_path: string
     backdrop_path: string
     overview: string
     popularity: number
     adult: boolean
+    type: $Enums.Type
   }
 
-  export type MovieUpdateManyMutationInput = {
+  export type FavoriteItemUpdateManyMutationInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
-    genre_ids?: MovieUpdategenre_idsInput | number[]
     poster_path?: StringFieldUpdateOperationsInput | string
     backdrop_path?: StringFieldUpdateOperationsInput | string
     overview?: StringFieldUpdateOperationsInput | string
     popularity?: FloatFieldUpdateOperationsInput | number
     adult?: BoolFieldUpdateOperationsInput | boolean
+    type?: EnumTypeFieldUpdateOperationsInput | $Enums.Type
   }
 
-  export type MovieUncheckedUpdateManyInput = {
+  export type FavoriteItemUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
-    genre_ids?: MovieUpdategenre_idsInput | number[]
     poster_path?: StringFieldUpdateOperationsInput | string
     backdrop_path?: StringFieldUpdateOperationsInput | string
     overview?: StringFieldUpdateOperationsInput | string
     popularity?: FloatFieldUpdateOperationsInput | number
     adult?: BoolFieldUpdateOperationsInput | boolean
+    type?: EnumTypeFieldUpdateOperationsInput | $Enums.Type
+  }
+
+  export type OrderCreateInput = {
+    id?: string
+    orderStatus: $Enums.OrderStatus
+    plan: $Enums.Plan
+    price: number
+    User: UserCreateNestedOneWithoutOrdersInput
+  }
+
+  export type OrderUncheckedCreateInput = {
+    id?: string
+    orderStatus: $Enums.OrderStatus
+    plan: $Enums.Plan
+    price: number
+    userId: string
+  }
+
+  export type OrderUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    price?: FloatFieldUpdateOperationsInput | number
+    User?: UserUpdateOneRequiredWithoutOrdersNestedInput
+  }
+
+  export type OrderUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    price?: FloatFieldUpdateOperationsInput | number
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type OrderCreateManyInput = {
+    id?: string
+    orderStatus: $Enums.OrderStatus
+    plan: $Enums.Plan
+    price: number
+    userId: string
+  }
+
+  export type OrderUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    price?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type OrderUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    price?: FloatFieldUpdateOperationsInput | number
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -8950,6 +10369,11 @@ export namespace Prisma {
     every?: ProfileWhereInput
     some?: ProfileWhereInput
     none?: ProfileWhereInput
+  }
+
+  export type OrderNullableScalarRelationFilter = {
+    is?: OrderWhereInput | null
+    isNot?: OrderWhereInput | null
   }
 
   export type SortOrderInput = {
@@ -9129,9 +10553,9 @@ export namespace Prisma {
     expires?: SortOrder
   }
 
-  export type MovieFavoriteListNullableScalarRelationFilter = {
-    is?: MovieFavoriteListWhereInput | null
-    isNot?: MovieFavoriteListWhereInput | null
+  export type FavoriteListNullableScalarRelationFilter = {
+    is?: FavoriteListWhereInput | null
+    isNot?: FavoriteListWhereInput | null
   }
 
   export type ProfileCountOrderByAggregateInput = {
@@ -9160,27 +10584,27 @@ export namespace Prisma {
     isNot?: ProfileWhereInput
   }
 
-  export type MovieListRelationFilter = {
-    every?: MovieWhereInput
-    some?: MovieWhereInput
-    none?: MovieWhereInput
+  export type FavoriteItemListRelationFilter = {
+    every?: FavoriteItemWhereInput
+    some?: FavoriteItemWhereInput
+    none?: FavoriteItemWhereInput
   }
 
-  export type MovieOrderByRelationAggregateInput = {
+  export type FavoriteItemOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type MovieFavoriteListCountOrderByAggregateInput = {
+  export type FavoriteListCountOrderByAggregateInput = {
     id?: SortOrder
     profileId?: SortOrder
   }
 
-  export type MovieFavoriteListMaxOrderByAggregateInput = {
+  export type FavoriteListMaxOrderByAggregateInput = {
     id?: SortOrder
     profileId?: SortOrder
   }
 
-  export type MovieFavoriteListMinOrderByAggregateInput = {
+  export type FavoriteListMinOrderByAggregateInput = {
     id?: SortOrder
     profileId?: SortOrder
   }
@@ -9194,14 +10618,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
-  }
-
-  export type IntNullableListFilter<$PrismaModel = never> = {
-    equals?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    has?: number | IntFieldRefInput<$PrismaModel> | null
-    hasEvery?: number[] | ListIntFieldRefInput<$PrismaModel>
-    hasSome?: number[] | ListIntFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -9220,35 +10636,24 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type MovieFavoriteListListRelationFilter = {
-    every?: MovieFavoriteListWhereInput
-    some?: MovieFavoriteListWhereInput
-    none?: MovieFavoriteListWhereInput
+  export type EnumTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.Type | EnumTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.Type[] | ListEnumTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Type[] | ListEnumTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTypeFilter<$PrismaModel> | $Enums.Type
   }
 
-  export type MovieFavoriteListOrderByRelationAggregateInput = {
+  export type FavoriteListListRelationFilter = {
+    every?: FavoriteListWhereInput
+    some?: FavoriteListWhereInput
+    none?: FavoriteListWhereInput
+  }
+
+  export type FavoriteListOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type MovieCountOrderByAggregateInput = {
-    id?: SortOrder
-    title?: SortOrder
-    release_date?: SortOrder
-    genre_ids?: SortOrder
-    poster_path?: SortOrder
-    backdrop_path?: SortOrder
-    overview?: SortOrder
-    popularity?: SortOrder
-    adult?: SortOrder
-  }
-
-  export type MovieAvgOrderByAggregateInput = {
-    id?: SortOrder
-    genre_ids?: SortOrder
-    popularity?: SortOrder
-  }
-
-  export type MovieMaxOrderByAggregateInput = {
+  export type FavoriteItemCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
     release_date?: SortOrder
@@ -9257,9 +10662,15 @@ export namespace Prisma {
     overview?: SortOrder
     popularity?: SortOrder
     adult?: SortOrder
+    type?: SortOrder
   }
 
-  export type MovieMinOrderByAggregateInput = {
+  export type FavoriteItemAvgOrderByAggregateInput = {
+    id?: SortOrder
+    popularity?: SortOrder
+  }
+
+  export type FavoriteItemMaxOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
     release_date?: SortOrder
@@ -9268,11 +10679,23 @@ export namespace Prisma {
     overview?: SortOrder
     popularity?: SortOrder
     adult?: SortOrder
+    type?: SortOrder
   }
 
-  export type MovieSumOrderByAggregateInput = {
+  export type FavoriteItemMinOrderByAggregateInput = {
     id?: SortOrder
-    genre_ids?: SortOrder
+    title?: SortOrder
+    release_date?: SortOrder
+    poster_path?: SortOrder
+    backdrop_path?: SortOrder
+    overview?: SortOrder
+    popularity?: SortOrder
+    adult?: SortOrder
+    type?: SortOrder
+  }
+
+  export type FavoriteItemSumOrderByAggregateInput = {
+    id?: SortOrder
     popularity?: SortOrder
   }
 
@@ -9316,6 +10739,82 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type EnumTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Type | EnumTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.Type[] | ListEnumTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Type[] | ListEnumTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTypeWithAggregatesFilter<$PrismaModel> | $Enums.Type
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTypeFilter<$PrismaModel>
+    _max?: NestedEnumTypeFilter<$PrismaModel>
+  }
+
+  export type EnumOrderStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.OrderStatus | EnumOrderStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumOrderStatusFilter<$PrismaModel> | $Enums.OrderStatus
+  }
+
+  export type EnumPlanFilter<$PrismaModel = never> = {
+    equals?: $Enums.Plan | EnumPlanFieldRefInput<$PrismaModel>
+    in?: $Enums.Plan[] | ListEnumPlanFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Plan[] | ListEnumPlanFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlanFilter<$PrismaModel> | $Enums.Plan
+  }
+
+  export type OrderCountOrderByAggregateInput = {
+    id?: SortOrder
+    orderStatus?: SortOrder
+    plan?: SortOrder
+    price?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type OrderAvgOrderByAggregateInput = {
+    price?: SortOrder
+  }
+
+  export type OrderMaxOrderByAggregateInput = {
+    id?: SortOrder
+    orderStatus?: SortOrder
+    plan?: SortOrder
+    price?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type OrderMinOrderByAggregateInput = {
+    id?: SortOrder
+    orderStatus?: SortOrder
+    plan?: SortOrder
+    price?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type OrderSumOrderByAggregateInput = {
+    price?: SortOrder
+  }
+
+  export type EnumOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.OrderStatus | EnumOrderStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumOrderStatusWithAggregatesFilter<$PrismaModel> | $Enums.OrderStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumOrderStatusFilter<$PrismaModel>
+    _max?: NestedEnumOrderStatusFilter<$PrismaModel>
+  }
+
+  export type EnumPlanWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Plan | EnumPlanFieldRefInput<$PrismaModel>
+    in?: $Enums.Plan[] | ListEnumPlanFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Plan[] | ListEnumPlanFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlanWithAggregatesFilter<$PrismaModel> | $Enums.Plan
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlanFilter<$PrismaModel>
+    _max?: NestedEnumPlanFilter<$PrismaModel>
+  }
+
   export type SessionCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -9330,6 +10829,12 @@ export namespace Prisma {
     connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
   }
 
+  export type OrderCreateNestedOneWithoutUserInput = {
+    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutUserInput
+    connect?: OrderWhereUniqueInput
+  }
+
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -9342,6 +10847,12 @@ export namespace Prisma {
     connectOrCreate?: ProfileCreateOrConnectWithoutUserInput | ProfileCreateOrConnectWithoutUserInput[]
     createMany?: ProfileCreateManyUserInputEnvelope
     connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
+  }
+
+  export type OrderUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutUserInput
+    connect?: OrderWhereUniqueInput
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -9392,6 +10903,16 @@ export namespace Prisma {
     deleteMany?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
   }
 
+  export type OrderUpdateOneWithoutUserNestedInput = {
+    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutUserInput
+    upsert?: OrderUpsertWithoutUserInput
+    disconnect?: OrderWhereInput | boolean
+    delete?: OrderWhereInput | boolean
+    connect?: OrderWhereUniqueInput
+    update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutUserInput, OrderUpdateWithoutUserInput>, OrderUncheckedUpdateWithoutUserInput>
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -9420,6 +10941,16 @@ export namespace Prisma {
     deleteMany?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
   }
 
+  export type OrderUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutUserInput
+    upsert?: OrderUpsertWithoutUserInput
+    disconnect?: OrderWhereInput | boolean
+    delete?: OrderWhereInput | boolean
+    connect?: OrderWhereUniqueInput
+    update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutUserInput, OrderUpdateWithoutUserInput>, OrderUncheckedUpdateWithoutUserInput>
+  }
+
   export type UserCreateNestedOneWithoutSessionsInput = {
     create?: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutSessionsInput
@@ -9440,16 +10971,16 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type MovieFavoriteListCreateNestedOneWithoutProfileInput = {
-    create?: XOR<MovieFavoriteListCreateWithoutProfileInput, MovieFavoriteListUncheckedCreateWithoutProfileInput>
-    connectOrCreate?: MovieFavoriteListCreateOrConnectWithoutProfileInput
-    connect?: MovieFavoriteListWhereUniqueInput
+  export type FavoriteListCreateNestedOneWithoutProfileInput = {
+    create?: XOR<FavoriteListCreateWithoutProfileInput, FavoriteListUncheckedCreateWithoutProfileInput>
+    connectOrCreate?: FavoriteListCreateOrConnectWithoutProfileInput
+    connect?: FavoriteListWhereUniqueInput
   }
 
-  export type MovieFavoriteListUncheckedCreateNestedOneWithoutProfileInput = {
-    create?: XOR<MovieFavoriteListCreateWithoutProfileInput, MovieFavoriteListUncheckedCreateWithoutProfileInput>
-    connectOrCreate?: MovieFavoriteListCreateOrConnectWithoutProfileInput
-    connect?: MovieFavoriteListWhereUniqueInput
+  export type FavoriteListUncheckedCreateNestedOneWithoutProfileInput = {
+    create?: XOR<FavoriteListCreateWithoutProfileInput, FavoriteListUncheckedCreateWithoutProfileInput>
+    connectOrCreate?: FavoriteListCreateOrConnectWithoutProfileInput
+    connect?: FavoriteListWhereUniqueInput
   }
 
   export type UserUpdateOneRequiredWithoutProfilesNestedInput = {
@@ -9460,92 +10991,88 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProfilesInput, UserUpdateWithoutProfilesInput>, UserUncheckedUpdateWithoutProfilesInput>
   }
 
-  export type MovieFavoriteListUpdateOneWithoutProfileNestedInput = {
-    create?: XOR<MovieFavoriteListCreateWithoutProfileInput, MovieFavoriteListUncheckedCreateWithoutProfileInput>
-    connectOrCreate?: MovieFavoriteListCreateOrConnectWithoutProfileInput
-    upsert?: MovieFavoriteListUpsertWithoutProfileInput
-    disconnect?: MovieFavoriteListWhereInput | boolean
-    delete?: MovieFavoriteListWhereInput | boolean
-    connect?: MovieFavoriteListWhereUniqueInput
-    update?: XOR<XOR<MovieFavoriteListUpdateToOneWithWhereWithoutProfileInput, MovieFavoriteListUpdateWithoutProfileInput>, MovieFavoriteListUncheckedUpdateWithoutProfileInput>
+  export type FavoriteListUpdateOneWithoutProfileNestedInput = {
+    create?: XOR<FavoriteListCreateWithoutProfileInput, FavoriteListUncheckedCreateWithoutProfileInput>
+    connectOrCreate?: FavoriteListCreateOrConnectWithoutProfileInput
+    upsert?: FavoriteListUpsertWithoutProfileInput
+    disconnect?: FavoriteListWhereInput | boolean
+    delete?: FavoriteListWhereInput | boolean
+    connect?: FavoriteListWhereUniqueInput
+    update?: XOR<XOR<FavoriteListUpdateToOneWithWhereWithoutProfileInput, FavoriteListUpdateWithoutProfileInput>, FavoriteListUncheckedUpdateWithoutProfileInput>
   }
 
-  export type MovieFavoriteListUncheckedUpdateOneWithoutProfileNestedInput = {
-    create?: XOR<MovieFavoriteListCreateWithoutProfileInput, MovieFavoriteListUncheckedCreateWithoutProfileInput>
-    connectOrCreate?: MovieFavoriteListCreateOrConnectWithoutProfileInput
-    upsert?: MovieFavoriteListUpsertWithoutProfileInput
-    disconnect?: MovieFavoriteListWhereInput | boolean
-    delete?: MovieFavoriteListWhereInput | boolean
-    connect?: MovieFavoriteListWhereUniqueInput
-    update?: XOR<XOR<MovieFavoriteListUpdateToOneWithWhereWithoutProfileInput, MovieFavoriteListUpdateWithoutProfileInput>, MovieFavoriteListUncheckedUpdateWithoutProfileInput>
+  export type FavoriteListUncheckedUpdateOneWithoutProfileNestedInput = {
+    create?: XOR<FavoriteListCreateWithoutProfileInput, FavoriteListUncheckedCreateWithoutProfileInput>
+    connectOrCreate?: FavoriteListCreateOrConnectWithoutProfileInput
+    upsert?: FavoriteListUpsertWithoutProfileInput
+    disconnect?: FavoriteListWhereInput | boolean
+    delete?: FavoriteListWhereInput | boolean
+    connect?: FavoriteListWhereUniqueInput
+    update?: XOR<XOR<FavoriteListUpdateToOneWithWhereWithoutProfileInput, FavoriteListUpdateWithoutProfileInput>, FavoriteListUncheckedUpdateWithoutProfileInput>
   }
 
-  export type ProfileCreateNestedOneWithoutMoviesFavoriteListInput = {
-    create?: XOR<ProfileCreateWithoutMoviesFavoriteListInput, ProfileUncheckedCreateWithoutMoviesFavoriteListInput>
-    connectOrCreate?: ProfileCreateOrConnectWithoutMoviesFavoriteListInput
+  export type ProfileCreateNestedOneWithoutFavoriteListInput = {
+    create?: XOR<ProfileCreateWithoutFavoriteListInput, ProfileUncheckedCreateWithoutFavoriteListInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutFavoriteListInput
     connect?: ProfileWhereUniqueInput
   }
 
-  export type MovieCreateNestedManyWithoutFavoriteListsInput = {
-    create?: XOR<MovieCreateWithoutFavoriteListsInput, MovieUncheckedCreateWithoutFavoriteListsInput> | MovieCreateWithoutFavoriteListsInput[] | MovieUncheckedCreateWithoutFavoriteListsInput[]
-    connectOrCreate?: MovieCreateOrConnectWithoutFavoriteListsInput | MovieCreateOrConnectWithoutFavoriteListsInput[]
-    connect?: MovieWhereUniqueInput | MovieWhereUniqueInput[]
+  export type FavoriteItemCreateNestedManyWithoutFavoriteListsInput = {
+    create?: XOR<FavoriteItemCreateWithoutFavoriteListsInput, FavoriteItemUncheckedCreateWithoutFavoriteListsInput> | FavoriteItemCreateWithoutFavoriteListsInput[] | FavoriteItemUncheckedCreateWithoutFavoriteListsInput[]
+    connectOrCreate?: FavoriteItemCreateOrConnectWithoutFavoriteListsInput | FavoriteItemCreateOrConnectWithoutFavoriteListsInput[]
+    connect?: FavoriteItemWhereUniqueInput | FavoriteItemWhereUniqueInput[]
   }
 
-  export type MovieUncheckedCreateNestedManyWithoutFavoriteListsInput = {
-    create?: XOR<MovieCreateWithoutFavoriteListsInput, MovieUncheckedCreateWithoutFavoriteListsInput> | MovieCreateWithoutFavoriteListsInput[] | MovieUncheckedCreateWithoutFavoriteListsInput[]
-    connectOrCreate?: MovieCreateOrConnectWithoutFavoriteListsInput | MovieCreateOrConnectWithoutFavoriteListsInput[]
-    connect?: MovieWhereUniqueInput | MovieWhereUniqueInput[]
+  export type FavoriteItemUncheckedCreateNestedManyWithoutFavoriteListsInput = {
+    create?: XOR<FavoriteItemCreateWithoutFavoriteListsInput, FavoriteItemUncheckedCreateWithoutFavoriteListsInput> | FavoriteItemCreateWithoutFavoriteListsInput[] | FavoriteItemUncheckedCreateWithoutFavoriteListsInput[]
+    connectOrCreate?: FavoriteItemCreateOrConnectWithoutFavoriteListsInput | FavoriteItemCreateOrConnectWithoutFavoriteListsInput[]
+    connect?: FavoriteItemWhereUniqueInput | FavoriteItemWhereUniqueInput[]
   }
 
-  export type ProfileUpdateOneRequiredWithoutMoviesFavoriteListNestedInput = {
-    create?: XOR<ProfileCreateWithoutMoviesFavoriteListInput, ProfileUncheckedCreateWithoutMoviesFavoriteListInput>
-    connectOrCreate?: ProfileCreateOrConnectWithoutMoviesFavoriteListInput
-    upsert?: ProfileUpsertWithoutMoviesFavoriteListInput
+  export type ProfileUpdateOneRequiredWithoutFavoriteListNestedInput = {
+    create?: XOR<ProfileCreateWithoutFavoriteListInput, ProfileUncheckedCreateWithoutFavoriteListInput>
+    connectOrCreate?: ProfileCreateOrConnectWithoutFavoriteListInput
+    upsert?: ProfileUpsertWithoutFavoriteListInput
     connect?: ProfileWhereUniqueInput
-    update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutMoviesFavoriteListInput, ProfileUpdateWithoutMoviesFavoriteListInput>, ProfileUncheckedUpdateWithoutMoviesFavoriteListInput>
+    update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutFavoriteListInput, ProfileUpdateWithoutFavoriteListInput>, ProfileUncheckedUpdateWithoutFavoriteListInput>
   }
 
-  export type MovieUpdateManyWithoutFavoriteListsNestedInput = {
-    create?: XOR<MovieCreateWithoutFavoriteListsInput, MovieUncheckedCreateWithoutFavoriteListsInput> | MovieCreateWithoutFavoriteListsInput[] | MovieUncheckedCreateWithoutFavoriteListsInput[]
-    connectOrCreate?: MovieCreateOrConnectWithoutFavoriteListsInput | MovieCreateOrConnectWithoutFavoriteListsInput[]
-    upsert?: MovieUpsertWithWhereUniqueWithoutFavoriteListsInput | MovieUpsertWithWhereUniqueWithoutFavoriteListsInput[]
-    set?: MovieWhereUniqueInput | MovieWhereUniqueInput[]
-    disconnect?: MovieWhereUniqueInput | MovieWhereUniqueInput[]
-    delete?: MovieWhereUniqueInput | MovieWhereUniqueInput[]
-    connect?: MovieWhereUniqueInput | MovieWhereUniqueInput[]
-    update?: MovieUpdateWithWhereUniqueWithoutFavoriteListsInput | MovieUpdateWithWhereUniqueWithoutFavoriteListsInput[]
-    updateMany?: MovieUpdateManyWithWhereWithoutFavoriteListsInput | MovieUpdateManyWithWhereWithoutFavoriteListsInput[]
-    deleteMany?: MovieScalarWhereInput | MovieScalarWhereInput[]
+  export type FavoriteItemUpdateManyWithoutFavoriteListsNestedInput = {
+    create?: XOR<FavoriteItemCreateWithoutFavoriteListsInput, FavoriteItemUncheckedCreateWithoutFavoriteListsInput> | FavoriteItemCreateWithoutFavoriteListsInput[] | FavoriteItemUncheckedCreateWithoutFavoriteListsInput[]
+    connectOrCreate?: FavoriteItemCreateOrConnectWithoutFavoriteListsInput | FavoriteItemCreateOrConnectWithoutFavoriteListsInput[]
+    upsert?: FavoriteItemUpsertWithWhereUniqueWithoutFavoriteListsInput | FavoriteItemUpsertWithWhereUniqueWithoutFavoriteListsInput[]
+    set?: FavoriteItemWhereUniqueInput | FavoriteItemWhereUniqueInput[]
+    disconnect?: FavoriteItemWhereUniqueInput | FavoriteItemWhereUniqueInput[]
+    delete?: FavoriteItemWhereUniqueInput | FavoriteItemWhereUniqueInput[]
+    connect?: FavoriteItemWhereUniqueInput | FavoriteItemWhereUniqueInput[]
+    update?: FavoriteItemUpdateWithWhereUniqueWithoutFavoriteListsInput | FavoriteItemUpdateWithWhereUniqueWithoutFavoriteListsInput[]
+    updateMany?: FavoriteItemUpdateManyWithWhereWithoutFavoriteListsInput | FavoriteItemUpdateManyWithWhereWithoutFavoriteListsInput[]
+    deleteMany?: FavoriteItemScalarWhereInput | FavoriteItemScalarWhereInput[]
   }
 
-  export type MovieUncheckedUpdateManyWithoutFavoriteListsNestedInput = {
-    create?: XOR<MovieCreateWithoutFavoriteListsInput, MovieUncheckedCreateWithoutFavoriteListsInput> | MovieCreateWithoutFavoriteListsInput[] | MovieUncheckedCreateWithoutFavoriteListsInput[]
-    connectOrCreate?: MovieCreateOrConnectWithoutFavoriteListsInput | MovieCreateOrConnectWithoutFavoriteListsInput[]
-    upsert?: MovieUpsertWithWhereUniqueWithoutFavoriteListsInput | MovieUpsertWithWhereUniqueWithoutFavoriteListsInput[]
-    set?: MovieWhereUniqueInput | MovieWhereUniqueInput[]
-    disconnect?: MovieWhereUniqueInput | MovieWhereUniqueInput[]
-    delete?: MovieWhereUniqueInput | MovieWhereUniqueInput[]
-    connect?: MovieWhereUniqueInput | MovieWhereUniqueInput[]
-    update?: MovieUpdateWithWhereUniqueWithoutFavoriteListsInput | MovieUpdateWithWhereUniqueWithoutFavoriteListsInput[]
-    updateMany?: MovieUpdateManyWithWhereWithoutFavoriteListsInput | MovieUpdateManyWithWhereWithoutFavoriteListsInput[]
-    deleteMany?: MovieScalarWhereInput | MovieScalarWhereInput[]
+  export type FavoriteItemUncheckedUpdateManyWithoutFavoriteListsNestedInput = {
+    create?: XOR<FavoriteItemCreateWithoutFavoriteListsInput, FavoriteItemUncheckedCreateWithoutFavoriteListsInput> | FavoriteItemCreateWithoutFavoriteListsInput[] | FavoriteItemUncheckedCreateWithoutFavoriteListsInput[]
+    connectOrCreate?: FavoriteItemCreateOrConnectWithoutFavoriteListsInput | FavoriteItemCreateOrConnectWithoutFavoriteListsInput[]
+    upsert?: FavoriteItemUpsertWithWhereUniqueWithoutFavoriteListsInput | FavoriteItemUpsertWithWhereUniqueWithoutFavoriteListsInput[]
+    set?: FavoriteItemWhereUniqueInput | FavoriteItemWhereUniqueInput[]
+    disconnect?: FavoriteItemWhereUniqueInput | FavoriteItemWhereUniqueInput[]
+    delete?: FavoriteItemWhereUniqueInput | FavoriteItemWhereUniqueInput[]
+    connect?: FavoriteItemWhereUniqueInput | FavoriteItemWhereUniqueInput[]
+    update?: FavoriteItemUpdateWithWhereUniqueWithoutFavoriteListsInput | FavoriteItemUpdateWithWhereUniqueWithoutFavoriteListsInput[]
+    updateMany?: FavoriteItemUpdateManyWithWhereWithoutFavoriteListsInput | FavoriteItemUpdateManyWithWhereWithoutFavoriteListsInput[]
+    deleteMany?: FavoriteItemScalarWhereInput | FavoriteItemScalarWhereInput[]
   }
 
-  export type MovieCreategenre_idsInput = {
-    set: number[]
+  export type FavoriteListCreateNestedManyWithoutFavoriteListInput = {
+    create?: XOR<FavoriteListCreateWithoutFavoriteListInput, FavoriteListUncheckedCreateWithoutFavoriteListInput> | FavoriteListCreateWithoutFavoriteListInput[] | FavoriteListUncheckedCreateWithoutFavoriteListInput[]
+    connectOrCreate?: FavoriteListCreateOrConnectWithoutFavoriteListInput | FavoriteListCreateOrConnectWithoutFavoriteListInput[]
+    connect?: FavoriteListWhereUniqueInput | FavoriteListWhereUniqueInput[]
   }
 
-  export type MovieFavoriteListCreateNestedManyWithoutMoviesInput = {
-    create?: XOR<MovieFavoriteListCreateWithoutMoviesInput, MovieFavoriteListUncheckedCreateWithoutMoviesInput> | MovieFavoriteListCreateWithoutMoviesInput[] | MovieFavoriteListUncheckedCreateWithoutMoviesInput[]
-    connectOrCreate?: MovieFavoriteListCreateOrConnectWithoutMoviesInput | MovieFavoriteListCreateOrConnectWithoutMoviesInput[]
-    connect?: MovieFavoriteListWhereUniqueInput | MovieFavoriteListWhereUniqueInput[]
-  }
-
-  export type MovieFavoriteListUncheckedCreateNestedManyWithoutMoviesInput = {
-    create?: XOR<MovieFavoriteListCreateWithoutMoviesInput, MovieFavoriteListUncheckedCreateWithoutMoviesInput> | MovieFavoriteListCreateWithoutMoviesInput[] | MovieFavoriteListUncheckedCreateWithoutMoviesInput[]
-    connectOrCreate?: MovieFavoriteListCreateOrConnectWithoutMoviesInput | MovieFavoriteListCreateOrConnectWithoutMoviesInput[]
-    connect?: MovieFavoriteListWhereUniqueInput | MovieFavoriteListWhereUniqueInput[]
+  export type FavoriteListUncheckedCreateNestedManyWithoutFavoriteListInput = {
+    create?: XOR<FavoriteListCreateWithoutFavoriteListInput, FavoriteListUncheckedCreateWithoutFavoriteListInput> | FavoriteListCreateWithoutFavoriteListInput[] | FavoriteListUncheckedCreateWithoutFavoriteListInput[]
+    connectOrCreate?: FavoriteListCreateOrConnectWithoutFavoriteListInput | FavoriteListCreateOrConnectWithoutFavoriteListInput[]
+    connect?: FavoriteListWhereUniqueInput | FavoriteListWhereUniqueInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -9554,11 +11081,6 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
-  }
-
-  export type MovieUpdategenre_idsInput = {
-    set?: number[]
-    push?: number | number[]
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -9573,30 +11095,56 @@ export namespace Prisma {
     set?: boolean
   }
 
-  export type MovieFavoriteListUpdateManyWithoutMoviesNestedInput = {
-    create?: XOR<MovieFavoriteListCreateWithoutMoviesInput, MovieFavoriteListUncheckedCreateWithoutMoviesInput> | MovieFavoriteListCreateWithoutMoviesInput[] | MovieFavoriteListUncheckedCreateWithoutMoviesInput[]
-    connectOrCreate?: MovieFavoriteListCreateOrConnectWithoutMoviesInput | MovieFavoriteListCreateOrConnectWithoutMoviesInput[]
-    upsert?: MovieFavoriteListUpsertWithWhereUniqueWithoutMoviesInput | MovieFavoriteListUpsertWithWhereUniqueWithoutMoviesInput[]
-    set?: MovieFavoriteListWhereUniqueInput | MovieFavoriteListWhereUniqueInput[]
-    disconnect?: MovieFavoriteListWhereUniqueInput | MovieFavoriteListWhereUniqueInput[]
-    delete?: MovieFavoriteListWhereUniqueInput | MovieFavoriteListWhereUniqueInput[]
-    connect?: MovieFavoriteListWhereUniqueInput | MovieFavoriteListWhereUniqueInput[]
-    update?: MovieFavoriteListUpdateWithWhereUniqueWithoutMoviesInput | MovieFavoriteListUpdateWithWhereUniqueWithoutMoviesInput[]
-    updateMany?: MovieFavoriteListUpdateManyWithWhereWithoutMoviesInput | MovieFavoriteListUpdateManyWithWhereWithoutMoviesInput[]
-    deleteMany?: MovieFavoriteListScalarWhereInput | MovieFavoriteListScalarWhereInput[]
+  export type EnumTypeFieldUpdateOperationsInput = {
+    set?: $Enums.Type
   }
 
-  export type MovieFavoriteListUncheckedUpdateManyWithoutMoviesNestedInput = {
-    create?: XOR<MovieFavoriteListCreateWithoutMoviesInput, MovieFavoriteListUncheckedCreateWithoutMoviesInput> | MovieFavoriteListCreateWithoutMoviesInput[] | MovieFavoriteListUncheckedCreateWithoutMoviesInput[]
-    connectOrCreate?: MovieFavoriteListCreateOrConnectWithoutMoviesInput | MovieFavoriteListCreateOrConnectWithoutMoviesInput[]
-    upsert?: MovieFavoriteListUpsertWithWhereUniqueWithoutMoviesInput | MovieFavoriteListUpsertWithWhereUniqueWithoutMoviesInput[]
-    set?: MovieFavoriteListWhereUniqueInput | MovieFavoriteListWhereUniqueInput[]
-    disconnect?: MovieFavoriteListWhereUniqueInput | MovieFavoriteListWhereUniqueInput[]
-    delete?: MovieFavoriteListWhereUniqueInput | MovieFavoriteListWhereUniqueInput[]
-    connect?: MovieFavoriteListWhereUniqueInput | MovieFavoriteListWhereUniqueInput[]
-    update?: MovieFavoriteListUpdateWithWhereUniqueWithoutMoviesInput | MovieFavoriteListUpdateWithWhereUniqueWithoutMoviesInput[]
-    updateMany?: MovieFavoriteListUpdateManyWithWhereWithoutMoviesInput | MovieFavoriteListUpdateManyWithWhereWithoutMoviesInput[]
-    deleteMany?: MovieFavoriteListScalarWhereInput | MovieFavoriteListScalarWhereInput[]
+  export type FavoriteListUpdateManyWithoutFavoriteListNestedInput = {
+    create?: XOR<FavoriteListCreateWithoutFavoriteListInput, FavoriteListUncheckedCreateWithoutFavoriteListInput> | FavoriteListCreateWithoutFavoriteListInput[] | FavoriteListUncheckedCreateWithoutFavoriteListInput[]
+    connectOrCreate?: FavoriteListCreateOrConnectWithoutFavoriteListInput | FavoriteListCreateOrConnectWithoutFavoriteListInput[]
+    upsert?: FavoriteListUpsertWithWhereUniqueWithoutFavoriteListInput | FavoriteListUpsertWithWhereUniqueWithoutFavoriteListInput[]
+    set?: FavoriteListWhereUniqueInput | FavoriteListWhereUniqueInput[]
+    disconnect?: FavoriteListWhereUniqueInput | FavoriteListWhereUniqueInput[]
+    delete?: FavoriteListWhereUniqueInput | FavoriteListWhereUniqueInput[]
+    connect?: FavoriteListWhereUniqueInput | FavoriteListWhereUniqueInput[]
+    update?: FavoriteListUpdateWithWhereUniqueWithoutFavoriteListInput | FavoriteListUpdateWithWhereUniqueWithoutFavoriteListInput[]
+    updateMany?: FavoriteListUpdateManyWithWhereWithoutFavoriteListInput | FavoriteListUpdateManyWithWhereWithoutFavoriteListInput[]
+    deleteMany?: FavoriteListScalarWhereInput | FavoriteListScalarWhereInput[]
+  }
+
+  export type FavoriteListUncheckedUpdateManyWithoutFavoriteListNestedInput = {
+    create?: XOR<FavoriteListCreateWithoutFavoriteListInput, FavoriteListUncheckedCreateWithoutFavoriteListInput> | FavoriteListCreateWithoutFavoriteListInput[] | FavoriteListUncheckedCreateWithoutFavoriteListInput[]
+    connectOrCreate?: FavoriteListCreateOrConnectWithoutFavoriteListInput | FavoriteListCreateOrConnectWithoutFavoriteListInput[]
+    upsert?: FavoriteListUpsertWithWhereUniqueWithoutFavoriteListInput | FavoriteListUpsertWithWhereUniqueWithoutFavoriteListInput[]
+    set?: FavoriteListWhereUniqueInput | FavoriteListWhereUniqueInput[]
+    disconnect?: FavoriteListWhereUniqueInput | FavoriteListWhereUniqueInput[]
+    delete?: FavoriteListWhereUniqueInput | FavoriteListWhereUniqueInput[]
+    connect?: FavoriteListWhereUniqueInput | FavoriteListWhereUniqueInput[]
+    update?: FavoriteListUpdateWithWhereUniqueWithoutFavoriteListInput | FavoriteListUpdateWithWhereUniqueWithoutFavoriteListInput[]
+    updateMany?: FavoriteListUpdateManyWithWhereWithoutFavoriteListInput | FavoriteListUpdateManyWithWhereWithoutFavoriteListInput[]
+    deleteMany?: FavoriteListScalarWhereInput | FavoriteListScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutOrdersInput = {
+    create?: XOR<UserCreateWithoutOrdersInput, UserUncheckedCreateWithoutOrdersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOrdersInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumOrderStatusFieldUpdateOperationsInput = {
+    set?: $Enums.OrderStatus
+  }
+
+  export type EnumPlanFieldUpdateOperationsInput = {
+    set?: $Enums.Plan
+  }
+
+  export type UserUpdateOneRequiredWithoutOrdersNestedInput = {
+    create?: XOR<UserCreateWithoutOrdersInput, UserUncheckedCreateWithoutOrdersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOrdersInput
+    upsert?: UserUpsertWithoutOrdersInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOrdersInput, UserUpdateWithoutOrdersInput>, UserUncheckedUpdateWithoutOrdersInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -9762,6 +11310,13 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type NestedEnumTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.Type | EnumTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.Type[] | ListEnumTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Type[] | ListEnumTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTypeFilter<$PrismaModel> | $Enums.Type
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -9802,6 +11357,50 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type NestedEnumTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Type | EnumTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.Type[] | ListEnumTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Type[] | ListEnumTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTypeWithAggregatesFilter<$PrismaModel> | $Enums.Type
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTypeFilter<$PrismaModel>
+    _max?: NestedEnumTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumOrderStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.OrderStatus | EnumOrderStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumOrderStatusFilter<$PrismaModel> | $Enums.OrderStatus
+  }
+
+  export type NestedEnumPlanFilter<$PrismaModel = never> = {
+    equals?: $Enums.Plan | EnumPlanFieldRefInput<$PrismaModel>
+    in?: $Enums.Plan[] | ListEnumPlanFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Plan[] | ListEnumPlanFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlanFilter<$PrismaModel> | $Enums.Plan
+  }
+
+  export type NestedEnumOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.OrderStatus | EnumOrderStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumOrderStatusWithAggregatesFilter<$PrismaModel> | $Enums.OrderStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumOrderStatusFilter<$PrismaModel>
+    _max?: NestedEnumOrderStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPlanWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Plan | EnumPlanFieldRefInput<$PrismaModel>
+    in?: $Enums.Plan[] | ListEnumPlanFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Plan[] | ListEnumPlanFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlanWithAggregatesFilter<$PrismaModel> | $Enums.Plan
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlanFilter<$PrismaModel>
+    _max?: NestedEnumPlanFilter<$PrismaModel>
+  }
+
   export type SessionCreateWithoutUserInput = {
     id?: string
     sessionToken: string
@@ -9832,14 +11431,14 @@ export namespace Prisma {
     id?: string
     name: string
     image?: string | null
-    moviesFavoriteList?: MovieFavoriteListCreateNestedOneWithoutProfileInput
+    favoriteList?: FavoriteListCreateNestedOneWithoutProfileInput
   }
 
   export type ProfileUncheckedCreateWithoutUserInput = {
     id?: string
     name: string
     image?: string | null
-    moviesFavoriteList?: MovieFavoriteListUncheckedCreateNestedOneWithoutProfileInput
+    favoriteList?: FavoriteListUncheckedCreateNestedOneWithoutProfileInput
   }
 
   export type ProfileCreateOrConnectWithoutUserInput = {
@@ -9850,6 +11449,25 @@ export namespace Prisma {
   export type ProfileCreateManyUserInputEnvelope = {
     data: ProfileCreateManyUserInput | ProfileCreateManyUserInput[]
     skipDuplicates?: boolean
+  }
+
+  export type OrderCreateWithoutUserInput = {
+    id?: string
+    orderStatus: $Enums.OrderStatus
+    plan: $Enums.Plan
+    price: number
+  }
+
+  export type OrderUncheckedCreateWithoutUserInput = {
+    id?: string
+    orderStatus: $Enums.OrderStatus
+    plan: $Enums.Plan
+    price: number
+  }
+
+  export type OrderCreateOrConnectWithoutUserInput = {
+    where: OrderWhereUniqueInput
+    create: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput>
   }
 
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
@@ -9906,6 +11524,31 @@ export namespace Prisma {
     userId?: StringFilter<"Profile"> | string
   }
 
+  export type OrderUpsertWithoutUserInput = {
+    update: XOR<OrderUpdateWithoutUserInput, OrderUncheckedUpdateWithoutUserInput>
+    create: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput>
+    where?: OrderWhereInput
+  }
+
+  export type OrderUpdateToOneWithWhereWithoutUserInput = {
+    where?: OrderWhereInput
+    data: XOR<OrderUpdateWithoutUserInput, OrderUncheckedUpdateWithoutUserInput>
+  }
+
+  export type OrderUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    price?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type OrderUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    price?: FloatFieldUpdateOperationsInput | number
+  }
+
   export type UserCreateWithoutSessionsInput = {
     id?: string
     name: string
@@ -9918,6 +11561,7 @@ export namespace Prisma {
     resetPasswordToken?: string | null
     resetPasswordExpiresAt?: Date | string | null
     profiles?: ProfileCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -9932,6 +11576,7 @@ export namespace Prisma {
     resetPasswordToken?: string | null
     resetPasswordExpiresAt?: Date | string | null
     profiles?: ProfileUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -9962,6 +11607,7 @@ export namespace Prisma {
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profiles?: ProfileUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -9976,6 +11622,7 @@ export namespace Prisma {
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profiles?: ProfileUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutProfilesInput = {
@@ -9990,6 +11637,7 @@ export namespace Prisma {
     resetPasswordToken?: string | null
     resetPasswordExpiresAt?: Date | string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProfilesInput = {
@@ -10004,6 +11652,7 @@ export namespace Prisma {
     resetPasswordToken?: string | null
     resetPasswordExpiresAt?: Date | string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProfilesInput = {
@@ -10011,19 +11660,19 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutProfilesInput, UserUncheckedCreateWithoutProfilesInput>
   }
 
-  export type MovieFavoriteListCreateWithoutProfileInput = {
+  export type FavoriteListCreateWithoutProfileInput = {
     id?: string
-    movies?: MovieCreateNestedManyWithoutFavoriteListsInput
+    favoriteList?: FavoriteItemCreateNestedManyWithoutFavoriteListsInput
   }
 
-  export type MovieFavoriteListUncheckedCreateWithoutProfileInput = {
+  export type FavoriteListUncheckedCreateWithoutProfileInput = {
     id?: string
-    movies?: MovieUncheckedCreateNestedManyWithoutFavoriteListsInput
+    favoriteList?: FavoriteItemUncheckedCreateNestedManyWithoutFavoriteListsInput
   }
 
-  export type MovieFavoriteListCreateOrConnectWithoutProfileInput = {
-    where: MovieFavoriteListWhereUniqueInput
-    create: XOR<MovieFavoriteListCreateWithoutProfileInput, MovieFavoriteListUncheckedCreateWithoutProfileInput>
+  export type FavoriteListCreateOrConnectWithoutProfileInput = {
+    where: FavoriteListWhereUniqueInput
+    create: XOR<FavoriteListCreateWithoutProfileInput, FavoriteListUncheckedCreateWithoutProfileInput>
   }
 
   export type UserUpsertWithoutProfilesInput = {
@@ -10049,6 +11698,7 @@ export namespace Prisma {
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProfilesInput = {
@@ -10063,170 +11713,247 @@ export namespace Prisma {
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateOneWithoutUserNestedInput
   }
 
-  export type MovieFavoriteListUpsertWithoutProfileInput = {
-    update: XOR<MovieFavoriteListUpdateWithoutProfileInput, MovieFavoriteListUncheckedUpdateWithoutProfileInput>
-    create: XOR<MovieFavoriteListCreateWithoutProfileInput, MovieFavoriteListUncheckedCreateWithoutProfileInput>
-    where?: MovieFavoriteListWhereInput
+  export type FavoriteListUpsertWithoutProfileInput = {
+    update: XOR<FavoriteListUpdateWithoutProfileInput, FavoriteListUncheckedUpdateWithoutProfileInput>
+    create: XOR<FavoriteListCreateWithoutProfileInput, FavoriteListUncheckedCreateWithoutProfileInput>
+    where?: FavoriteListWhereInput
   }
 
-  export type MovieFavoriteListUpdateToOneWithWhereWithoutProfileInput = {
-    where?: MovieFavoriteListWhereInput
-    data: XOR<MovieFavoriteListUpdateWithoutProfileInput, MovieFavoriteListUncheckedUpdateWithoutProfileInput>
+  export type FavoriteListUpdateToOneWithWhereWithoutProfileInput = {
+    where?: FavoriteListWhereInput
+    data: XOR<FavoriteListUpdateWithoutProfileInput, FavoriteListUncheckedUpdateWithoutProfileInput>
   }
 
-  export type MovieFavoriteListUpdateWithoutProfileInput = {
+  export type FavoriteListUpdateWithoutProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
-    movies?: MovieUpdateManyWithoutFavoriteListsNestedInput
+    favoriteList?: FavoriteItemUpdateManyWithoutFavoriteListsNestedInput
   }
 
-  export type MovieFavoriteListUncheckedUpdateWithoutProfileInput = {
+  export type FavoriteListUncheckedUpdateWithoutProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
-    movies?: MovieUncheckedUpdateManyWithoutFavoriteListsNestedInput
+    favoriteList?: FavoriteItemUncheckedUpdateManyWithoutFavoriteListsNestedInput
   }
 
-  export type ProfileCreateWithoutMoviesFavoriteListInput = {
+  export type ProfileCreateWithoutFavoriteListInput = {
     id?: string
     name: string
     image?: string | null
     User: UserCreateNestedOneWithoutProfilesInput
   }
 
-  export type ProfileUncheckedCreateWithoutMoviesFavoriteListInput = {
+  export type ProfileUncheckedCreateWithoutFavoriteListInput = {
     id?: string
     name: string
     image?: string | null
     userId: string
   }
 
-  export type ProfileCreateOrConnectWithoutMoviesFavoriteListInput = {
+  export type ProfileCreateOrConnectWithoutFavoriteListInput = {
     where: ProfileWhereUniqueInput
-    create: XOR<ProfileCreateWithoutMoviesFavoriteListInput, ProfileUncheckedCreateWithoutMoviesFavoriteListInput>
+    create: XOR<ProfileCreateWithoutFavoriteListInput, ProfileUncheckedCreateWithoutFavoriteListInput>
   }
 
-  export type MovieCreateWithoutFavoriteListsInput = {
+  export type FavoriteItemCreateWithoutFavoriteListsInput = {
     id?: number
     title: string
     release_date: string
-    genre_ids?: MovieCreategenre_idsInput | number[]
     poster_path: string
     backdrop_path: string
     overview: string
     popularity: number
     adult: boolean
+    type: $Enums.Type
   }
 
-  export type MovieUncheckedCreateWithoutFavoriteListsInput = {
+  export type FavoriteItemUncheckedCreateWithoutFavoriteListsInput = {
     id?: number
     title: string
     release_date: string
-    genre_ids?: MovieCreategenre_idsInput | number[]
     poster_path: string
     backdrop_path: string
     overview: string
     popularity: number
     adult: boolean
+    type: $Enums.Type
   }
 
-  export type MovieCreateOrConnectWithoutFavoriteListsInput = {
-    where: MovieWhereUniqueInput
-    create: XOR<MovieCreateWithoutFavoriteListsInput, MovieUncheckedCreateWithoutFavoriteListsInput>
+  export type FavoriteItemCreateOrConnectWithoutFavoriteListsInput = {
+    where: FavoriteItemWhereUniqueInput
+    create: XOR<FavoriteItemCreateWithoutFavoriteListsInput, FavoriteItemUncheckedCreateWithoutFavoriteListsInput>
   }
 
-  export type ProfileUpsertWithoutMoviesFavoriteListInput = {
-    update: XOR<ProfileUpdateWithoutMoviesFavoriteListInput, ProfileUncheckedUpdateWithoutMoviesFavoriteListInput>
-    create: XOR<ProfileCreateWithoutMoviesFavoriteListInput, ProfileUncheckedCreateWithoutMoviesFavoriteListInput>
+  export type ProfileUpsertWithoutFavoriteListInput = {
+    update: XOR<ProfileUpdateWithoutFavoriteListInput, ProfileUncheckedUpdateWithoutFavoriteListInput>
+    create: XOR<ProfileCreateWithoutFavoriteListInput, ProfileUncheckedCreateWithoutFavoriteListInput>
     where?: ProfileWhereInput
   }
 
-  export type ProfileUpdateToOneWithWhereWithoutMoviesFavoriteListInput = {
+  export type ProfileUpdateToOneWithWhereWithoutFavoriteListInput = {
     where?: ProfileWhereInput
-    data: XOR<ProfileUpdateWithoutMoviesFavoriteListInput, ProfileUncheckedUpdateWithoutMoviesFavoriteListInput>
+    data: XOR<ProfileUpdateWithoutFavoriteListInput, ProfileUncheckedUpdateWithoutFavoriteListInput>
   }
 
-  export type ProfileUpdateWithoutMoviesFavoriteListInput = {
+  export type ProfileUpdateWithoutFavoriteListInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     User?: UserUpdateOneRequiredWithoutProfilesNestedInput
   }
 
-  export type ProfileUncheckedUpdateWithoutMoviesFavoriteListInput = {
+  export type ProfileUncheckedUpdateWithoutFavoriteListInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type MovieUpsertWithWhereUniqueWithoutFavoriteListsInput = {
-    where: MovieWhereUniqueInput
-    update: XOR<MovieUpdateWithoutFavoriteListsInput, MovieUncheckedUpdateWithoutFavoriteListsInput>
-    create: XOR<MovieCreateWithoutFavoriteListsInput, MovieUncheckedCreateWithoutFavoriteListsInput>
+  export type FavoriteItemUpsertWithWhereUniqueWithoutFavoriteListsInput = {
+    where: FavoriteItemWhereUniqueInput
+    update: XOR<FavoriteItemUpdateWithoutFavoriteListsInput, FavoriteItemUncheckedUpdateWithoutFavoriteListsInput>
+    create: XOR<FavoriteItemCreateWithoutFavoriteListsInput, FavoriteItemUncheckedCreateWithoutFavoriteListsInput>
   }
 
-  export type MovieUpdateWithWhereUniqueWithoutFavoriteListsInput = {
-    where: MovieWhereUniqueInput
-    data: XOR<MovieUpdateWithoutFavoriteListsInput, MovieUncheckedUpdateWithoutFavoriteListsInput>
+  export type FavoriteItemUpdateWithWhereUniqueWithoutFavoriteListsInput = {
+    where: FavoriteItemWhereUniqueInput
+    data: XOR<FavoriteItemUpdateWithoutFavoriteListsInput, FavoriteItemUncheckedUpdateWithoutFavoriteListsInput>
   }
 
-  export type MovieUpdateManyWithWhereWithoutFavoriteListsInput = {
-    where: MovieScalarWhereInput
-    data: XOR<MovieUpdateManyMutationInput, MovieUncheckedUpdateManyWithoutFavoriteListsInput>
+  export type FavoriteItemUpdateManyWithWhereWithoutFavoriteListsInput = {
+    where: FavoriteItemScalarWhereInput
+    data: XOR<FavoriteItemUpdateManyMutationInput, FavoriteItemUncheckedUpdateManyWithoutFavoriteListsInput>
   }
 
-  export type MovieScalarWhereInput = {
-    AND?: MovieScalarWhereInput | MovieScalarWhereInput[]
-    OR?: MovieScalarWhereInput[]
-    NOT?: MovieScalarWhereInput | MovieScalarWhereInput[]
-    id?: IntFilter<"Movie"> | number
-    title?: StringFilter<"Movie"> | string
-    release_date?: StringFilter<"Movie"> | string
-    genre_ids?: IntNullableListFilter<"Movie">
-    poster_path?: StringFilter<"Movie"> | string
-    backdrop_path?: StringFilter<"Movie"> | string
-    overview?: StringFilter<"Movie"> | string
-    popularity?: FloatFilter<"Movie"> | number
-    adult?: BoolFilter<"Movie"> | boolean
+  export type FavoriteItemScalarWhereInput = {
+    AND?: FavoriteItemScalarWhereInput | FavoriteItemScalarWhereInput[]
+    OR?: FavoriteItemScalarWhereInput[]
+    NOT?: FavoriteItemScalarWhereInput | FavoriteItemScalarWhereInput[]
+    id?: IntFilter<"FavoriteItem"> | number
+    title?: StringFilter<"FavoriteItem"> | string
+    release_date?: StringFilter<"FavoriteItem"> | string
+    poster_path?: StringFilter<"FavoriteItem"> | string
+    backdrop_path?: StringFilter<"FavoriteItem"> | string
+    overview?: StringFilter<"FavoriteItem"> | string
+    popularity?: FloatFilter<"FavoriteItem"> | number
+    adult?: BoolFilter<"FavoriteItem"> | boolean
+    type?: EnumTypeFilter<"FavoriteItem"> | $Enums.Type
   }
 
-  export type MovieFavoriteListCreateWithoutMoviesInput = {
+  export type FavoriteListCreateWithoutFavoriteListInput = {
     id?: string
-    profile: ProfileCreateNestedOneWithoutMoviesFavoriteListInput
+    profile: ProfileCreateNestedOneWithoutFavoriteListInput
   }
 
-  export type MovieFavoriteListUncheckedCreateWithoutMoviesInput = {
+  export type FavoriteListUncheckedCreateWithoutFavoriteListInput = {
     id?: string
     profileId: string
   }
 
-  export type MovieFavoriteListCreateOrConnectWithoutMoviesInput = {
-    where: MovieFavoriteListWhereUniqueInput
-    create: XOR<MovieFavoriteListCreateWithoutMoviesInput, MovieFavoriteListUncheckedCreateWithoutMoviesInput>
+  export type FavoriteListCreateOrConnectWithoutFavoriteListInput = {
+    where: FavoriteListWhereUniqueInput
+    create: XOR<FavoriteListCreateWithoutFavoriteListInput, FavoriteListUncheckedCreateWithoutFavoriteListInput>
   }
 
-  export type MovieFavoriteListUpsertWithWhereUniqueWithoutMoviesInput = {
-    where: MovieFavoriteListWhereUniqueInput
-    update: XOR<MovieFavoriteListUpdateWithoutMoviesInput, MovieFavoriteListUncheckedUpdateWithoutMoviesInput>
-    create: XOR<MovieFavoriteListCreateWithoutMoviesInput, MovieFavoriteListUncheckedCreateWithoutMoviesInput>
+  export type FavoriteListUpsertWithWhereUniqueWithoutFavoriteListInput = {
+    where: FavoriteListWhereUniqueInput
+    update: XOR<FavoriteListUpdateWithoutFavoriteListInput, FavoriteListUncheckedUpdateWithoutFavoriteListInput>
+    create: XOR<FavoriteListCreateWithoutFavoriteListInput, FavoriteListUncheckedCreateWithoutFavoriteListInput>
   }
 
-  export type MovieFavoriteListUpdateWithWhereUniqueWithoutMoviesInput = {
-    where: MovieFavoriteListWhereUniqueInput
-    data: XOR<MovieFavoriteListUpdateWithoutMoviesInput, MovieFavoriteListUncheckedUpdateWithoutMoviesInput>
+  export type FavoriteListUpdateWithWhereUniqueWithoutFavoriteListInput = {
+    where: FavoriteListWhereUniqueInput
+    data: XOR<FavoriteListUpdateWithoutFavoriteListInput, FavoriteListUncheckedUpdateWithoutFavoriteListInput>
   }
 
-  export type MovieFavoriteListUpdateManyWithWhereWithoutMoviesInput = {
-    where: MovieFavoriteListScalarWhereInput
-    data: XOR<MovieFavoriteListUpdateManyMutationInput, MovieFavoriteListUncheckedUpdateManyWithoutMoviesInput>
+  export type FavoriteListUpdateManyWithWhereWithoutFavoriteListInput = {
+    where: FavoriteListScalarWhereInput
+    data: XOR<FavoriteListUpdateManyMutationInput, FavoriteListUncheckedUpdateManyWithoutFavoriteListInput>
   }
 
-  export type MovieFavoriteListScalarWhereInput = {
-    AND?: MovieFavoriteListScalarWhereInput | MovieFavoriteListScalarWhereInput[]
-    OR?: MovieFavoriteListScalarWhereInput[]
-    NOT?: MovieFavoriteListScalarWhereInput | MovieFavoriteListScalarWhereInput[]
-    id?: StringFilter<"MovieFavoriteList"> | string
-    profileId?: StringFilter<"MovieFavoriteList"> | string
+  export type FavoriteListScalarWhereInput = {
+    AND?: FavoriteListScalarWhereInput | FavoriteListScalarWhereInput[]
+    OR?: FavoriteListScalarWhereInput[]
+    NOT?: FavoriteListScalarWhereInput | FavoriteListScalarWhereInput[]
+    id?: StringFilter<"FavoriteList"> | string
+    profileId?: StringFilter<"FavoriteList"> | string
+  }
+
+  export type UserCreateWithoutOrdersInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    emailVerified?: boolean | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    resetPasswordToken?: string | null
+    resetPasswordExpiresAt?: Date | string | null
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    profiles?: ProfileCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutOrdersInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    emailVerified?: boolean | null
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    resetPasswordToken?: string | null
+    resetPasswordExpiresAt?: Date | string | null
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    profiles?: ProfileUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutOrdersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutOrdersInput, UserUncheckedCreateWithoutOrdersInput>
+  }
+
+  export type UserUpsertWithoutOrdersInput = {
+    update: XOR<UserUpdateWithoutOrdersInput, UserUncheckedUpdateWithoutOrdersInput>
+    create: XOR<UserCreateWithoutOrdersInput, UserUncheckedCreateWithoutOrdersInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutOrdersInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutOrdersInput, UserUncheckedUpdateWithoutOrdersInput>
+  }
+
+  export type UserUpdateWithoutOrdersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    profiles?: ProfileUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutOrdersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    emailVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    profiles?: ProfileUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SessionCreateManyUserInput = {
@@ -10271,14 +11998,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    moviesFavoriteList?: MovieFavoriteListUpdateOneWithoutProfileNestedInput
+    favoriteList?: FavoriteListUpdateOneWithoutProfileNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    moviesFavoriteList?: MovieFavoriteListUncheckedUpdateOneWithoutProfileNestedInput
+    favoriteList?: FavoriteListUncheckedUpdateOneWithoutProfileNestedInput
   }
 
   export type ProfileUncheckedUpdateManyWithoutUserInput = {
@@ -10287,53 +12014,53 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type MovieUpdateWithoutFavoriteListsInput = {
+  export type FavoriteItemUpdateWithoutFavoriteListsInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
-    genre_ids?: MovieUpdategenre_idsInput | number[]
     poster_path?: StringFieldUpdateOperationsInput | string
     backdrop_path?: StringFieldUpdateOperationsInput | string
     overview?: StringFieldUpdateOperationsInput | string
     popularity?: FloatFieldUpdateOperationsInput | number
     adult?: BoolFieldUpdateOperationsInput | boolean
+    type?: EnumTypeFieldUpdateOperationsInput | $Enums.Type
   }
 
-  export type MovieUncheckedUpdateWithoutFavoriteListsInput = {
+  export type FavoriteItemUncheckedUpdateWithoutFavoriteListsInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
-    genre_ids?: MovieUpdategenre_idsInput | number[]
     poster_path?: StringFieldUpdateOperationsInput | string
     backdrop_path?: StringFieldUpdateOperationsInput | string
     overview?: StringFieldUpdateOperationsInput | string
     popularity?: FloatFieldUpdateOperationsInput | number
     adult?: BoolFieldUpdateOperationsInput | boolean
+    type?: EnumTypeFieldUpdateOperationsInput | $Enums.Type
   }
 
-  export type MovieUncheckedUpdateManyWithoutFavoriteListsInput = {
+  export type FavoriteItemUncheckedUpdateManyWithoutFavoriteListsInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
-    genre_ids?: MovieUpdategenre_idsInput | number[]
     poster_path?: StringFieldUpdateOperationsInput | string
     backdrop_path?: StringFieldUpdateOperationsInput | string
     overview?: StringFieldUpdateOperationsInput | string
     popularity?: FloatFieldUpdateOperationsInput | number
     adult?: BoolFieldUpdateOperationsInput | boolean
+    type?: EnumTypeFieldUpdateOperationsInput | $Enums.Type
   }
 
-  export type MovieFavoriteListUpdateWithoutMoviesInput = {
+  export type FavoriteListUpdateWithoutFavoriteListInput = {
     id?: StringFieldUpdateOperationsInput | string
-    profile?: ProfileUpdateOneRequiredWithoutMoviesFavoriteListNestedInput
+    profile?: ProfileUpdateOneRequiredWithoutFavoriteListNestedInput
   }
 
-  export type MovieFavoriteListUncheckedUpdateWithoutMoviesInput = {
+  export type FavoriteListUncheckedUpdateWithoutFavoriteListInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type MovieFavoriteListUncheckedUpdateManyWithoutMoviesInput = {
+  export type FavoriteListUncheckedUpdateManyWithoutFavoriteListInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
   }

@@ -1,4 +1,4 @@
-import IBaseMovie from "@/api/interfaces/IBaseMovie";
+import IBaseMovie from "@/api/interfaces/movie/IBaseMovie";
 import { Button } from "@/components/ui/button";
 import AddToListButton from "@/features/home/AddToListButton";
 import { useTrailerKey } from "@/hooks/useTrailerKey";
@@ -22,7 +22,7 @@ const HomeMovieCard = ({
 }: MovieCardProps) => {
   const { title, id } = movie;
 
-  const { data } = useTrailerKey(id);
+  const { data } = useTrailerKey(id, "movie");
   const cleanUrl = cleanYouTubeEmbedUrl(data?.embedUrl);
 
   const [isHovered, setIsHovered] = useState(false);

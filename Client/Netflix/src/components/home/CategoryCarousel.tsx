@@ -6,9 +6,10 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
+import IBaseMovie from "@/api/interfaces/movie/IBaseMovie";
 import { Link } from "react-router-dom";
-import IBaseMovie from "@/api/interfaces/IBaseMovie";
-import HomeMovieCard from "./HomeMovieCard";
+import MovieCard from "../shared/MovieCard";
+import Typography from "../shared/Typography";
 
 interface CategoryCarouselProps {
   title: string;
@@ -27,7 +28,13 @@ const CategoryCarousel = ({
     <div className="mt-6">
       <div className="flex justify-between items-center px-2 mb-4">
         <div className="group flex items-center gap-3 px-2 mb-4">
-          <h2 className="text-white text-2xl font-bold">{title}</h2>
+          <Typography
+            responsiveSize={{ base: "text-lg", md: "text-xl", lg: "text-2xl" }}
+            weight="font-bold"
+            className="text-white"
+          >
+            {title}
+          </Typography>
           <Link
             to={categoryLink}
             className="text-cyan-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:underline"
@@ -37,19 +44,22 @@ const CategoryCarousel = ({
         </div>
       </div>
       <Carousel
-        className="relative px-20 overflow-x-clip"
+        className="relative px-4 sm:px-10 md:px-16 lg:px-20 overflow-x-clip"
         opts={{ align: "start", loop: false }}
       >
-        <CarouselContent className="overflow-visible z-10 hover:shadow-2xlִִִ hover:shadow-black">
+        <CarouselContent className="overflow-visible z-10 hover:shadow-2xl hover:shadow-black">
           {movies.slice(0, 10).map((movie) => (
             <CarouselItem
               key={movie.id}
-              className="relative md:basis-1/2 lg:basis-1/5 transition-transform duration-300 hover:z-30 hover:scale-130 "
+              className="relative basis-2/3 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 transition-transform duration-300 hover:z-30 hover:scale-130"
             >
-              <HomeMovieCard
+              <MovieCard
                 movie={movie}
-                image={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
-                onPlay={() => console.log("Play", movie.title)}
+                image={
+                  movie.backdrop_path
+                    ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+                    : "/images/not-found-img.png"
+                }
                 onMoreInfo={() => onMoreInfo(movie.id)}
               />
             </CarouselItem>

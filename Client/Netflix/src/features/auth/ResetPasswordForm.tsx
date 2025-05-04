@@ -19,6 +19,7 @@ const ResetPasswordForm = () => {
   const [isPending, startTransition] = useTransition();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
+  
   const navigate = useNavigate();
 
   const {
@@ -71,14 +72,15 @@ const ResetPasswordForm = () => {
         <Input
           {...register("password")}
           error={errors.password?.message}
-          className="w-full bg-transparent border border-gray-500 focus:border-white focus:outline-none text-white px-4 py-3 rounded placeholder-gray-400"
+          placeholder="Enter your new password"
+          className="w-full bg-neutral-900 border border-gray-500 focus:border-red-600 focus:outline-none text-white px-4 py-3 rounded-md placeholder:text-zinc-400-500 text-sm"
           disabled={isPending}
         />
         {success && <FormSuccess message={success} />}
         {error && <FormError message={error} />}
         <Button
           type="submit"
-          className="bg-red-500/40 w-20"
+          className="w-full bg-red-600 hover:bg-red-800 font-bold text-lg py-3 rounded"
           disabled={isPending}
         >
           {isPending ? (

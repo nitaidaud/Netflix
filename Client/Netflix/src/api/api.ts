@@ -3,17 +3,22 @@ import { apiBaseUrl } from "@/config/config";
 import { SigninFormData, SignupFormData } from "@/schemas/auth.schema";
 import { ProfileFormData } from "@/schemas/profile.schema";
 import axios from "axios";
-import IAuthResponse from "./interfaces/IAuthResponse";
-import IBaseMovie from "./interfaces/IBaseMovie";
+import IAuthResponse from "./interfaces/auth/IAuthResponse";
+import IBaseMovie from "./interfaces/movie/IBaseMovie";
 import IBaseResponse from "./interfaces/IBaseRespone";
-import IMyListResponse from "./interfaces/IMyListResponse";
-import IProfile from "./interfaces/IProfile";
-import IProfileData from "./interfaces/IProfileData";
-import IProfileResponse from "./interfaces/IProfileResponse";
-import IProfilesResponse from "./interfaces/IProfilesResponse";
-import ITrailerResponse from "./interfaces/ITrailerResponse";
-import IUser from "./interfaces/IUser";
-import ISendMailResponse from "./interfaces/IVerifyMailResponse";
+import IMovieDetails from "./interfaces/movie/IMovieDetails";
+import IMyListResponse from "./interfaces/movie/IMyListResponse";
+import IProfile from "./interfaces/profile/IProfile";
+import IProfileResponse from "./interfaces/profile/IProfileResponse";
+import IProfilesResponse from "./interfaces/profile/IProfilesResponse";
+import ITrailerResponse from "./interfaces/movie/ITrailerResponse";
+import IUser from "./interfaces/auth/IUser";
+import ISendMailResponse from "./interfaces/auth/IVerifyMailResponse";
+import ITVShow from "./interfaces/tv/ITVShow";
+import ISeason from "./interfaces/tv/ISeason";
+import { IPaymentStatusResponse } from "./interfaces/payment/IPaymentResponse";
+import ICreatePaymentResponse from "./interfaces/payment/ICreatePaymentResponse";
+import ICreatePaymentData from "./interfaces/payment/ICreatePaymentData";
 
 const api = axios.create({
   baseURL: apiBaseUrl,
@@ -60,10 +65,8 @@ export const newVerificationRequest = async () => {
   if (!userData) {
     throw new Error("User not found");
   }
-  console.log("userData", userData);
 
   const { email } = userData;
-  console.log("email", email);
 
   const { data } = await api.post<ISendMailResponse>(`/api/users/send-email`, {
     email,
@@ -98,7 +101,7 @@ export const resetPassword = async (
   token: string,
   password: string,
 ): Promise<ISendMailResponse> => {
-  const { data } = await api.post<ISendMailResponse>(
+  const { data } = await api.patch<ISendMailResponse>(
     `/api/users/reset-password/${token}`,
     {
       password,
@@ -143,7 +146,6 @@ export const searchMoviesRequest = async (
   const { data } = await api.get<IBaseMovie[]>(`/api/movies/search`, {
     params: { title: query, page },
   });
-  console.log("data", data);
 
   return data;
 };
@@ -191,10 +193,16 @@ export const getProfileByIdRequest = async () => {
   return data;
 };
 
-export const updateProfileRequest = async (profileData: IProfileData) => {
-  const { data } = await api.put<IProfile>(
+export const updateProfileRequest = async (profileData: ProfileFormData) => {
+  const { data } = await api.patch<IProfileResponse>(
     `/api/profiles/update-profile`,
     profileData,
+    {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
   );
   return data;
 };
@@ -215,8 +223,13 @@ export const removeMovieFromFavoriteListRequest = async (movieId: number) => {
   return data;
 };
 
-export const deleteProfileRequest = async () => {
-  const { data } = await api.delete<IProfile>(`/api/profiles/delete-profile`);
+export const deleteProfileRequest = async (profileName: string) => {
+  const { data } = await api.delete<IBaseResponse>(
+    `/api/profiles/delete-profile`,
+    {
+      data: { name: profileName },
+    },
+  );
   return data;
 };
 
@@ -243,6 +256,61 @@ export const getMoviesByPageRequest = async (pageParam: number = 1) => {
 };
 
 export const getMovieByIdRequest = async (id: number) => {
-  const { data } = await api.get<IBaseMovie>(`/api/movies/getMovieById/${id}`);
+  const { data } = await api.get<IMovieDetails>(
+    `/api/movies/getMovieById/${id}`,
+  );
+  return data;
+};
+
+type SearchResponse = {
+  message: string;
+  movieUrl: string;
+};
+
+export const getStreamMovieRequest = async () => {
+  const { data } = await api.get<SearchResponse>("/api/stream/get-movie");
+
+  return data;
+};
+
+export const getPopularTVShows = async (): Promise<ITVShow[]> => {
+  const { data } = await api.get("/api/movies/tv-shows/popular");
+  return data;
+};
+
+export const getTVShowByIdRequest = async (id: number) => {
+  const { data } = await api.get<ITVShow>(`/api/movies/getTVShowById/${id}`);
+  return data;
+};
+
+export const getSeasonByIdRequest = async (
+  seriesId: number,
+  seasonNumber: number,
+) => {
+  const { data } = await api.get<ISeason>(
+    `/api/movies/series/${seriesId}/${seasonNumber}`,
+  );
+  return data;
+};
+
+export const createPaymentIntentRequest = async (
+  paymentData: ICreatePaymentData,
+) => {
+  const { data } = await api.post<ICreatePaymentResponse>(
+    `/api/payments/create`,
+    paymentData,
+  );
+  return data;
+};
+
+export const capturePaymentRequest = async () => {
+  const { data } = await api.post<IBaseResponse>(`/api/payments/capture`);
+  return data;
+};
+
+export const checkPayment = async () => {
+  const { data } = await api.get<IPaymentStatusResponse>(
+    `/api/payments/check-payment`,
+  );
   return data;
 };

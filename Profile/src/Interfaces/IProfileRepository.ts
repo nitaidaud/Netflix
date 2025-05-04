@@ -7,6 +7,7 @@ import IFavoriteList from "./IFavoriteList";
 
 export default interface IProfileRepository {
   getProfileById(profileId: string): Promise<ProfileDTO | null>;
+  getProfileByName(profileName: string): Promise<ProfileDTO | null>;
   createProfile(profileData: IProfileData, userId: string): Promise<IProfile>;
   updateProfile(
     profileId: string,
@@ -21,6 +22,6 @@ export default interface IProfileRepository {
     movieId: number,
   ): Promise<IFavoriteList>;
   getMyList(profileId: string): Promise<IFavoriteList | null>;
-  deleteProfile(profileId: string): Promise<boolean>;
+  deleteProfile(profileName: string): Promise<boolean>;
   getAllProfiles(userId: string): Promise<ProfileDTO[] | null>;
 }

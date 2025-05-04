@@ -1,24 +1,45 @@
 import MoviesGrid from "@/components/browse/MovieGrid";
+import MovieModal from "@/components/home/modals/movieModal/MovieModal";
+import TVModal from "@/components/home/modals/tvModal/TvModal";
 import Container from "@/components/shared/Container";
-import { useAppSelector } from "@/store/store";
+import Typography from "@/components/shared/Typography";
+import { openMovieModal, openTVShowModal } from "@/store/slice/modal.slice";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 
 const MyListPage = () => {
-  const myList = useAppSelector(
-    (state) => state.profile.profile?.moviesFavoriteList,
-  );
-
+  const dispatch = useAppDispatch();
+  const myList = useAppSelector((state) => state.profile.profile?.favoriteList);
+  const handleMoreInfo = (id: number, type: "Movie" | "Show") => {
+    if (type === "Show") dispatch(openTVShowModal(id));
+    else dispatch(openMovieModal(id));
+  };
   return (
-    <Container>
-      <div className="text-start">
-        {myList && myList.movies.length > 0 ? (
-          <>
-            <h2>My List</h2>
-            <MoviesGrid movies={myList.movies} isLoading={false} />
-          </>
-        ) : (
-          <h2>No movies in your list</h2>
-        )}
-      </div>
+    <Container className="min-h-screen pt-24">
+      {myList && myList.favoriteList.length > 0 ? (
+        <div className="w-full h-full">
+          <Typography size="text-2xl" weight="font-bold">
+            My List
+          </Typography>
+          <MoviesGrid
+            onMoreInfo={handleMoreInfo}
+            movies={myList.favoriteList}
+            isLoading={false}
+          />
+        </div>
+      ) : (
+        <div className="flex items-center justify-center w-full h-[50vh]">
+          <Typography
+            size="text-2xl"
+            weight="font-bold"
+            color="text-gray-300"
+            className="text-center"
+          >
+            No movies in your list
+          </Typography>
+        </div>
+      )}
+      <MovieModal />
+      <TVModal />
     </Container>
   );
 };

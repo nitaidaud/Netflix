@@ -7,7 +7,7 @@ import { TOKENS } from "../../tokens";
 @injectable()
 export class MovieController {
   constructor(
-    @inject(TOKENS.IMovieService) private movieService: IMovieService,
+    @inject(TOKENS.IMovieService) private movieService: IMovieService
   ) {}
 
   async getPopularMovies(req: Request, res: Response) {
@@ -45,8 +45,6 @@ export class MovieController {
     try {
       const { genre } = req.params;
       const page = req.query.page ? Number(req.query.page) : 1;
-
-      console.log("page in movies", page);
 
       const movies = await this.movieService.getMoviesByGenre(genre, page);
       res.json(movies);
@@ -87,7 +85,6 @@ export class MovieController {
   async getMoviesByPage(req: Request, res: Response): Promise<void> {
     try {
       const { page } = req.params;
-      console.log("page in movies", page);
 
       if (!page) {
         const movies = await this.movieService.getMoviesByPage();
@@ -154,8 +151,6 @@ export class MovieController {
 
   async getKidsMovies(req: Request, res: Response): Promise<void> {
     try {
-      console.log("get kids movies");
-
       const movies = await this.movieService.getKidsMovies();
       res.json(movies);
     } catch (err) {
@@ -198,4 +193,37 @@ export class MovieController {
       handleError(res, err);
     }
   }
+
+  async getSeasonDetails(req: Request, res: Response) {
+    try {
+      const { seriesId, seasonNumber } = req.params;
+      const season = await this.movieService.getSeasonDetails(
+        seriesId,
+        seasonNumber
+      );
+      res.json(season);
+    } catch (error) {
+      handleError(res, error);
+    }
+  }
+
+  async getPopularTVShows(req: Request, res: Response) {
+    try {
+      const shows = await this.movieService.getPopularTVShows();
+      res.json(shows);
+    } catch (error) {
+      handleError(res, error);
+    }
+  }
+  async getTVShowById(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const tvShow = await this.movieService.getTVShowById(id);
+      res.json(tvShow);
+    } catch (error) {
+      handleError(res, error);
+    }
+  }
+
+  
 }

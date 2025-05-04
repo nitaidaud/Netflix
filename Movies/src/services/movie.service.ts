@@ -1,14 +1,15 @@
 import { injectable } from "inversify";
-import tmbd from "../api/tmdb";
-import IBaseMovie from "../interfaces/IBaseMovie";
-import IBaseResponse from "../interfaces/IBaseResponse";
-import IMovieService from "../interfaces/IMovieService";
-import ITrailerResponse from "../interfaces/ITrailerResponse";
-import genres from "../utils/genres";
-import IHomeContent from "../interfaces/IHomeContent";
-import RedisClient from "../config/redis";
 import { TOKENS } from "../../tokens";
-import IMoviesByPage from "../interfaces/IMoviesByPage";
+import tmbd from "../api/tmdb";
+import RedisClient from "../config/redis";
+import IBaseMovie from "../interfaces/IBaseMovie";
+import IHomeContent from "../interfaces/IHomeContent";
+import IMovieResponse from "../interfaces/IMovieResponse";
+import IMovieService from "../interfaces/IMovieService";
+import ISeason from "../interfaces/ISeason";
+import ITrailerResponse from "../interfaces/ITrailerResponse";
+import ITVShow from "../interfaces/ITVShow";
+import genres from "../utils/genres";
 
 @injectable()
 export class MovieService implements IMovieService {
@@ -26,7 +27,7 @@ export class MovieService implements IMovieService {
     }
     console.log("getting popular movies new data");
 
-    const res = await tmbd.get<IBaseResponse>("/movie/popular");
+    const res = await tmbd.get<IMovieResponse>("/movie/popular");
     const movies = res.data.results;
 
     await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
@@ -56,19 +57,19 @@ export class MovieService implements IMovieService {
     const cachedMovies = await this.cacheClient.get(cacheKey);
     if (cachedMovies) {
       console.log(
-        `Returning search results for ${title} page ${page} cached data...`,
+        `Returning search results for ${title} page ${page} cached data...`
       );
       const data = JSON.parse(cachedMovies) as IBaseMovie[];
       return data;
     }
     console.log(`getting search results for ${title} new data`);
-    const res = await tmbd.get<IBaseResponse>(`/search/movie?query=${title}`, {
+    const res = await tmbd.get<IMovieResponse>(`/search/movie?query=${title}`, {
       params: { page },
     });
     const movies = res.data.results;
 
     await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
-    
+
     return movies;
   }
 
@@ -82,7 +83,6 @@ export class MovieService implements IMovieService {
       return [];
     }
     const cacheKey = genre + page;
-    console.log("cacheKey", cacheKey);
 
     const cachedMovies = await this.cacheClient.get(cacheKey);
 
@@ -94,14 +94,14 @@ export class MovieService implements IMovieService {
     }
     console.log(`getting ${genre} movies new data`);
 
-    const res = await tmbd.get<IBaseResponse>(`/discover/movie`, {
+    const res = await tmbd.get<IMovieResponse>(`/discover/movie`, {
       params: { with_genres: genreId, page },
     });
 
     await this.cacheClient.setEx(
       cacheKey,
       60 * 60,
-      JSON.stringify(res.data.results),
+      JSON.stringify(res.data.results)
     ); //1 hour
     return res.data.results;
   }
@@ -116,7 +116,7 @@ export class MovieService implements IMovieService {
     }
     console.log("getting top movies new data");
 
-    const res = await tmbd.get<IBaseResponse>("/movie/top_rated");
+    const res = await tmbd.get<IMovieResponse>("/movie/top_rated");
     const movies = res.data.results.slice(0, 10);
     await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
     return movies;
@@ -134,7 +134,7 @@ export class MovieService implements IMovieService {
     console.log(`getting trailer for movie ${Id} new data`);
 
     const { data } = await tmbd.get<ITrailerResponse | null>(
-      `/movie/${Id}/videos`,
+      `/movie/${Id}/videos`
     );
 
     const key = data?.results[0]?.key ?? null;
@@ -152,7 +152,7 @@ export class MovieService implements IMovieService {
       console.log(
         `Returning movies page ${page} category ${
           category ?? "browse"
-        } cached data...`,
+        } cached data...`
       );
       const cachedData = JSON.parse(cachedMovies) as IBaseMovie[];
 
@@ -161,7 +161,7 @@ export class MovieService implements IMovieService {
       return data;
     }
     console.log(`getting movies page ${page} category ${category} new data`);
-    const res = await tmbd.get<IBaseResponse>(`/discover/movie`, {
+    const res = await tmbd.get<IMovieResponse>(`/discover/movie`, {
       params: { page },
     });
 
@@ -183,7 +183,7 @@ export class MovieService implements IMovieService {
     }
     console.log("getting new movies cached data");
 
-    const res = await tmbd.get<IBaseResponse>(`/movie/now_playing`);
+    const res = await tmbd.get<IMovieResponse>(`/movie/now_playing`);
     const movies = res.data.results;
 
     await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
@@ -200,7 +200,9 @@ export class MovieService implements IMovieService {
     }
     console.log("getting comedy movies cached data");
 
-    const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=35`);
+    const res = await tmbd.get<IMovieResponse>(
+      `/discover/movie?with_genres=35`
+    );
     const movies = res.data.results;
 
     await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
@@ -217,7 +219,9 @@ export class MovieService implements IMovieService {
     }
     console.log("getting horror movies cached data");
 
-    const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=27`);
+    const res = await tmbd.get<IMovieResponse>(
+      `/discover/movie?with_genres=27`
+    );
     const movies = res.data.results;
     await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
     return movies;
@@ -234,7 +238,9 @@ export class MovieService implements IMovieService {
     }
     console.log("getting action movies cached data");
 
-    const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=28`);
+    const res = await tmbd.get<IMovieResponse>(
+      `/discover/movie?with_genres=28`
+    );
     const movies = res.data.results;
 
     await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
@@ -251,8 +257,8 @@ export class MovieService implements IMovieService {
     }
     console.log("getting romance movies cached data");
 
-    const res = await tmbd.get<IBaseResponse>(
-      `/discover/movie?with_genres=10749`,
+    const res = await tmbd.get<IMovieResponse>(
+      `/discover/movie?with_genres=10749`
     );
     const movies = res.data.results;
 
@@ -271,8 +277,8 @@ export class MovieService implements IMovieService {
     }
     console.log("getting kids movies cached data");
 
-    const res = await tmbd.get<IBaseResponse>(
-      `/discover/movie?with_genres=10751`,
+    const res = await tmbd.get<IMovieResponse>(
+      `/discover/movie?with_genres=10751`
     );
     const movies = res.data.results;
 
@@ -291,7 +297,9 @@ export class MovieService implements IMovieService {
     }
     console.log("getting animation movies cached data");
 
-    const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=16`);
+    const res = await tmbd.get<IMovieResponse>(
+      `/discover/movie?with_genres=16`
+    );
     const movies = res.data.results;
 
     await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
@@ -308,7 +316,9 @@ export class MovieService implements IMovieService {
     }
     console.log("getting crime movies cached data");
 
-    const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=80`);
+    const res = await tmbd.get<IMovieResponse>(
+      `/discover/movie?with_genres=80`
+    );
     const movies = res.data.results;
 
     await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
@@ -326,7 +336,9 @@ export class MovieService implements IMovieService {
     }
     console.log("getting documentary movies cached data");
 
-    const res = await tmbd.get<IBaseResponse>(`/discover/movie?with_genres=99`);
+    const res = await tmbd.get<IMovieResponse>(
+      `/discover/movie?with_genres=99`
+    );
     const movies = res.data.results;
 
     await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(movies)); //1 hour
@@ -355,15 +367,15 @@ export class MovieService implements IMovieService {
       crime,
       documentary,
     ] = await Promise.all([
-      tmbd.get<IBaseResponse>(`/movie/now_playing`),
-      tmbd.get<IBaseResponse>(`/discover/movie?with_genres=35`),
-      tmbd.get<IBaseResponse>(`/discover/movie?with_genres=27`),
-      tmbd.get<IBaseResponse>(`/discover/movie?with_genres=28`),
-      tmbd.get<IBaseResponse>(`/discover/movie?with_genres=10749`),
-      tmbd.get<IBaseResponse>(`/discover/movie?with_genres=10751`),
-      tmbd.get<IBaseResponse>(`/discover/movie?with_genres=16`),
-      tmbd.get<IBaseResponse>(`/discover/movie?with_genres=80`),
-      tmbd.get<IBaseResponse>(`/discover/movie?with_genres=99`),
+      tmbd.get<IMovieResponse>(`/movie/now_playing`),
+      tmbd.get<IMovieResponse>(`/discover/movie?with_genres=35`),
+      tmbd.get<IMovieResponse>(`/discover/movie?with_genres=27`),
+      tmbd.get<IMovieResponse>(`/discover/movie?with_genres=28`),
+      tmbd.get<IMovieResponse>(`/discover/movie?with_genres=10749`),
+      tmbd.get<IMovieResponse>(`/discover/movie?with_genres=10751`),
+      tmbd.get<IMovieResponse>(`/discover/movie?with_genres=16`),
+      tmbd.get<IMovieResponse>(`/discover/movie?with_genres=80`),
+      tmbd.get<IMovieResponse>(`/discover/movie?with_genres=99`),
     ]);
 
     const result = {
@@ -380,5 +392,55 @@ export class MovieService implements IMovieService {
 
     await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(result)); //1 hour
     return result;
+  }
+
+  async getSeasonDetails(
+    seriesId: string,
+    seasonNumber: string
+  ): Promise<ISeason> {
+    const cacheKey = `tv_${seriesId}_season_${seasonNumber}`;
+
+    const cached = await this.cacheClient.get(cacheKey);
+    if (cached) {
+      console.log("Returning cached season data...");
+      return JSON.parse(cached);
+    }
+
+    const { data } = await tmbd.get<ISeason>(
+      `/tv/${seriesId}/season/${seasonNumber}`
+    );
+
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(data));
+    return data;
+  }
+
+  async getPopularTVShows(): Promise<ITVShow[]> {
+    const cacheKey = "popular_tv";
+    const cached = await this.cacheClient.get(cacheKey);
+    if (cached) return JSON.parse(cached);
+
+    const { data } = await tmbd.get("/tv/popular"); // זה לפי TMDB
+    const shows = data.results;
+
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(shows));
+    return shows;
+  }
+
+  async getTVShowById(id: string): Promise<ITVShow> {
+    const cacheKey = `series_${id}`;
+
+    const cachedTVShow = await this.cacheClient.get(cacheKey);
+    if (cachedTVShow) {
+      console.log(`Returning tvShow ${id} cached data...`);
+      const data = JSON.parse(cachedTVShow) as ITVShow;
+      return data;
+    }
+    console.log(`getting tvShow ${id} new data`);
+
+    const res = await tmbd.get<ITVShow>(`/tv/${id}`);
+    const tvShow = res.data;
+
+    await this.cacheClient.setEx(cacheKey, 60 * 60, JSON.stringify(tvShow)); //1 hour
+    return tvShow;
   }
 }

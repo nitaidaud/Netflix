@@ -27,7 +27,7 @@ const Filters = () => {
   };
 
   return (
-    <div className="mt-20 flex justify-between items-center flex-wrap gap-4">
+    <div className="sticky top-21 z-40 bg-black/80 backdrop-blur-md flex justify-between items-center flex-wrap gap-4 px-6 py-4">
       <div>
         <Typography size="text-2xl" weight="font-bold">
           {displayTitle()}

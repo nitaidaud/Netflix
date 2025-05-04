@@ -1,4 +1,5 @@
-import IBaseMovie from "@/api/interfaces/IBaseMovie";
+import IBaseMovie from "@/api/interfaces/movie/IBaseMovie";
+import ITVShow from "@/api/interfaces/tv/ITVShow";
 import AddToList from "@/components/ui/home/AddToList";
 import RemoveFromList from "@/components/ui/home/RemoveFromList";
 import {
@@ -10,36 +11,53 @@ import { LucideLoader } from "lucide-react";
 import { useState } from "react";
 
 type AddToListButtonProps = {
-  movie: IBaseMovie;
+  movie?: IBaseMovie;
+  tvShow?: ITVShow;
 };
 
-const AddToListButton = ({ movie }: AddToListButtonProps) => {
+const AddToListButton = ({ movie, tvShow }: AddToListButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const myList = useAppSelector(
-    (state) => state.profile.profile?.moviesFavoriteList,
-  );
+  const myList = useAppSelector((state) => state.profile.profile?.favoriteList);
   const dispatch = useAppDispatch();
 
-  const isMovieAdded = myList?.movies.some((m) => m.id === movie.id);
+  const isMovieAdded = myList?.favoriteList.some(
+    (m) => m.id === movie?.id || m.id === tvShow?.id,
+  );
 
   const addToList = async () => {
     try {
       setIsLoading(true);
-      const movieToAdd: IBaseMovie = {
-        backdrop_path: movie.backdrop_path,
-        genre_ids: movie.genre_ids,
-        id: movie.id,
-        overview: movie.overview,
-        popularity: movie.popularity,
-        poster_path: movie.poster_path,
-        release_date: movie.release_date,
-        title: movie.title,
-        adult: movie.adult,
-      };
+      if (movie) {
+        const movieToAdd: IBaseMovie = {
+          backdrop_path: movie.backdrop_path,
+          id: movie.id,
+          overview: movie.overview,
+          popularity: movie.popularity,
+          poster_path: movie.poster_path,
+          release_date: movie.release_date,
+          title: movie.title,
+          adult: movie.adult,
+          type: "Movie",
+        };
 
-      console.log("movieToAdd", movieToAdd);
+        await dispatch(addMovieToFavoriteList(movieToAdd));
+      }
 
-      await dispatch(addMovieToFavoriteList(movieToAdd));
+      if (tvShow) {
+        const tvShowToAdd: IBaseMovie = {
+          backdrop_path: tvShow.backdrop_path,
+          id: tvShow.id,
+          overview: tvShow.overview,
+          popularity: tvShow.popularity,
+          poster_path: tvShow.poster_path,
+          release_date: tvShow.first_air_date,
+          title: tvShow.name,
+          adult: tvShow.adult,
+          type: "Show",
+        };
+
+        await dispatch(addMovieToFavoriteList(tvShowToAdd));
+      }
     } catch (error) {
       console.error("Error adding movie to list:", error);
     } finally {
@@ -49,10 +67,14 @@ const AddToListButton = ({ movie }: AddToListButtonProps) => {
 
   const removeFromList = async () => {
     try {
-      console.log("movie", movie.id);
-
       setIsLoading(true);
-      await dispatch(removeMovieFromFavoriteList(movie.id));
+      if (movie) {
+        await dispatch(removeMovieFromFavoriteList(movie.id));
+      }
+
+      if (tvShow) {
+        await dispatch(removeMovieFromFavoriteList(tvShow.id));
+      }
     } catch (error) {
       console.error("Error removing movie from list:", error);
     } finally {

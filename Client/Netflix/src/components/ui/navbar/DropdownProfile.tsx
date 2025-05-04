@@ -1,5 +1,7 @@
-import IProfile from "@/api/interfaces/IProfile";
+
+import IProfile from "@/api/interfaces/profile/IProfile";
 import LogoutButton from "@/components/auth/LogoutButton";
+import Typography from "@/components/shared/Typography";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -54,7 +56,7 @@ const DropdownProfile = ({ currentProfile }: DropdownProfileProps) => {
   };
 
   if (isLogging) {
-    return <LucideLoader className="animate-spin mx-auto" />;
+    return <LucideLoader color="red" className="animate-spin mx-auto" />;
   }
 
   return (
@@ -79,10 +81,10 @@ const DropdownProfile = ({ currentProfile }: DropdownProfileProps) => {
           />
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 bg-black/80 text-white rounded-md shadow-lg border border-gray-700">
+      <DropdownMenuContent className="w-56  bg-black/70 backdrop-blur-sm text-white rounded-md shadow-lg border border-gray-700">
         {data ? (
           isLoading || isFetching ? (
-            <LucideLoader className="animate-spin mx-auto" />
+            <LucideLoader color="red" className="animate-spin mx-auto" />
           ) : (
             data.profiles.map((profile, index) => (
               <DropdownMenuItem
@@ -108,16 +110,20 @@ const DropdownProfile = ({ currentProfile }: DropdownProfileProps) => {
         )}
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="font-semibold text-md">
-            Settings
+          <DropdownMenuItem asChild>
+            <Typography size="text-md" weight="font-semibold">
+              Settings
+            </Typography>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link to="/profiles" className="flex items-center gap-2">
               <Pencil className="size-[25px]" fill="#fff" /> Manage Profiles
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <User2 className="size-[25px]" fill="#fff" /> Account
+          <DropdownMenuItem asChild>
+            <Link to="/profile/update" className="flex items-center gap-2">
+              <User2 className="size-[25px]" fill="#fff" /> Account
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link to="/profile/create" className="flex items-center gap-2">

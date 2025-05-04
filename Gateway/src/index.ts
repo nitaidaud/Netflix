@@ -2,8 +2,6 @@ import { PORT, validateEnv } from "./env_exports";
 import { app } from "./app";
 
 const start = async () => {
-  console.log("in index");
-  
   validateEnv();
 
   app.listen(PORT || 5000, () => {

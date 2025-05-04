@@ -1,3 +1,3 @@
-export default interface IProfilePayload {
+export default interface ITokenPayload {
   id: string;
 }

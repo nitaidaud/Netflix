@@ -12,7 +12,9 @@ export class ProfileRepository implements IProfileRepository {
   async getProfileById(profileId: string): Promise<ProfileDTO | null> {
     const profile = await prisma.profile.findUnique({
       where: { id: profileId },
-      include: {
+      select: {
+        image: true,
+        name: true,
         favoriteList: {
           include: {
             favoriteList: true,
@@ -45,7 +47,10 @@ export class ProfileRepository implements IProfileRepository {
   ): Promise<IProfile> {
     const newProfile = await prisma.profile.create({
       data: { ...profileData, userId },
-      include: {
+      select: {
+        id: true,
+        image: true,
+        name: true,
         favoriteList: {
           include: {
             favoriteList: true,

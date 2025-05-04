@@ -1,35 +1,35 @@
 import ProfileDTO from "../DTOs/profile.dto";
+import ICreateProfile from "./ICreateProfile";
 import IFavoriteList from "./IFavoriteList";
 import IMovie from "./IMovie";
-import IMyListRemoveMovie from "./IMylistRemoveMovie";
 import IProfile from "./IProfile";
 import IProfileData from "./IProfilePayload";
 
 export default interface IProfileService {
-  getProfileByToken(profileToken: string): Promise<ProfileDTO | null>;
+  getProfileByToken(profileToken: string): Promise<ProfileDTO>;
 
-  createProfile(profileData: IProfileData, userId: string): Promise<IProfile | null>;
+  createProfile(profileData: ICreateProfile, token: string): Promise<ProfileDTO>;
 
   updateProfile(
-    profileId: string,
-    profileData: IProfileData,
-  ): Promise<ProfileDTO | null>;
+    profileToken: string,
+    profileData: ICreateProfile,
+  ): Promise<ProfileDTO>;
 
-  login(profileData: IProfile): Promise<string | null>;
+  login(profileData: IProfile): Promise<string>;
 
   addMovieToFavoriteList(
-    profileId: string,
+    profileToken: string,
     movieData: IMovie,
   ): Promise<IFavoriteList>;
 
   removeMovieFromFavoriteList(
-    profileId: string,
+    profileToken: string,
     movieId: number,
   ): Promise<IFavoriteList>;
 
-  getFavoritesList(profileId: string): Promise<IMovie[] | null>;
+  getFavoritesList(profileToken: string): Promise<IMovie[]>;
 
   deleteProfile(profileName: string): Promise<boolean>;
 
-  getAllProfiles(userId: string): Promise<ProfileDTO[] | null>;
+  getAllProfiles(userToken: string): Promise<ProfileDTO[]>;
 }

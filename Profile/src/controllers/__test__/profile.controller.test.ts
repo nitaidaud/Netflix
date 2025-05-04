@@ -1,319 +1,355 @@
-import request from "supertest";
-import { prisma } from "../../../prisma/prisma";
-import { app } from "../../app";
+import { mockRequest, mockResponse } from "jest-mock-req-res";
+import IProfileService from "../../Interfaces/IProfileService";
+import { ProfileController } from "../profile.controller";
+import TOKENS from "../../../tokens";
+import { Type } from "../../../prisma/generated/test-client";
 
-describe("Test for profiles controller", () => {
-  describe("create profile", () => {
-    it("should return 201 if create profile successfully", async () => {
-      const res = await request(app).post("/api/profiles/create-profile").send({
-        email: "test name",
-        image: null
-      });
+jest.mock("../../utils/jwt", () => ({
+  sign: jest.fn(() => "signedToken"),
+  verify: jest.fn(() => ({ id: "profileId" })),
+}));
 
-      expect(res.status).toBe(201);
-    });
+jest.mock("../../utils/handle-error-request", () => ({
+  handleError: jest.fn((res, error) =>
+    res.status(500).json({ message: error.message }),
+  ),
+}));
 
-    it("should return 400 if signup failed", async () => {
-      const res = await request(app).post("/api/users/signup").send({
-        email: "test@test.com",
-        password: "test password",
-      });
-      expect(res.status).toBe(400);
-    });
+jest.mock("../../utils/profileImage", () => ({
+  __esModule: true,
+  default: jest.fn(() => "mocked/image/url"),
+}));
+
+describe("ProfileController", () => {
+  let controller: ProfileController;
+  let mockService: jest.Mocked<IProfileService>;
+  let req: ReturnType<typeof mockRequest>;
+  let res: ReturnType<typeof mockResponse>;
+
+  beforeEach(() => {
+    mockService = {
+      login: jest.fn(),
+      getProfileByToken: jest.fn(),
+      createProfile: jest.fn(),
+      updateProfile: jest.fn(),
+      addMovieToFavoriteList: jest.fn(),
+      removeMovieFromFavoriteList: jest.fn(),
+      getFavoritesList: jest.fn(),
+      deleteProfile: jest.fn(),
+      getAllProfiles: jest.fn(),
+    };
+
+    controller = new ProfileController(mockService);
+    req = mockRequest();
+    res = mockResponse();
   });
 
-  describe("login", () => {
-    it("should return 200 if login successfully", async () => {
-      // First, we need to sign up the user before logging in
-      await request(app).post("/api/users/signup").send({
-        email: "test@test.com",
-        password: "test password",
-        name: "test name",
-      });
+  it("login - success", async () => {
+    req.cookies.Token = "token";
+    req.body = { name: "test", image: null };
+    mockService.login.mockResolvedValue("profileToken");
 
-      // Now we can log in the user
-      const res = await request(app).post("/api/users/login").send({
-        email: "test@test.com",
-        password: "test password",
-      });
-      expect(res.status).toBe(200);
-      expect(res.body.token).toBeDefined();
-    });
+    await controller.login(req, res);
 
-    it("should return 400 if login failed", async () => {
-      const res = await request(app).post("/api/users/login").send({
-        email: "test@test.com",
-        password: "test password",
-      });
-      expect(res.status).toBe(400);
-    });
+    expect(res.cookie).toHaveBeenCalledWith(
+      TOKENS.Token,
+      "profileToken",
+      expect.any(Object),
+    );
+    expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  describe("logout", () => {
-    it("should return 201 if logout successfully", async () => {
-      const res = await request(app).post("/api/users/logout").send({});
-      expect(res.status).toBe(201);
-      expect(res.body.token).toBe(undefined);
-    });
+  it("login - failure", async () => {
+    req.cookies.Token = "token";
+    req.body = { name: "test", image: null };
+    mockService.login.mockRejectedValue(new Error("Login failed"));
+
+    await controller.login(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
   });
 
-  describe("getUser", () => {
-    it("should return 200 if get user successfully", async () => {
-      // First, we need to sign up the user before getting user
-      await request(app).post("/api/users/signup").send({
-        email: "test@test.com",
-        password: "test password",
-        name: "test name",
-      });
+  it("logout - success", async () => {
+    req.cookies.profileToken = "profileToken";
 
-      // Login and capture the response to get the cookie
-      const loginResponse = await request(app).post("/api/users/login").send({
-        email: "test@test.com",
-        password: "test password",
-      });
+    await controller.logout(req, res);
 
-      // Extract the cookie from the login response
-      const cookies = loginResponse.headers["set-cookie"];
-
-      // Now we can get the user with the cookie attached
-      const res = await request(app)
-        .get("/api/users/get-user")
-        .set("Cookie", cookies)
-        .send();
-
-      expect(res.status).toBe(200);
-      expect(res.body.message).toBe("User found");
-      // Test for user properties instead of token
-      expect(res.body.id).toBeDefined(); // Or another user property you expect
-    });
-
-    it("should return 401 if get user failed", async () => {
-      const res = await request(app).get("/api/users/get-user").send({});
-      expect(res.status).toBe(401);
-    });
+    expect(res.clearCookie).toHaveBeenCalledWith(
+      TOKENS.Token,
+      expect.any(Object),
+    );
+    expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  describe("updateUser", () => {
-    it("should return 200 if update user successfully", async () => {
-      // First, we need to sign up the user before updating user
-      await request(app).post("/api/users/signup").send({
-        email: "test@test.com",
-        password: "test password",
-        name: "test name",
-      });
+  it("checkLoggedProfile - success", async () => {
+    req.cookies.Token = "token";
+    req.cookies.profileToken = "profileToken";
+    const mockProfile = {
+      id: "1",
+      name: "test",
+      image: null,
+      favoriteList: null,
+    };
+    mockService.getProfileByToken.mockResolvedValue(mockProfile);
 
-      // Login and capture the response to get the cookie
-      const loginResponse = await request(app).post("/api/users/login").send({
-        email: "test@test.com",
-        password: "test password",
-      });
+    await controller.checkLoggedProfile(req, res);
 
-      // Extract the cookie from the login response
-      const cookies = loginResponse.headers["set-cookie"];
-
-      // Now we can update the user with the cookie attached
-      const res = await request(app)
-        .patch("/api/users/update")
-        .set("Cookie", cookies)
-        .send({
-          password: "test password",
-          name: "test name",
-        });
-
-      expect(res.status).toBe(200);
-      expect(res.body.message).toBe("User updated");
-      expect(res.body.updateUser).toBeDefined();
-    });
-
-    it("should return 401 if update user failed", async () => {
-      const res = await request(app)
-        .patch("/api/users/update")
-        .send({ password: "test password", name: "test name" });
-      expect(res.status).toBe(401);
-    });
+    expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  describe("sendVerificationMail", () => {
-    it("should return 200 if send verification mail successfully", async () => {
-      // First, we need to sign up the user before sending verification mail
-      await request(app).post("/api/users/signup").send({
-        email: "nitaidaud@gmail.com",
-        password: "test password",
-        name: "test name",
-      });
+  it("checkLoggedProfile - failure", async () => {
+    req.cookies.Token = "token";
+    req.cookies.profileToken = "profileToken";
+    mockService.getProfileByToken.mockResolvedValue(null);
 
-      // Login and capture the response to get the cookie
-      const loginResponse = await request(app).post("/api/users/login").send({
-        email: "nitaidaud@gmail.com",
-        password: "test password",
-      });
+    await controller.checkLoggedProfile(req, res);
 
-      // Extract the cookie from the login response
-      const cookies = loginResponse.headers["set-cookie"];
-
-      // Now we can send verification mail with the cookie attached
-      const res = await request(app)
-        .post("/api/users/send-email")
-        .set("Cookie", cookies)
-        .send({ email: "nitaidaud@gmail.com" });
-
-      expect(res.status).toBe(200);
-      expect(res.body.success).toBe(true);
-    });
-
-    it("should return 400 if send verification mail failed", async () => {
-      const res = await request(app)
-        .post("/api/users/send-email")
-        .send({ email: "nitaidaud@gmail.com" });
-      expect(res.status).toBe(400);
-    });
+    expect(res.status).toHaveBeenCalledWith(404);
   });
 
-  describe("verifyEmail", () => {
-    it("should return 200 if verify email successfully", async () => {
-      // First, we need to sign up the user before verifying email
-      const email = "nitaidaud@gmail.com";
-      await request(app).post("/api/users/signup").send({
-        email,
-        password: "test password",
-        name: "test name",
-      });
-
-      // Login and capture the response to get the cookie
-      const loginResponse = await request(app).post("/api/users/login").send({
-        email,
-        password: "test password",
-      });
-
-      // Extract the cookie from the login response
-      const cookies = loginResponse.headers["set-cookie"];
-
-      // Send verification email with the cookie attached
-      await request(app)
-        .post("/api/users/send-email")
-        .set("Cookie", cookies)
-        .send({ email });
-
-      // Add a delay to ensure the token is created before we try to fetch it
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      const tokenRecord = await prisma.verificationToken.findFirst({
-        where: { email },
-      });
-
-      const res = await request(app)
-        .post(`/api/users/verify-email/${tokenRecord!.id}`)
-        .send();
-
-      expect(res.status).toBe(200);
+  it("getProfileById - profile found", async () => {
+    req.cookies.profileToken = "token";
+    mockService.getProfileByToken.mockResolvedValue({
+      name: "A",
+      image: null,
+      favoriteList: null,
     });
 
-    it("should return 401 if verify email failed", async () => {
-      const res = await request(app)
-        .post(`/api/users/verify-email/invalid-token`)
-        .send();
-      expect(res.status).toBe(401);
-    });
+    await controller.getProfileById(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  describe("resetPassword", () => {
-    const email = "nitaidaud@gmail.com";
+  it("getProfileById - failure", async () => {
+    req.cookies.profileToken = "token";
+    mockService.getProfileByToken.mockRejectedValue(new Error("Not found"));
 
-    it("should return 200 if reset password successfully", async () => {
-      // First, we need to sign up the user before resetting password
-      await request(app).post("/api/users/signup").send({
-        email,
-        password: "test password",
-        name: "test name",
-      });
+    await controller.getProfileById(req, res);
 
-      // Send verification email
-      await request(app).post("/api/users/forgot-password").send({ email });
-
-      // Add a delay to ensure the token is created before we try to fetch it
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      const tokenRecord = await prisma.verificationToken.findFirst({
-        where: { email },
-      });
-
-      // If token isn't found, skip the test rather than failing
-      if (!tokenRecord) {
-        console.log("Token not found, skipping test");
-        return;
-      }
-
-      // Now we can reset the password
-      const res = await request(app)
-        .patch(`/api/users/reset-password/${tokenRecord.token}`)
-        .send({ password: "new test password" });
-      expect(res.status).toBe(200);
-    });
-
-    it("should return 400 if reset password failed with invalid token", async () => {
-      const res = await request(app)
-        .patch(`/api/users/reset-password/invalid-token`)
-        .send({ password: "new test password" });
-      expect(res.status).toBe(400);
-    });
+    expect(res.status).toHaveBeenCalledWith(500);
   });
 
-  describe("sendMailForgotPassword", () => {
-    it("should return 200 if send mail forgot password successfully", async () => {
-      // First, we need to sign up the user before sending mail forgot password
-      await request(app).post("/api/users/signup").send({
-        email: "nitaidaud@gmail.com",
-        password: "test password",
-        name: "test name",
-      });
-
-      // Now we can send mail forgot password
-      const res = await request(app)
-        .post("/api/users/forgot-password")
-        .send({ email: "nitaidaud@gmail.com" });
-      expect(res.status).toBe(200);
+  it("createProfile - success", async () => {
+    req.cookies.Token = "token";
+    req.body = { name: "test", image: null };
+    req.file = {
+      fieldname: "file",
+      originalname: "test.jpg",
+      encoding: "7bit",
+      mimetype: "image/jpeg",
+      size: 1024,
+      buffer: Buffer.from(""),
+      destination: "",
+      filename: "test.jpg",
+      path: "",
+      stream: null as any,
+    };
+    mockService.createProfile.mockResolvedValue({
+      id: "1",
+      name: "test",
+      image: "mocked/image/url",
+      favoriteList: null,
     });
 
-    it("should return 400 if email not found", async () => {
-      const res = await request(app)
-        .post("/api/users/forgot-password")
-        .send({ email: "nonexistent@email.com" });
-      expect(res.status).toBe(400);
-    });
+    await controller.createProfile(req, res);
+
+    expect(res.cookie).toHaveBeenCalledWith(
+      TOKENS.Token,
+      "signedToken",
+      expect.any(Object),
+    );
+    expect(res.status).toHaveBeenCalledWith(201);
   });
 
-  describe("checkAuth", () => {
-    it("should return 200 if check auth successfully", async () => {
-      // First, we need to sign up the user before checking auth
-      await request(app).post("/api/users/signup").send({
-        email: "test@test.com",
-        password: "test password",
-        name: "test name",
-      });
+  it("createProfile - failure", async () => {
+    req.cookies.Token = "token";
+    req.body = { name: "test", image: null };
+    mockService.createProfile.mockRejectedValue(new Error("Create failed"));
 
-      // Login and capture the response to get the cookie
-      const loginResponse = await request(app).post("/api/users/login").send({
-        email: "test@test.com",
-        password: "test password",
-      });
+    await controller.createProfile(req, res);
 
-      // Extract the cookie from the login response
-      const cookies = loginResponse.headers["set-cookie"];
+    expect(res.status).toHaveBeenCalledWith(500);
+  });
 
-      // Now we can check auth with the cookie attached
-      const res = await request(app)
-        .post("/api/users/check-auth")
-        .set("Cookie", cookies)
-        .send();
-
-      expect(res.status).toBe(200);
-      expect(res.body.isAuthenticated).toBe(true);
+  it("updateProfile - success", async () => {
+    req.cookies.profileToken = "token";
+    req.body = { name: "newName" };
+    req.file = {
+      fieldname: "file",
+      originalname: "test.jpg",
+      encoding: "7bit",
+      mimetype: "image/jpeg",
+      size: 1024,
+      buffer: Buffer.from(""),
+      destination: "",
+      filename: "test.jpg",
+      path: "",
+      stream: null as any,
+    };
+    mockService.getProfileByToken.mockResolvedValue({
+      name: "test",
+      image: "image.jpg",
+      favoriteList: null,
+    });
+    mockService.updateProfile.mockResolvedValue({
+      name: "newName",
+      image: "mocked/image/url",
+      favoriteList: null,
     });
 
-    it("should return 200 but with isAuthenticated false if check auth failed", async () => {
-      const res = await request(app).post("/api/users/check-auth").send();
-      expect(res.status).toBe(200);
-      expect(res.body.isAuthenticated).toBe(false);
+    await controller.updateProfile(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(200);
+  });
+
+  it("updateProfile - failure", async () => {
+    req.cookies.profileToken = "token";
+    req.body = { name: "newName" };
+    mockService.getProfileByToken.mockResolvedValue({
+      name: "test",
+      image: "image.jpg",
+      favoriteList: null,
     });
+    mockService.updateProfile.mockRejectedValue(new Error("Update failed"));
+
+    await controller.updateProfile(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+  });
+
+  it("addMovieToFavoriteList - success", async () => {
+    req.cookies.profileToken = "token";
+    req.body = {
+      id: 1,
+      adult: false,
+      backdrop_path: "",
+      overview: "",
+      popularity: 0,
+      poster_path: "",
+      release_date: "",
+      title: "Movie",
+      type: Type.Movie,
+    };
+    mockService.addMovieToFavoriteList.mockResolvedValue({
+      favoriteList: [req.body],
+    });
+
+    await controller.addMovieToFavoriteList(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(200);
+  });
+
+  it("addMovieToFavoriteList - failure", async () => {
+    req.cookies.profileToken = "token";
+    req.body = {
+      id: 1,
+      adult: false,
+      backdrop_path: "",
+      overview: "",
+      popularity: 0,
+      poster_path: "",
+      release_date: "",
+      title: "Movie",
+      type: Type.Movie,
+    };
+    mockService.addMovieToFavoriteList.mockRejectedValue(
+      new Error("Add failed"),
+    );
+
+    await controller.addMovieToFavoriteList(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+  });
+
+  it("removeMovieFromFavoriteList - success", async () => {
+    req.cookies.profileToken = "token";
+    req.body = { movieId: 1 };
+    mockService.removeMovieFromFavoriteList.mockResolvedValue({
+      favoriteList: [],
+    });
+
+    await controller.removeMovieFromFavoriteList(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(200);
+  });
+
+  it("removeMovieFromFavoriteList - failure", async () => {
+    req.cookies.profileToken = "token";
+    req.body = { movieId: 1 };
+    mockService.removeMovieFromFavoriteList.mockRejectedValue(
+      new Error("Remove failed"),
+    );
+
+    await controller.removeMovieFromFavoriteList(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+  });
+
+  it("deleteProfile - success", async () => {
+    req.body = { name: "test" };
+    mockService.deleteProfile.mockResolvedValue(true);
+
+    await controller.deleteProfile(req, res);
+
+    expect(res.clearCookie).toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(200);
+  });
+
+  it("deleteProfile - failure", async () => {
+    req.body = { name: "test" };
+    mockService.deleteProfile.mockRejectedValue(new Error("Delete failed"));
+
+    await controller.deleteProfile(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+  });
+
+  it("getFavoriteList - success with data", async () => {
+    req.cookies.profileToken = "token";
+    const movie = {
+      id: 1,
+      adult: false,
+      backdrop_path: "",
+      overview: "",
+      popularity: 0,
+      poster_path: "",
+      release_date: "",
+      title: "Movie",
+      type: Type.Movie,
+    };
+    mockService.getFavoritesList.mockResolvedValue([movie]);
+
+    await controller.getFavoriteList(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(200);
+  });
+
+  it("getFavoriteList - failure", async () => {
+    req.cookies.profileToken = "token";
+    mockService.getFavoritesList.mockRejectedValue(new Error("List failed"));
+
+    await controller.getFavoriteList(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+  });
+
+  it("getAllProfiles - success", async () => {
+    req.cookies.Token = "token";
+    mockService.getAllProfiles.mockResolvedValue([
+      { name: "test", image: null, favoriteList: null },
+    ]);
+
+    await controller.getAllProfiles(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(200);
+  });
+
+  it("getAllProfiles - failure", async () => {
+    req.cookies.Token = "token";
+    mockService.getAllProfiles.mockRejectedValue(new Error("Get all failed"));
+
+    await controller.getAllProfiles(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
   });
 });

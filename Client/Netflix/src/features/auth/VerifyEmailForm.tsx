@@ -21,7 +21,7 @@ const VerifyEmailForm = () => {
     if (success || error) return;
 
     if (!tokenId) {
-      setError("Invalid token");
+      setError("Invalid Url");
       return;
     }
     startTransition(async () => {

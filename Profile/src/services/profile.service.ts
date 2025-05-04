@@ -1,15 +1,14 @@
 import { inject, injectable } from "inversify";
 import TOKENS from "../../tokens";
+import ProfileDTO from "../DTOs/profile.dto";
+import ICreateProfile from "../Interfaces/ICreateProfile";
+import IFavoriteList from "../Interfaces/IFavoriteList";
 import IMovie from "../Interfaces/IMovie";
 import IProfile from "../Interfaces/IProfile";
-import IProfileData from "../Interfaces/IProfilePayload";
 import IProfileRepository from "../Interfaces/IProfileRepository";
 import IProfileService from "../Interfaces/IProfileService";
-import ProfileDTO from "../DTOs/profile.dto";
 import { sign, verify } from "../utils/jwt";
-import IProfilePayload from "../Interfaces/IUserPayload";
-import IMyListRemoveMovie from "../Interfaces/IMylistRemoveMovie";
-import IFavoriteList from "../Interfaces/IFavoriteList";
+import chooseProfileImage from "../utils/profileImage";
 
 @injectable()
 export class ProfileService implements IProfileService {
@@ -18,36 +17,55 @@ export class ProfileService implements IProfileService {
     private profileRepository: IProfileRepository,
   ) {}
 
-  async getProfileByToken(profileToken: string): Promise<ProfileDTO | null> {
+  async getProfileByToken(profileToken: string): Promise<ProfileDTO> {
     try {
       const profilePayload = verify(profileToken);
       if (!profilePayload) {
-        throw new Error("Invalid token");
+        throw new Error("Unauthorized");
       }
 
       const { id } = profilePayload;
       const profile = await this.profileRepository.getProfileById(id);
 
+      if (!profile) {
+        throw new Error("Profile not found");
+      }
+
       return profile;
     } catch (error) {
       console.error("Error fetching profile:", error);
-      return null;
+      throw error;
     }
   }
 
   async createProfile(
-    profileData: IProfileData,
-    userId: string,
-  ): Promise<IProfile | null> {
+    profileData: ICreateProfile,
+    token: string,
+  ): Promise<ProfileDTO> {
     try {
-      const userExist = !!(await this.profileRepository.getProfileByName(
-        profileData.name,
-      ));
+      const userPayload = verify(token);
 
-      if (userExist) return null;
+      if (!userPayload) {
+        throw new Error("Unauthorized");
+      }
+
+      const { image, name } = profileData;
+
+      const userExist = !!(await this.profileRepository.getProfileByName(name));
+
+      if (userExist) {
+        throw new Error("Profile with this name already exists");
+      }
+
+      const { id: userId } = userPayload;
+
+      const imageUrl = chooseProfileImage(image, null);
 
       const newProfile = await this.profileRepository.createProfile(
-        profileData,
+        {
+          name,
+          image: imageUrl,
+        },
         userId,
       );
 
@@ -55,14 +73,19 @@ export class ProfileService implements IProfileService {
         throw new Error("Error creating profile");
       }
 
-      return newProfile;
+      const profileToken = sign({ id: newProfile.id });
+
+      return {
+        ...newProfile,
+        token: profileToken,
+      };
     } catch (error) {
       console.error("Error creating profile:", error);
-      throw new Error(`Error creating profile: ${error}`);
+      throw error;
     }
   }
 
-  async login(profileData: IProfile): Promise<string | null> {
+  async login(profileData: IProfile): Promise<string> {
     try {
       const { id } = profileData;
 
@@ -71,31 +94,67 @@ export class ProfileService implements IProfileService {
       return profileToken;
     } catch (error) {
       console.error("Error logging in:", error);
-      return null;
+      throw error;
     }
   }
 
   async updateProfile(
-    profileId: string,
-    profileData: IProfileData,
-  ): Promise<ProfileDTO | null> {
+    profileToken: string,
+    profileData: ICreateProfile,
+  ): Promise<ProfileDTO> {
     try {
+      const profilePayload = verify(profileToken);
+
+      if (!profilePayload) {
+        throw new Error("Unauthorized");
+      }
+
+      const { image, name } = profileData;
+
+      const { id: profileId } = profilePayload;
+
+      const userExist = !!(await this.profileRepository.getProfileById(
+        profileId,
+      ));
+
+      if (!userExist) {
+        throw new Error("Profile does not exist");
+      }
+
+      const imageUrl = chooseProfileImage(image, name);
+
       const updatedProfile = await this.profileRepository.updateProfile(
         profileId,
-        profileData,
+        {
+          name,
+          image: imageUrl,
+        },
       );
+
+      if (!updatedProfile) {
+        throw new Error("Error updating profile");
+      }
+
       return updatedProfile;
     } catch (error) {
       console.error("Error updating profile:", error);
-      throw new Error("Error updating profile");
+      throw error;
     }
   }
 
   async addMovieToFavoriteList(
-    profileId: string,
+    profileToken: string,
     movieData: IMovie,
   ): Promise<IFavoriteList> {
     try {
+      const profilePayload = verify(profileToken);
+
+      if (!profilePayload) {
+        throw new Error("Unauthorized");
+      }
+
+      const { id: profileId } = profilePayload;
+
       const myList = await this.profileRepository.addMovieToFavoriteList(
         profileId,
         movieData,
@@ -108,7 +167,8 @@ export class ProfileService implements IProfileService {
       return myList;
     } catch (error) {
       console.error("Error adding movie to favorite list:", error);
-      const myList = await this.profileRepository.getMyList(profileId);
+
+      const myList = await this.profileRepository.getMyList(profileToken);
 
       if (!myList) {
         throw new Error("Error removing movie from favorite list");
@@ -119,10 +179,18 @@ export class ProfileService implements IProfileService {
   }
 
   async removeMovieFromFavoriteList(
-    profileId: string,
+    profileToken: string,
     movieId: number,
   ): Promise<IFavoriteList> {
     try {
+      const profilePayload = verify(profileToken);
+
+      if (!profilePayload) {
+        throw new Error("Unauthorized");
+      }
+
+      const { id: profileId } = profilePayload;
+
       const myList = await this.profileRepository.removeMovieFromFavoriteList(
         profileId,
         movieId,
@@ -134,7 +202,7 @@ export class ProfileService implements IProfileService {
       return myList;
     } catch (error) {
       console.error("Error removing movie from favorite list:", error);
-      const myList = await this.profileRepository.getMyList(profileId);
+      const myList = await this.profileRepository.getMyList(profileToken);
 
       if (!myList) {
         throw new Error("Error removing movie from favorite list");
@@ -144,22 +212,31 @@ export class ProfileService implements IProfileService {
     }
   }
 
-  async getFavoritesList(profileId: string): Promise<IMovie[] | null> {
+  async getFavoritesList(profileToken: string): Promise<IMovie[]> {
     try {
+      const profilePayload = verify(profileToken);
+
+      if (!profilePayload) {
+        throw new Error("Unauthorized");
+      }
+
+      const { id: profileId } = profilePayload;
+
       const profile = await this.profileRepository.getProfileById(profileId);
+
       if (!profile) {
         throw new Error("Profile not found");
       }
 
       const favList = profile.favoriteList;
-      if (!favList) {
+      if (!favList || favList.favoriteList.length <= 0) {
         throw new Error("Favorite list not found");
       }
 
       return favList.favoriteList;
     } catch (error) {
       console.error("Error fetching favorite list:", error);
-      return null;
+      throw error;
     }
   }
 
@@ -174,17 +251,30 @@ export class ProfileService implements IProfileService {
       return isDeleted;
     } catch (error) {
       console.error("Error deleting profile:", error);
-      return false;
+      throw error;
     }
   }
 
-  async getAllProfiles(userId: string): Promise<ProfileDTO[] | null> {
+  async getAllProfiles(userToken: string): Promise<ProfileDTO[]> {
     try {
+      const userPayload = verify(userToken);
+
+      if (!userPayload) {
+        throw new Error("Unauthorized");
+      }
+
+      const { id: userId } = userPayload;
+
       const profiles = await this.profileRepository.getAllProfiles(userId);
+
+      if (!profiles || profiles.length <= 0) {
+        throw new Error("No profiles found!");
+      }
+
       return profiles;
     } catch (error) {
       console.error("Error fetching profiles:", error);
-      return null;
+      throw error;
     }
   }
 }

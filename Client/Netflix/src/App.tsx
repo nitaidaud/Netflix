@@ -66,7 +66,8 @@ function App() {
       <Routes>
         <Route element={<AppLayout />}>
           {isAuthenticated ? (
-            hasPayment ? (
+            // hasPayment ? (
+            true ? (
               isProfileLoggedIn ? (
                 <>
                   <Route index element={<Home />} />

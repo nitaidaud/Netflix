@@ -1,10 +1,10 @@
-import { useTrailerKey } from "@/hooks/useTrailerKey";
-import cleanYouTubeEmbedUrl from "@/utils/cleanTrailerUrl";
 import { InfoIcon, Volume2, VolumeX } from "lucide-react";
 import { useEffect, useState } from "react";
 import ReactPlayer from "react-player/youtube";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
+import { useTrailerKey } from "@/hooks/useTrailerKey";
+import cleanYouTubeEmbedUrl from "@/utils/cleanTrailerUrl";
 
 type HeroSectionProps = {
   title: string;
@@ -66,6 +66,7 @@ const HeroSection = ({
         <div className="absolute top-0 left-0 w-full h-full animate-fade-in z-0">
           <ReactPlayer
             playing
+            loop
             muted={isMuted}
             url={cleanUrl}
             width="100%"

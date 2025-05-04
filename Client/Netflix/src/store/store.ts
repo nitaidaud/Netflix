@@ -4,6 +4,7 @@ import authReducer from "./slice/auth.slice";
 import profileReducer from "./slice/profile.slice";
 import browseReducer from "./slice/movies.slice";
 import modalReducer from "./slice/modal.slice";
+import paymentReducer from "./slice/payment.slice";
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     profile: profileReducer,
     movies: browseReducer,
     modal: modalReducer,
+    payment: paymentReducer,
   },
 });
 

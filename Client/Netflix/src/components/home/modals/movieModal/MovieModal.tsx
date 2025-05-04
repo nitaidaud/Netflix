@@ -6,12 +6,12 @@ const MovieModal = () => {
   const { selectedMovieId } = useAppSelector((state) => state.modal);
   const dispatch = useAppDispatch();
 
-  if (!selectedMovieId) return null; // Modal not open, render nothing
+  if (!selectedMovieId) return null;
 
   return (
     <MovieModalContent
       movieId={selectedMovieId}
-      onClose={() => dispatch(closeModal())} // Closing handled here
+      onClose={() => dispatch(closeModal())}
     />
   );
 };

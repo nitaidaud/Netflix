@@ -10,12 +10,8 @@ type NavLinksProps = {
 const links = [
   { name: "Home", href: "/" },
   { name: "TV Shows", href: "/tv" },
-  { name: "Movies", href: "/movies" },
-  { name: "New & Popular", href: "/new-popular" },
   { name: "My List", href: "/my-list" },
   { name: "Browse", href: "/browse" },
-  { name: "Payment", href: "/payment/step-1" },
- 
 ];
 
 const NavLinks = ({ isAuthenticated, isMobile = false }: NavLinksProps) => {

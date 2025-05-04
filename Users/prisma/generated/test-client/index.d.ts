@@ -54,10 +54,12 @@ export type Order = $Result.DefaultSelection<Prisma.$OrderPayload>
  */
 export namespace $Enums {
   export const OrderStatus: {
-  Pending: 'Pending',
-  Completed: 'Completed',
-  Failed: 'Failed',
-  Canceled: 'Canceled'
+  CREATED: 'CREATED',
+  SAVED: 'SAVED',
+  APPROVED: 'APPROVED',
+  VOIDED: 'VOIDED',
+  COMPLETED: 'COMPLETED',
+  PAYER_ACTION_REQUIRED: 'PAYER_ACTION_REQUIRED'
 };
 
 export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
@@ -1490,13 +1492,11 @@ export namespace Prisma {
   export type UserCountOutputType = {
     sessions: number
     profiles: number
-    orders: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     profiles?: boolean | UserCountOutputTypeCountProfilesArgs
-    orders?: boolean | UserCountOutputTypeCountOrdersArgs
   }
 
   // Custom InputTypes
@@ -1522,13 +1522,6 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountProfilesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProfileWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrderWhereInput
   }
 
 
@@ -1862,7 +1855,7 @@ export namespace Prisma {
     objects: {
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       profiles: Prisma.$ProfilePayload<ExtArgs>[]
-      orders: Prisma.$OrderPayload<ExtArgs>[]
+      orders: Prisma.$OrderPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2271,7 +2264,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     profiles<T extends User$profilesArgs<ExtArgs> = {}>(args?: Subset<T, User$profilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    orders<T extends User$ordersArgs<ExtArgs> = {}>(args?: Subset<T, User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    orders<T extends User$ordersArgs<ExtArgs> = {}>(args?: Subset<T, User$ordersArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2763,11 +2756,6 @@ export namespace Prisma {
      */
     include?: OrderInclude<ExtArgs> | null
     where?: OrderWhereInput
-    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
-    cursor?: OrderWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
   }
 
   /**
@@ -9460,7 +9448,7 @@ export namespace Prisma {
     resetPasswordExpiresAt?: DateTimeNullableFilter<"User"> | Date | string | null
     sessions?: SessionListRelationFilter
     profiles?: ProfileListRelationFilter
-    orders?: OrderListRelationFilter
+    orders?: XOR<OrderNullableScalarRelationFilter, OrderWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -9476,7 +9464,7 @@ export namespace Prisma {
     resetPasswordExpiresAt?: SortOrderInput | SortOrder
     sessions?: SessionOrderByRelationAggregateInput
     profiles?: ProfileOrderByRelationAggregateInput
-    orders?: OrderOrderByRelationAggregateInput
+    orders?: OrderOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -9495,7 +9483,7 @@ export namespace Prisma {
     resetPasswordExpiresAt?: DateTimeNullableFilter<"User"> | Date | string | null
     sessions?: SessionListRelationFilter
     profiles?: ProfileListRelationFilter
-    orders?: OrderListRelationFilter
+    orders?: XOR<OrderNullableScalarRelationFilter, OrderWhereInput> | null
   }, "id" | "email" | "resetPasswordToken">
 
   export type UserOrderByWithAggregationInput = {
@@ -9833,15 +9821,15 @@ export namespace Prisma {
 
   export type OrderWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    userId?: string
     AND?: OrderWhereInput | OrderWhereInput[]
     OR?: OrderWhereInput[]
     NOT?: OrderWhereInput | OrderWhereInput[]
     orderStatus?: EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
     plan?: EnumPlanFilter<"Order"> | $Enums.Plan
     price?: FloatFilter<"Order"> | number
-    userId?: StringFilter<"Order"> | string
     User?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id">
+  }, "id" | "userId">
 
   export type OrderOrderByWithAggregationInput = {
     id?: SortOrder
@@ -9880,7 +9868,7 @@ export namespace Prisma {
     resetPasswordExpiresAt?: Date | string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
     profiles?: ProfileCreateNestedManyWithoutUserInput
-    orders?: OrderCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -9896,7 +9884,7 @@ export namespace Prisma {
     resetPasswordExpiresAt?: Date | string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     profiles?: ProfileUncheckedCreateNestedManyWithoutUserInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -9912,7 +9900,7 @@ export namespace Prisma {
     resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
     profiles?: ProfileUpdateManyWithoutUserNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -9928,7 +9916,7 @@ export namespace Prisma {
     resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     profiles?: ProfileUncheckedUpdateManyWithoutUserNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -10383,10 +10371,9 @@ export namespace Prisma {
     none?: ProfileWhereInput
   }
 
-  export type OrderListRelationFilter = {
-    every?: OrderWhereInput
-    some?: OrderWhereInput
-    none?: OrderWhereInput
+  export type OrderNullableScalarRelationFilter = {
+    is?: OrderWhereInput | null
+    isNot?: OrderWhereInput | null
   }
 
   export type SortOrderInput = {
@@ -10399,10 +10386,6 @@ export namespace Prisma {
   }
 
   export type ProfileOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type OrderOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -10846,11 +10829,10 @@ export namespace Prisma {
     connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
   }
 
-  export type OrderCreateNestedManyWithoutUserInput = {
-    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput> | OrderCreateWithoutUserInput[] | OrderUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutUserInput | OrderCreateOrConnectWithoutUserInput[]
-    createMany?: OrderCreateManyUserInputEnvelope
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  export type OrderCreateNestedOneWithoutUserInput = {
+    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutUserInput
+    connect?: OrderWhereUniqueInput
   }
 
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
@@ -10867,11 +10849,10 @@ export namespace Prisma {
     connect?: ProfileWhereUniqueInput | ProfileWhereUniqueInput[]
   }
 
-  export type OrderUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput> | OrderCreateWithoutUserInput[] | OrderUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutUserInput | OrderCreateOrConnectWithoutUserInput[]
-    createMany?: OrderCreateManyUserInputEnvelope
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  export type OrderUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutUserInput
+    connect?: OrderWhereUniqueInput
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -10922,18 +10903,14 @@ export namespace Prisma {
     deleteMany?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
   }
 
-  export type OrderUpdateManyWithoutUserNestedInput = {
-    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput> | OrderCreateWithoutUserInput[] | OrderUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutUserInput | OrderCreateOrConnectWithoutUserInput[]
-    upsert?: OrderUpsertWithWhereUniqueWithoutUserInput | OrderUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: OrderCreateManyUserInputEnvelope
-    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    update?: OrderUpdateWithWhereUniqueWithoutUserInput | OrderUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: OrderUpdateManyWithWhereWithoutUserInput | OrderUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  export type OrderUpdateOneWithoutUserNestedInput = {
+    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutUserInput
+    upsert?: OrderUpsertWithoutUserInput
+    disconnect?: OrderWhereInput | boolean
+    delete?: OrderWhereInput | boolean
+    connect?: OrderWhereUniqueInput
+    update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutUserInput, OrderUpdateWithoutUserInput>, OrderUncheckedUpdateWithoutUserInput>
   }
 
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
@@ -10964,18 +10941,14 @@ export namespace Prisma {
     deleteMany?: ProfileScalarWhereInput | ProfileScalarWhereInput[]
   }
 
-  export type OrderUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput> | OrderCreateWithoutUserInput[] | OrderUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutUserInput | OrderCreateOrConnectWithoutUserInput[]
-    upsert?: OrderUpsertWithWhereUniqueWithoutUserInput | OrderUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: OrderCreateManyUserInputEnvelope
-    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    update?: OrderUpdateWithWhereUniqueWithoutUserInput | OrderUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: OrderUpdateManyWithWhereWithoutUserInput | OrderUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  export type OrderUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutUserInput
+    upsert?: OrderUpsertWithoutUserInput
+    disconnect?: OrderWhereInput | boolean
+    delete?: OrderWhereInput | boolean
+    connect?: OrderWhereUniqueInput
+    update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutUserInput, OrderUpdateWithoutUserInput>, OrderUncheckedUpdateWithoutUserInput>
   }
 
   export type UserCreateNestedOneWithoutSessionsInput = {
@@ -11497,11 +11470,6 @@ export namespace Prisma {
     create: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput>
   }
 
-  export type OrderCreateManyUserInputEnvelope = {
-    data: OrderCreateManyUserInput | OrderCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
     where: SessionWhereUniqueInput
     update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
@@ -11556,31 +11524,29 @@ export namespace Prisma {
     userId?: StringFilter<"Profile"> | string
   }
 
-  export type OrderUpsertWithWhereUniqueWithoutUserInput = {
-    where: OrderWhereUniqueInput
+  export type OrderUpsertWithoutUserInput = {
     update: XOR<OrderUpdateWithoutUserInput, OrderUncheckedUpdateWithoutUserInput>
     create: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput>
+    where?: OrderWhereInput
   }
 
-  export type OrderUpdateWithWhereUniqueWithoutUserInput = {
-    where: OrderWhereUniqueInput
+  export type OrderUpdateToOneWithWhereWithoutUserInput = {
+    where?: OrderWhereInput
     data: XOR<OrderUpdateWithoutUserInput, OrderUncheckedUpdateWithoutUserInput>
   }
 
-  export type OrderUpdateManyWithWhereWithoutUserInput = {
-    where: OrderScalarWhereInput
-    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutUserInput>
+  export type OrderUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    price?: FloatFieldUpdateOperationsInput | number
   }
 
-  export type OrderScalarWhereInput = {
-    AND?: OrderScalarWhereInput | OrderScalarWhereInput[]
-    OR?: OrderScalarWhereInput[]
-    NOT?: OrderScalarWhereInput | OrderScalarWhereInput[]
-    id?: StringFilter<"Order"> | string
-    orderStatus?: EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
-    plan?: EnumPlanFilter<"Order"> | $Enums.Plan
-    price?: FloatFilter<"Order"> | number
-    userId?: StringFilter<"Order"> | string
+  export type OrderUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+    price?: FloatFieldUpdateOperationsInput | number
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -11595,7 +11561,7 @@ export namespace Prisma {
     resetPasswordToken?: string | null
     resetPasswordExpiresAt?: Date | string | null
     profiles?: ProfileCreateNestedManyWithoutUserInput
-    orders?: OrderCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -11610,7 +11576,7 @@ export namespace Prisma {
     resetPasswordToken?: string | null
     resetPasswordExpiresAt?: Date | string | null
     profiles?: ProfileUncheckedCreateNestedManyWithoutUserInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -11641,7 +11607,7 @@ export namespace Prisma {
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profiles?: ProfileUpdateManyWithoutUserNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -11656,7 +11622,7 @@ export namespace Prisma {
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     profiles?: ProfileUncheckedUpdateManyWithoutUserNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutProfilesInput = {
@@ -11671,7 +11637,7 @@ export namespace Prisma {
     resetPasswordToken?: string | null
     resetPasswordExpiresAt?: Date | string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
-    orders?: OrderCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProfilesInput = {
@@ -11686,7 +11652,7 @@ export namespace Prisma {
     resetPasswordToken?: string | null
     resetPasswordExpiresAt?: Date | string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProfilesInput = {
@@ -11732,7 +11698,7 @@ export namespace Prisma {
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProfilesInput = {
@@ -11747,7 +11713,7 @@ export namespace Prisma {
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type FavoriteListUpsertWithoutProfileInput = {
@@ -12004,13 +11970,6 @@ export namespace Prisma {
     image?: string | null
   }
 
-  export type OrderCreateManyUserInput = {
-    id?: string
-    orderStatus: $Enums.OrderStatus
-    plan: $Enums.Plan
-    price: number
-  }
-
   export type SessionUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     sessionToken?: StringFieldUpdateOperationsInput | string
@@ -12053,27 +12012,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type OrderUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    orderStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
-    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    price?: FloatFieldUpdateOperationsInput | number
-  }
-
-  export type OrderUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    orderStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
-    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    price?: FloatFieldUpdateOperationsInput | number
-  }
-
-  export type OrderUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    orderStatus?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
-    plan?: EnumPlanFieldUpdateOperationsInput | $Enums.Plan
-    price?: FloatFieldUpdateOperationsInput | number
   }
 
   export type FavoriteItemUpdateWithoutFavoriteListsInput = {

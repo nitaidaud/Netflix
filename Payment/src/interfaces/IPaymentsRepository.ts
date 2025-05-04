@@ -1,7 +1,10 @@
 import { Order } from "@prisma/client";
+import INewOrder from "./INewOrder";
 
 export default interface IPaymentRepository {
-  createOrder(orderDetails: Order): Promise<boolean>;
-  captureOrder(captureDetails: any): Promise<void>;
-  getOrderById(orderId: string): Promise<any>;
+  saveOrder(data: INewOrder): Promise<void>;
+
+  updateOrderStatus(orderId: string, status: string): Promise<void>;
+
+  getOrderByUserId(userId: string): Promise<Order | null>;
 }

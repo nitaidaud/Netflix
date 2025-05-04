@@ -8,12 +8,7 @@ const StreamPage = () => {
 
   if (!hlsUrl) return <div>Movie not found</div>;
 
-  return (
-    <div>
-      <h1>Stream Movie</h1>
-      <MovieStreamer url={hlsUrl.movieUrl} />
-    </div>
-  );
+  return <MovieStreamer url={hlsUrl.movieUrl} />;
 };
 
 export default StreamPage;

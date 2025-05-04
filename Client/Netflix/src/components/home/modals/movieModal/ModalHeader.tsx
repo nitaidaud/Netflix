@@ -2,7 +2,7 @@ import cleanYouTubeEmbedUrl from "@/utils/cleanTrailerUrl";
 import { AnimatePresence, motion } from "framer-motion";
 import { Volume2, VolumeX, X } from "lucide-react";
 import ReactPlayer from "react-player/youtube";
-import ModalPlayButtons from "./ModalPlayButtons";
+import ModalActionsButtons from "./ModalPlayButtons";
 import IMovieDetails from "@/api/interfaces/IMovieDetails";
 
 interface ModalHeaderProps {
@@ -89,7 +89,7 @@ const ModalHeader = ({
           {muted ? <VolumeX size={26} /> : <Volume2 size={26} />}
         </button>
       )}
-      <ModalPlayButtons movie={movie} />
+      <ModalActionsButtons movieTrailer={cleanUrl} movie={movie} />
     </div>
   );
 };

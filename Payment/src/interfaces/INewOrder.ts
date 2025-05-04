@@ -1,15 +1,9 @@
-import {
-  CheckoutPaymentIntent,
-  LinkDescription,
-  PurchaseUnit,
-} from "@paypal/paypal-server-sdk";
-import { OrderStatus } from "@prisma/client";
+import { OrderStatus, Plan } from "@prisma/client";
 
 export default interface INewOrder {
-  orderId: string;
-  status: OrderStatus;
-  createTime: string;
-  intent?: CheckoutPaymentIntent;
-  links?: LinkDescription[];
-  purchaseUnits?: PurchaseUnit[];
+  id: string;
+  userId: string;
+  plan: Plan;
+  price: number;
+  orderStatus: OrderStatus;
 }

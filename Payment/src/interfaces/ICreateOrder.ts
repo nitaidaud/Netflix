@@ -1,15 +1,7 @@
-import {
-  CheckoutPaymentIntent,
-  OrderApplicationContext,
-  Payer,
-  PaymentSource,
-  PurchaseUnitRequest,
-} from "@paypal/paypal-server-sdk";
+import { Plan } from "@prisma/client";
 
-export default interface IOrder {
-  intent: CheckoutPaymentIntent;
-  payer?: Payer;
-  purchaseUnits: PurchaseUnitRequest[];
-  paymentSource?: PaymentSource;
-  applicationContext?: OrderApplicationContext;
+export default interface ICreateOrder {
+  plan: Plan;
+  price: number;
+  currency: string;
 }

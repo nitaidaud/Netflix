@@ -21,7 +21,7 @@ model User {
   resetPasswordExpiresAt DateTime?
   sessions               Session[]
   profiles               Profile[]
-  orders                 Order[]
+  orders                 Order?
 
   @@map("users")
 }
@@ -88,14 +88,16 @@ model Order {
   plan        Plan
   price       Float
   User        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String
+  userId      String      @unique
 }
 
 enum OrderStatus {
-  Pending
-  Completed
-  Failed
-  Canceled
+  CREATED
+  SAVED
+  APPROVED
+  VOIDED
+  COMPLETED
+  PAYER_ACTION_REQUIRED
 }
 
 enum Plan {

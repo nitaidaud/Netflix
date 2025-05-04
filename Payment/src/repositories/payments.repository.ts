@@ -1,22 +1,30 @@
-import { Order } from "@prisma/client";
-import { injectable } from "inversify";
-import { prisma } from "../../prisma/prisma";
-import IPaymentsRepository from "../interfaces/IPaymentsRepository";
+import { Order, OrderStatus, PrismaClient } from "@prisma/client";
+import INewOrder from "../interfaces/INewOrder";
+import IPaymentRepository from "../interfaces/IPaymentsRepository";
 
-@injectable()
-export class PaymentsPostgressqlRepository implements IPaymentsRepository {
-  async createOrder(newOrder: Order): Promise<boolean> {
-    const order = await prisma.order.create({
-      data: newOrder,
+const prisma = new PrismaClient();
+
+export class PaymentRepository implements IPaymentRepository {
+  async saveOrder(data: INewOrder): Promise<void> {
+    await prisma.order.upsert({
+      where: { userId: data.userId },
+      create: {
+        ...data
+      },
+      update: {
+       ...data
+      },
     });
-
-    return !!order;
-  }
-  captureOrder(): Promise<void> {
-    throw new Error("Method not implemented.");
   }
 
-  getOrderById(): Promise<any> {
-    throw new Error("Method not implemented.");
+  async updateOrderStatus(orderId: string, status: OrderStatus): Promise<void> {
+    await prisma.order.update({
+      where: { id: orderId },
+      data: { orderStatus: status },
+    });
+  }
+
+  async getOrderByUserId(userId: string): Promise<Order | null> {
+    return prisma.order.findFirst({ where: { userId } });
   }
 }

@@ -5,14 +5,14 @@ const publicRoutes = [
   "/api/users/login",
   "/api/users/signup",
   "/api/users/send-email",
-  "/api/users/verify-email/:tokenId",
-  "/api/users/reset-password/:token",
+  "/api/users/verify-email",
+  "/api/users/reset-password",
   "/api/users/forgot-password",
   "/api/users/check-auth",
   "/api/users/check-logged-in",
 ];
 
-const userRoutes = ["/api/profiles/delete-profile"];
+const userRoutes = ["/api/profiles/delete-profile", "/api/payments/create"];
 
 export const checkAuthMiddleware = (
   req: Request,
@@ -34,20 +34,15 @@ export const checkAuthMiddleware = (
 
   const token = req.cookies?.Token;
 
-  if (!token) {
-    res.status(401).json({ message: "Unauthorized" });
+  const user = verify(token);
+
+  if (!user) {
+    res.status(401).json({ message: "Unauthorized", success: false });
     return;
   }
 
   if (isUserRoute) {
     next();
-    return;
-  }
-
-  const user = verify(token);
-
-  if (!user) {
-    res.status(401).json({ message: "Unauthorized" });
     return;
   }
 

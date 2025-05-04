@@ -1,103 +1,117 @@
-import { inject } from "inversify";
-import IPaymentService from "../interfaces/IPaymentService";
-import TOKENS from "../../tokens";
-import IPaymentRepository from "../interfaces/IPaymentsRepository";
-import PaypalClient from "../paypal/paypal.client";
 import {
-  Order,
-  OrderCaptureRequest,
+  CheckoutPaymentIntent,
   OrderRequest,
   OrdersController,
+  OrderStatus as PayPalOrderStatus,
 } from "@paypal/paypal-server-sdk";
+import { inject } from "inversify";
+import TOKENS from "../../tokens";
+import IPaymentService from "../interfaces/IPaymentService";
+import IPaymentRepository from "../interfaces/IPaymentsRepository";
+import PaypalClient from "../paypal/paypal.client";
+import { CLIENT } from "../env_exports";
 
 export class PaymentService implements IPaymentService {
-  private orderController = new OrdersController(PaypalClient);
+  private ordersController = new OrdersController(PaypalClient);
+
   constructor(
     @inject(TOKENS.IPaymentRepository)
     private paymentRepository: IPaymentRepository,
   ) {}
 
-  async createPayment(
-    orderRequest: OrderRequest,
-  ): Promise<{ orderId: string; approvalLink: string }> {
-    try {
-      const order = await this.orderController.createOrder({
-        body: orderRequest,
-      });
+  async createPayment({
+    userId,
+    plan,
+    price,
+    currency,
+  }: {
+    userId: string;
+    plan: "Basic" | "Standard" | "Premium";
+    price: number;
+    currency: string;
+  }): Promise<{ orderId: string; approvalLink: string }> {
+    const orderRequest: OrderRequest = {
+      intent: CheckoutPaymentIntent.Capture,
+      purchaseUnits: [
+        {
+          amount: {
+            currencyCode: currency,
+            value: price.toFixed(2),
+          },
+        },
+      ],
+    };
 
-      const orderId = order.result.id;
-      const approvalLink = order.result.links?.find(
-        (link) => link.rel === "approve",
-      )?.href;
+    const response = await this.ordersController.createOrder({
+      body: {
+        ...orderRequest,
+        applicationContext: {
+          cancelUrl: CLIENT,
+          returnUrl: `${CLIENT}/payment/capture`,
+        },
+      },
+    });
 
-      if (!orderId) {
-        throw new Error("Order ID not found in PayPal response");
-      }
+    const order = response.result;
+    const approvalLink = order.links?.find((l) => l.rel === "approve")?.href;
+    if (!approvalLink) throw new Error("No approval link found");
 
-      if (!approvalLink) {
-        throw new Error("Approval link not found in PayPal response");
-      }
+    await this.paymentRepository.saveOrder({
+      id: order.id!,
+      userId,
+      plan,
+      price,
+      orderStatus: "CREATED",
+    });
 
-      const newOrder = await this.paymentRepository.createOrder({
-        orderId,
-        status: order.result.status,
-        createTime: order.result.createTime,
-        intent: order.result.intent,
-        links: order.result.links,
-        purchaseUnits: order.result.purchaseUnits,
-      });
-
-      if (!newOrder) {
-        throw new Error("Error creating order in repository");
-      }
-
-      return {
-        orderId,
-        approvalLink,
-      };
-    } catch (error) {
-      console.error("Error creating PayPal payment:", error);
-      throw error;
-    }
+    return {
+      orderId: order.id!,
+      approvalLink,
+    };
   }
 
-  async capturePayment(
-    orderId: string,
-  ): Promise<{ captureId: string; status: string; details: any }> {
-    try {
-      // Capture the payment in PayPal
-      const captureRequest = new OrderCaptureRequest(orderId);
-      const captureResponse = await this.orderController.captureOrder(
-        orderId,
-        captureRequest,
-      );
+  async capturePayment(userId: string): Promise<void> {
+    const order = await this.paymentRepository.getOrderByUserId(userId);
 
-      // Extract capture details
-      const { status, id } = captureResponse.result;
-      const captureId =
-        captureResponse.result.purchase_units[0]?.payments?.captures?.[0]?.id;
+    if (!order) throw new Error("Order not found");
 
-      if (!captureId) {
-        throw new Error("Capture ID not found in PayPal capture response");
-      }
+    console.log("order", order);
 
-      // Store capture details in your repository
-      await this.paymentRepository.captureOrder({
-        orderId,
-        captureId,
-        status,
-        captureTime: new Date().toISOString(),
-        details: captureResponse.result,
-      });
+    const response = await this.ordersController.captureOrder({
+      id: order.id,
+    });
 
-      return {
-        captureId,
-        status,
-        details: captureResponse.result,
-      };
-    } catch (error) {
-      console.error("Error capturing PayPal payment:", error);
-      throw error;
+    const result = response.result;
+
+    if (!result || result.status !== PayPalOrderStatus.Completed) {
+      throw new Error("Payment capture failed");
     }
+
+    await this.paymentRepository.updateOrderStatus(order.id, "COMPLETED");
+  }
+
+  async checkPayment(userId: string): Promise<{
+    orderStatus: "pending" | "success" | "failed" | null;
+    hasPayment: boolean;
+  }> {
+    const order = await this.paymentRepository.getOrderByUserId(userId);
+
+    if (!order) throw new Error("Order not found");
+
+    if (order.orderStatus === "CREATED") {
+      return {
+        orderStatus: "pending",
+        hasPayment: false,
+      };
+    }
+
+    if (order.orderStatus !== "COMPLETED") {
+      throw new Error("Payment not completed");
+    }
+
+    return {
+      orderStatus: "success",
+      hasPayment: true,
+    };
   }
 }

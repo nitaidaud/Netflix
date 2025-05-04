@@ -1,6 +1,6 @@
 // components/HLSPlayer.tsx
-import React, { useEffect, useRef, useState } from 'react';
-import Hls from 'hls.js';
+import Hls from "hls.js";
+import { useEffect, useRef, useState } from "react";
 
 interface MovieStreamerProps {
   url: string;
@@ -10,13 +10,13 @@ interface MovieStreamerProps {
   height?: string;
 }
 
-const MovieStreamer: React.FC<MovieStreamerProps> = ({
+const MovieStreamer = ({
   url,
   autoPlay = true,
   controls = true,
-  width = '100%',
-  height = 'auto',
-}) => {
+  width = "100%",
+  height = "auto",
+}: MovieStreamerProps) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,17 +31,17 @@ const MovieStreamer: React.FC<MovieStreamerProps> = ({
       hls.attachMedia(video);
 
       hls.on(Hls.Events.ERROR, (_event, data) => {
-        console.error('HLS error:', data);
-        setError('Playback error');
+        console.error("HLS error:", data);
+        setError("Playback error");
       });
 
       return () => {
         hls.destroy();
       };
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
       video.src = url;
     } else {
-      setError('HLS not supported in this browser');
+      setError("HLS not supported in this browser");
     }
   }, [url]);
 
@@ -54,7 +54,7 @@ const MovieStreamer: React.FC<MovieStreamerProps> = ({
           ref={videoRef}
           autoPlay={autoPlay}
           controls={controls}
-          style={{ width: '100%', height: '100%' }}
+          style={{ width: "100%", height: "100%" }}
         />
       )}
     </div>

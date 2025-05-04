@@ -47,6 +47,7 @@ function App() {
   );
   const { hasPayment, orderStatus } = useAppSelector((state) => state.payment);
 
+
   useEffect(() => {
     startTransition(async () => {
       await Promise.allSettled([
@@ -66,8 +67,7 @@ function App() {
       <Routes>
         <Route element={<AppLayout />}>
           {isAuthenticated ? (
-            // hasPayment ? (
-            true ? (
+            hasPayment ? (
               isProfileLoggedIn ? (
                 <>
                   <Route index element={<Home />} />

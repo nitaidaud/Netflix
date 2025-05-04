@@ -1,4 +1,5 @@
-import IProfile from "@/api/interfaces/IProfile";
+
+import IProfile from "@/api/interfaces/profile/IProfile";
 import LogoutButton from "@/components/auth/LogoutButton";
 import Typography from "@/components/shared/Typography";
 import {
@@ -80,7 +81,7 @@ const DropdownProfile = ({ currentProfile }: DropdownProfileProps) => {
           />
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 bg-black/80 text-white rounded-md shadow-lg border border-gray-700">
+      <DropdownMenuContent className="w-56  bg-black/70 backdrop-blur-sm text-white rounded-md shadow-lg border border-gray-700">
         {data ? (
           isLoading || isFetching ? (
             <LucideLoader color="red" className="animate-spin mx-auto" />

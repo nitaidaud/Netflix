@@ -1,4 +1,4 @@
-import IGenre from "./IGenre";
+import IGenre from "../IGenre";
 import ISeason from "./ISeason";
 
 export default interface ITVShow {

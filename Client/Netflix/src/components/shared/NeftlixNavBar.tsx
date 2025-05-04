@@ -39,11 +39,14 @@ const NetflixNavBar = () => {
     };
   }, [isFixedBlack]);
 
-  const navbarClass = isFixedBlack
-    ? "bg-black"
-    : isScrolled
-    ? "bg-black shadow-lg"
-    : "bg-gradient-to-b from-black/80 to-transparent";
+  const navbarClass = isMobileMenuOpen
+  ? "bg-black"
+  : isFixedBlack
+  ? "bg-black"
+  : isScrolled
+  ? "bg-black shadow-lg"
+  : "bg-gradient-to-b from-black/80 to-transparent";
+
 
   return (
     <NavBar

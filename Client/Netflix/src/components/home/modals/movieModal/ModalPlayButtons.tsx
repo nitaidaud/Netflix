@@ -1,4 +1,4 @@
-import IMovieDetails from "@/api/interfaces/IMovieDetails";
+import IMovieDetails from "@/api/interfaces/movie/IMovieDetails";
 import { Button } from "@/components/ui/button";
 import AddToListButton from "@/features/home/AddToListButton";
 import { Link } from "react-router-dom";

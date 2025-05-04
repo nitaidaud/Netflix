@@ -1,4 +1,4 @@
-import IEpisode from "@/api/interfaces/IEpisode";
+import IEpisode from "@/api/interfaces/tv/IEpisode";
 
 interface Props {
   episodes: IEpisode[];

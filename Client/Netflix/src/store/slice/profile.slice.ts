@@ -9,8 +9,8 @@ import {
   removeMovieFromFavoriteListRequest,
   updateProfileRequest,
 } from "@/api/api";
-import IBaseMovie from "@/api/interfaces/IBaseMovie";
-import IProfile from "@/api/interfaces/IProfile";
+import IBaseMovie from "@/api/interfaces/movie/IBaseMovie";
+import IProfile from "@/api/interfaces/profile/IProfile";
 import { ProfileFormData } from "@/schemas/profile.schema";
 import { getErrorMessage } from "@/utils/axios.error.handler";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";

@@ -1,4 +1,6 @@
-import IBaseMovie from "@/api/interfaces/IBaseMovie";
+import IBaseMovie from "@/api/interfaces/movie/IBaseMovie";
+import Typography from "@/components/shared/Typography";
+
 
 interface MovieDescriptionProps {
   movie: IBaseMovie;
@@ -8,13 +10,27 @@ const MovieDescription = ({ movie }: MovieDescriptionProps) => {
   return (
     <div className="space-y-4 md:w-2/3 w-full">
       <div className="flex items-end gap-4">
-        <span className="text-zinc-400 text-lg">
+        <Typography
+          responsiveSize={{
+            base: "text-sm",
+            sm: "text-base",
+            md: "text-lg",
+          }}
+          color="text-zinc-400"
+        >
           {new Date(movie.release_date).getFullYear()}
-        </span>
+        </Typography>
       </div>
-      <p className="text-gray-200 text-lg">
+      <Typography
+        responsiveSize={{
+          base: "text-sm",
+          sm: "text-base",
+          md: "text-lg",
+        }}
+        color="text-gray-200"
+      >
         {movie.overview}
-      </p>
+      </Typography>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import IBaseMovie from "@/api/interfaces/IBaseMovie";
+import IBaseMovie from "@/api/interfaces/movie/IBaseMovie";
 import MovieCard from "@/components/shared/MovieCard";
 import { openMovieModal } from "@/store/slice/modal.slice";
 import { useAppDispatch } from "@/store/store";

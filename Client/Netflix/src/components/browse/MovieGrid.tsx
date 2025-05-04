@@ -1,4 +1,4 @@
-import IBaseMovie from "@/api/interfaces/IBaseMovie";
+import IBaseMovie from "@/api/interfaces/movie/IBaseMovie";
 import LoadingContentAnimation from "../shared/LoadingContentAnimation";
 import MovieCard from "../shared/MovieCard";
 

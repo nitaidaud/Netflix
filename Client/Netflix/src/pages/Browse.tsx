@@ -62,7 +62,7 @@ const Browse = () => {
   };
 
   return (
-    <div className="relative w-full h-full max-w-7xl mx-auto">
+    <div className="relative w-full h-full max-w-7xl mx-auto pb-40">
       <Filters />
       <div className="h-20" />
       {isLoading ? (

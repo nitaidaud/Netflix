@@ -1,4 +1,4 @@
-import IBaseResponse from "./IBaseRespone";
+import IBaseResponse from "../IBaseRespone";
 
 export default interface ICreatePaymentResponse extends IBaseResponse {
   order?: {

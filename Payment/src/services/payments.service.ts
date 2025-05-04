@@ -61,7 +61,7 @@ export class PaymentService implements IPaymentService {
       userId,
       plan,
       price,
-      status: "CREATED",
+      orderStatus: "CREATED",
     });
 
     return {
@@ -90,15 +90,28 @@ export class PaymentService implements IPaymentService {
     await this.paymentRepository.updateOrderStatus(order.id, "COMPLETED");
   }
 
-  async checkPayment(userId: string): Promise<boolean> {
+  async checkPayment(userId: string): Promise<{
+    orderStatus: "pending" | "success" | "failed" | null;
+    hasPayment: boolean;
+  }> {
     const order = await this.paymentRepository.getOrderByUserId(userId);
 
     if (!order) throw new Error("Order not found");
+
+    if (order.orderStatus === "CREATED") {
+      return {
+        orderStatus: "pending",
+        hasPayment: false,
+      };
+    }
 
     if (order.orderStatus !== "COMPLETED") {
       throw new Error("Payment not completed");
     }
 
-    return true;
+    return {
+      orderStatus: "success",
+      hasPayment: true,
+    };
   }
 }

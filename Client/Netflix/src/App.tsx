@@ -16,6 +16,7 @@ import Home from "./pages/Home";
 import Landing from "./pages/Landing";
 import MoviesPage from "./pages/MoviesPage";
 import MyListPage from "./pages/MyListPage";
+import CapturePaymentPage from "./pages/payment/CapturePaymentPage";
 import PayPalSetupPage from "./pages/payment/PayPalSetupPage";
 import Step1AccountSetup from "./pages/payment/Step1AccountSetup";
 import Step2PlanSelection from "./pages/payment/Step2PlanSelection";
@@ -32,7 +33,7 @@ import { checkAuth } from "./store/slice/auth.slice";
 import { checkUserPayment } from "./store/slice/payment.slice";
 import { checkLoggedInProfile } from "./store/slice/profile.slice";
 import { useAppDispatch, useAppSelector } from "./store/store";
-import CapturePaymentPage from "./pages/payment/CapturePaymentPage";
+import LoadingScreen from "./components/shared/LoadingScreen";
 
 // Layouts
 
@@ -44,23 +45,22 @@ function App() {
   const isProfileLoggedIn = useAppSelector(
     (state) => state.profile.isProfileLoggedIn,
   );
-  const hasPayment = useAppSelector((state) => state.payment.hasPayment);
+  const { hasPayment, orderStatus } = useAppSelector((state) => state.payment);
 
   useEffect(() => {
     startTransition(async () => {
-      await dispatch(checkAuth());
-      await dispatch(checkLoggedInProfile());
-      await dispatch(checkUserPayment());
+      await Promise.allSettled([
+        await dispatch(checkAuth()),
+        await dispatch(checkLoggedInProfile()),
+        await dispatch(checkUserPayment()),
+      ]);
     });
   }, [dispatch]);
 
   if (pending) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <img src="/images/loading-screen.gif" alt="loading screen" />
-      </div>
-    );
+    return <LoadingScreen />;
   }
+
   return (
     <Router>
       <Routes>
@@ -97,6 +97,24 @@ function App() {
                   <Route path="*" element={<Navigate to="/" />} />
                 </>
               )
+            ) : orderStatus === "pending" ? (
+              <>
+                <Route index element={<CapturePaymentPage />} />
+                <Route path="/payment/step-1" element={<Step1AccountSetup />} />
+                <Route
+                  path="/payment/step-2"
+                  element={<Step2PlanSelection />}
+                />
+                <Route
+                  path="/payment/step-3"
+                  element={<Step3PaymentMethod />}
+                />
+                <Route path="/payment/paypal" element={<PayPalSetupPage />} />
+
+                <Route path="/verify-email" element={<VerifyEmail />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="*" element={<Navigate to="/payment/step-1" />} />
+              </>
             ) : (
               <>
                 <Route index element={<Step1AccountSetup />} />
@@ -109,10 +127,7 @@ function App() {
                   element={<Step3PaymentMethod />}
                 />
                 <Route path="/payment/paypal" element={<PayPalSetupPage />} />
-                <Route
-                  path="/payment/capture"
-                  element={<CapturePaymentPage />}
-                />
+
                 <Route path="/verify-email" element={<VerifyEmail />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="*" element={<Navigate to="/" />} />

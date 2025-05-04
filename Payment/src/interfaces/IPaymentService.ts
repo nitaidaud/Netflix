@@ -8,5 +8,5 @@ export default interface IPaymentService {
 
   capturePayment(orderId: string): Promise<void>;
 
-  checkPayment(userId: string): Promise<boolean>;
+  checkPayment(userId: string): Promise<{orderStatus: "pending" | "success" | "failed" | null, hasPayment: boolean}>;
 }

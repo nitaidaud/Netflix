@@ -1,23 +1,18 @@
-import { Order, OrderStatus, Plan, PrismaClient } from "@prisma/client";
+import { Order, OrderStatus, PrismaClient } from "@prisma/client";
+import INewOrder from "../interfaces/INewOrder";
 import IPaymentRepository from "../interfaces/IPaymentsRepository";
 
 const prisma = new PrismaClient();
 
 export class PaymentRepository implements IPaymentRepository {
-  async saveOrder(data: {
-    id: string;
-    userId: string;
-    plan: Plan;
-    price: number;
-    status: OrderStatus;
-  }): Promise<void> {
-    await prisma.order.create({
-      data: {
-        id: data.id,
-        userId: data.userId,
-        plan: data.plan,
-        price: data.price,
-        orderStatus: data.status,
+  async saveOrder(data: INewOrder): Promise<void> {
+    await prisma.order.upsert({
+      where: { userId: data.userId },
+      create: {
+        ...data
+      },
+      update: {
+       ...data
       },
     });
   }

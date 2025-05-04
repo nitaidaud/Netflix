@@ -1,3 +1,4 @@
+import Typography from "@/components/shared/Typography";
 import { Button } from "@/components/ui/button";
 
 interface PlanSummaryBoxProps {
@@ -12,16 +13,18 @@ const PlanSummaryBox = ({
   onChange,
 }: PlanSummaryBoxProps) => {
   return (
-    <div className="w-full bg-gray-100 text-black rounded-md p-4 text-sm flex flex-col sm:flex-row justify-between sm:items-center text-left">
-      <div>
-        <p className="text-sm font-semibold">
+    <div className="w-full border border-gray-100 text-gray-100 rounded-md p-4 text-sm flex flex-col sm:flex-row justify-between sm:items-center text-start">
+      <div className="flex flex-col items-start justify-start w-full">
+        <Typography size="text-sm" weight="font-semibold">
           {price.toLocaleString("he-IL", {
             style: "currency",
             currency: "ILS",
           })}{" "}
           per month
-        </p>
-        <p className="text-xs text-gray-500">Plan: {planLabel}</p>
+        </Typography>
+        <Typography className="ms-1" size="text-xs" color="text-gray-500">
+          Plan: {planLabel}
+        </Typography>
       </div>
       <Button
         variant="link"

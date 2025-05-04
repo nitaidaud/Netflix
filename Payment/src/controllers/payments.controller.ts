@@ -50,13 +50,13 @@ export class PaymentController {
       const Token = req.cookies.Token;
       const userPayload = verify(Token);
 
-      if (!userPayload?.id) {
+      if (!userPayload) {
         return res
           .status(400)
           .json({ success: false, message: "Unauthorized" });
       }
 
-      await this.paymentService.capturePayment(userPayload?.id);
+      await this.paymentService.capturePayment(userPayload.id);
 
       return res.status(200).json({
         message: "Payment captured successfully",
@@ -79,11 +79,11 @@ export class PaymentController {
           .json({ success: false, message: "Unauthorized" });
       }
 
-      const hasPayment = await this.paymentService.checkPayment(userPayload.id);
+      const paymentStatus = await this.paymentService.checkPayment(userPayload.id);
 
       return res.status(200).json({
         message: "Payment captured successfully",
-        success: hasPayment,
+        paymentStatus,
       });
     } catch (error) {
       console.error("Capture Payment Error:", error);

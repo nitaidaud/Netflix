@@ -304,9 +304,7 @@ export const createPaymentIntentRequest = async (
 };
 
 export const capturePaymentRequest = async () => {
-  const { data } = await api.post<IPaymentStatusResponse>(
-    `/api/payments/capture`,
-  );
+  const { data } = await api.post<IBaseResponse>(`/api/payments/capture`);
   return data;
 };
 

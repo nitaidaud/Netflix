@@ -7,6 +7,12 @@ interface Props {
   onNext: () => void;
 }
 
+const features = [
+  { feature: "Watch all you want. Ad-free." },
+  { feature: "Recommendations just for you." },
+  { feature: "Change or cancel your plan anytime." },
+];
+
 const PlanSelectionHeader = ({ onNext }: Props) => {
   return (
     <div className="flex flex-col items-center justify-center px-4 text-white max-w-2xl w-full mx-auto text-right">
@@ -21,23 +27,16 @@ const PlanSelectionHeader = ({ onNext }: Props) => {
       </Typography>
 
       <ul className="w-full space-y-4 text-left sm:text-center">
-  {[
-    "Watch all you want. Ad-free.",
-    "Recommendations just for you.",
-    "Change or cancel your plan anytime.",
-  ].map((item, i) => (
-    <li
-      key={i}
-      className="flex items-center justify-start sm:justify-center"
-    >
-      <Check className="text-red-600 w-5 h-5 shrink-0 mr-3 sm:mr-2 sm:ml-0" />
-      <Typography size="text-md">{item}</Typography>
-    </li>
-  ))}
-</ul>
-
-
-
+        {features.map((item) => (
+          <li
+            key={item.feature}
+            className="w-1/2 min-w-fit mx-auto flex items-center justify-start"
+          >
+            <Check className="text-red-600 w-5 h-5 shrink-0 mr-3 sm:mr-2 sm:ml-0" />
+            <Typography size="text-md">{item.feature}</Typography>
+          </li>
+        ))}
+      </ul>
 
       <Button
         onClick={onNext}

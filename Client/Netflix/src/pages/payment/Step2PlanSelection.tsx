@@ -1,6 +1,6 @@
-import { useState } from "react";
-import PlanSelectionHeader from "@/components/payment/plan/PlanSelectionHeader";
 import PlanSelectionDetails from "@/components/payment/plan/PlanSelectionDetails";
+import PlanSelectionHeader from "@/components/payment/plan/PlanSelectionHeader";
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
 const Step2PlanSelection = () => {

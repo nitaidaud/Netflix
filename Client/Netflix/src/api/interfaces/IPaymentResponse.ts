@@ -1,5 +1,8 @@
 import IBaseResponse from "./IBaseRespone";
 
 export interface IPaymentStatusResponse extends IBaseResponse {
-  success: boolean;
+  paymentStatus: {
+    orderStatus: "pending" | "success" | "failed" | null;
+    hasPayment: boolean;
+  };
 }

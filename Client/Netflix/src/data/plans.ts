@@ -24,7 +24,7 @@ export const plans: Plan[] = [
     id: "premium",
     title: PlanName.PREMIUM,
     resolution: "4K + HDR",
-    price: 69.9,
+    price:69.9,
     currency: "ILS",
     features: [
       { label: "Video & Audio Quality", value: "Best" },
@@ -39,7 +39,7 @@ export const plans: Plan[] = [
     id: "standard",
     title: PlanName.STANDARD,
     resolution: "1080p (Full HD)",
-    price: 54.9,
+    price:54.9,
     currency: "ILS",
     features: [
       { label: "Video & Audio Quality", value: "Great" },
@@ -53,7 +53,7 @@ export const plans: Plan[] = [
     id: "basic",
     title: PlanName.BASIC,
     resolution: "720p (HD)",
-    price: 32.9,
+    price:32.9,
     currency: "ILS",
     features: [
       { label: "Video & Audio Quality", value: "Good" },

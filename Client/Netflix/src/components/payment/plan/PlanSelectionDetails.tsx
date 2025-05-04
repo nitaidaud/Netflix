@@ -19,7 +19,7 @@ const PlanSelectionDetails = () => {
   };
 
   return (
-    <div className="flex flex-col items-center px-4 text-white text-center w-full max-w-5xl mx-auto mt-20">
+    <div className="flex flex-col items-center px-4 text-white text-center w-full max-w-5xl mx-auto mt-16 ">
       <StepProgressIndicator step={2} total={3} />
 
       <Typography size="text-2xl" weight="font-bold" className="mb-8">
@@ -38,7 +38,7 @@ const PlanSelectionDetails = () => {
       </div>
 
       <Button
-        className="mt-8 w-full max-w-sm text-lg py-6 bg-red-600 hover:bg-red-900 transition duration-200 ease-in-out"
+        className="w-full max-w-sm text-lg py-6 bg-red-600 hover:bg-red-900 transition duration-200 ease-in-out"
         onClick={handleContinue}
       >
         Continue

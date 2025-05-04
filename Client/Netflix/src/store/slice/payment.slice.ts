@@ -7,6 +7,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface PaymentState {
   selectedPlan: Plan | null;
+  orderStatus: "pending" | "success" | "failed" | null;
   hasPayment: boolean;
   isLoading: boolean;
 }
@@ -15,6 +16,7 @@ const initialState: PaymentState = {
   selectedPlan: null,
   hasPayment: false,
   isLoading: false,
+  orderStatus: null,
 };
 
 export const createPayment = createAsyncThunk(
@@ -44,9 +46,10 @@ export const checkUserPayment = createAsyncThunk(
   "payment/checkUserPayment",
   async (_, { rejectWithValue }) => {
     try {
-      const { success } = await checkPayment();
+      const { paymentStatus } = await checkPayment();
       return {
-        success,
+        hasPayment: paymentStatus.hasPayment,
+        orderStatus: paymentStatus.orderStatus,
       };
     } catch (error) {
       const errorMessage: string = getErrorMessage(error);
@@ -84,13 +87,15 @@ const paymentSlice = createSlice({
         state.isLoading = true;
         state.hasPayment = false;
       })
-      .addCase(createPayment.fulfilled, (state, action) => {
-        state.hasPayment = action.payload.success;
+      .addCase(createPayment.fulfilled, (state) => {
+        state.hasPayment = false
         state.isLoading = false;
+        state.orderStatus = "pending";
       })
       .addCase(createPayment.rejected, (state) => {
         state.isLoading = false;
         state.hasPayment = false;
+        state.orderStatus = "failed";
       })
       .addCase(checkUserPayment.pending, (state) => {
         state.isLoading = true;
@@ -98,7 +103,8 @@ const paymentSlice = createSlice({
       })
       .addCase(checkUserPayment.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.hasPayment = action.payload.success;
+        state.hasPayment = action.payload.hasPayment;
+        state.orderStatus = action.payload.orderStatus;
       })
       .addCase(checkUserPayment.rejected, (state) => {
         state.isLoading = false;
@@ -111,6 +117,7 @@ const paymentSlice = createSlice({
       .addCase(capturePayment.fulfilled, (state, action) => {
         state.isLoading = false;
         state.hasPayment = action.payload.success;
+        state.orderStatus = "success";
       })
       .addCase(capturePayment.rejected, (state) => {
         state.isLoading = false;

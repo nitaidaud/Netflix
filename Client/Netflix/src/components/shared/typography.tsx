@@ -4,6 +4,7 @@ type TypographyProps = {
   children: React.ReactNode;
   className?: string;
   size?:
+    | "text-xs"
     | "text-sm"
     | "text-md"
     | "text-lg"
@@ -19,6 +20,7 @@ type TypographyProps = {
     | "text-gray-500"
     | "text-red-500"
     | "text-green-800"
+    | "text-zinc-400"
     | "text-red-500";
   spacing?: "tracking-tight" | "tracking-normal" | "tracking-wide";
 };

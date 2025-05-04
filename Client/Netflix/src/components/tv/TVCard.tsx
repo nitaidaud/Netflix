@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { InfoIcon } from "lucide-react";
 
-import ITVShow from "@/api/interfaces/ITVShow";
+import ITVShow from "@/api/interfaces/tv/ITVShow";
 import AddToListButton from "@/features/home/AddToListButton";
 
 interface Props {

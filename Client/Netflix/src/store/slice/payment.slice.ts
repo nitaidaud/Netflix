@@ -1,6 +1,6 @@
 import { capturePaymentRequest } from "./../../api/api";
 import { checkPayment, createPaymentIntentRequest } from "@/api/api";
-import ICreatePaymentData from "@/api/interfaces/ICreatePaymentData";
+import ICreatePaymentData from "@/api/interfaces/payment/ICreatePaymentData";
 import { Plan } from "@/data/plans";
 import { getErrorMessage } from "@/utils/axios.error.handler";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";

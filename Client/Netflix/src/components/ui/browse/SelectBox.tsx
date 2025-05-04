@@ -28,7 +28,7 @@ type SelectDemoProps = {
 const SelectBox = ({ onChange, selectedValue }: SelectDemoProps) => {
   return (
     <Select onValueChange={onChange} value={selectedValue ?? ""}>
-      <SelectTrigger className="border-2 border-gray-300 h-full rounded-none w-[150px]">
+      <SelectTrigger className="border-2 border-gray-300 h-full rounded-none w-[150px] text-white">
         <SelectValue placeholder="Select"/>
       </SelectTrigger>
       <SelectContent className="bg-zinc-900">

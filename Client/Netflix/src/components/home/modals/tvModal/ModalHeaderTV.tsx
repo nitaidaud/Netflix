@@ -1,4 +1,4 @@
-import ITVShow from "@/api/interfaces/ITVShow";
+import ITVShow from "@/api/interfaces/tv/ITVShow";
 import { X } from "lucide-react";
 
 interface Props {

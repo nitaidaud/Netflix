@@ -3,22 +3,22 @@ import { apiBaseUrl } from "@/config/config";
 import { SigninFormData, SignupFormData } from "@/schemas/auth.schema";
 import { ProfileFormData } from "@/schemas/profile.schema";
 import axios from "axios";
-import IAuthResponse from "./interfaces/IAuthResponse";
-import IBaseMovie from "./interfaces/IBaseMovie";
+import IAuthResponse from "./interfaces/auth/IAuthResponse";
+import IBaseMovie from "./interfaces/movie/IBaseMovie";
 import IBaseResponse from "./interfaces/IBaseRespone";
-import IMovieDetails from "./interfaces/IMovieDetails";
-import IMyListResponse from "./interfaces/IMyListResponse";
-import IProfile from "./interfaces/IProfile";
-import IProfileResponse from "./interfaces/IProfileResponse";
-import IProfilesResponse from "./interfaces/IProfilesResponse";
-import ITrailerResponse from "./interfaces/ITrailerResponse";
-import IUser from "./interfaces/IUser";
-import ISendMailResponse from "./interfaces/IVerifyMailResponse";
-import ITVShow from "./interfaces/ITVShow";
-import ISeason from "./interfaces/ISeason";
-import { IPaymentStatusResponse } from "./interfaces/IPaymentResponse";
-import ICreatePaymentResponse from "./interfaces/ICreatePaymentResponse";
-import ICreatePaymentData from "./interfaces/ICreatePaymentData";
+import IMovieDetails from "./interfaces/movie/IMovieDetails";
+import IMyListResponse from "./interfaces/movie/IMyListResponse";
+import IProfile from "./interfaces/profile/IProfile";
+import IProfileResponse from "./interfaces/profile/IProfileResponse";
+import IProfilesResponse from "./interfaces/profile/IProfilesResponse";
+import ITrailerResponse from "./interfaces/movie/ITrailerResponse";
+import IUser from "./interfaces/auth/IUser";
+import ISendMailResponse from "./interfaces/auth/IVerifyMailResponse";
+import ITVShow from "./interfaces/tv/ITVShow";
+import ISeason from "./interfaces/tv/ISeason";
+import { IPaymentStatusResponse } from "./interfaces/payment/IPaymentResponse";
+import ICreatePaymentResponse from "./interfaces/payment/ICreatePaymentResponse";
+import ICreatePaymentData from "./interfaces/payment/ICreatePaymentData";
 
 const api = axios.create({
   baseURL: apiBaseUrl,

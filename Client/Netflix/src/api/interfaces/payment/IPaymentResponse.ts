@@ -1,4 +1,5 @@
-import IBaseResponse from "./IBaseRespone";
+import IBaseResponse from "../IBaseRespone";
+
 
 export interface IPaymentStatusResponse extends IBaseResponse {
   paymentStatus: {

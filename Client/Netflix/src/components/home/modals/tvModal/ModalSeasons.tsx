@@ -1,8 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { openTVShowWithSeasonModal } from "@/store/slice/modal.slice";
-import ISeason from "@/api/interfaces/ISeason";
 import EpisodeList from "./EpisodeList";
 import SeasonSelect from "./SeasonSelect";
+import ISeason from "@/api/interfaces/tv/ISeason";
 
 interface Props {
   season: ISeason;

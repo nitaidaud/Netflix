@@ -6,7 +6,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-import IBaseMovie from "@/api/interfaces/IBaseMovie";
+import IBaseMovie from "@/api/interfaces/movie/IBaseMovie";
 import { Link } from "react-router-dom";
 import MovieCard from "../shared/MovieCard";
 import Typography from "../shared/Typography";

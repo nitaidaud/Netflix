@@ -2,7 +2,6 @@ import cors from "cors";
 import express, { Application, Request, Response } from "express";
 import { ORIGIN } from "./env_exports";
 import { movieRouter } from "./routes/movie.router";
-import { tvRouter } from "./routes/tv.router";
 
 const app: Application = express();
 
@@ -15,7 +14,6 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/movies", movieRouter);
-app.use("/api/tv", tvRouter);
 
 app.all("*", (req: Request, res: Response) => {
   res.status(404).json({ message: "Route not found" });

@@ -51,9 +51,9 @@ export class ProfileService implements IProfileService {
 
       const { image, name } = profileData;
 
-      const userExist = !!(await this.profileRepository.getProfileByName(name));
+      const profileExist = !!(await this.profileRepository.getProfileByName(name));
 
-      if (userExist) {
+      if (profileExist) {
         throw new Error("Profile with this name already exists");
       }
 

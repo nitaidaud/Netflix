@@ -11,7 +11,7 @@ type MainLayoutProps = {
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   return (
-    <div className="flex flex-col h-[100vh]">
+    <div className="flex flex-col h-screen">
       <NetflixNavBar />
       <ScrollToTop />
       <main className="min-h-fit h-screen flex-grow">{children}</main>

@@ -13,7 +13,7 @@ const SignupPage = () => {
 
   return (
     <Container>
-      <div className="w-full max-w-sm bg-black bg-opacity-80 text-white p-8 rounded-md space-y-4 shadow-lg">
+      <div className="w-full h-screen flex flex-col justify-center max-w-sm bg-black bg-opacity-80 text-white p-8 rounded-md space-y-4 shadow-lg">
         <Typography size="text-2xl" weight="font-bold" className="mb-4">
           {STRINGS.SignUp}
         </Typography>

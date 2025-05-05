@@ -37,7 +37,7 @@ const ProfileGrid = ({ profiles }: ProfileGridProps) => {
   const showAddButton = profiles.length < MAX_PROFILES;
 
   return (
-    <div className={`grid grid-cols-2 sm:grid-cols-[${profilesCount+10}] gap-6 sm:gap-10 place-items-center mx-auto `}>
+    <div className={`grid grid-cols-2 sm:grid-cols-[${profilesCount > 0 ? profilesCount + 1 : "1"}] gap-6 sm:gap-10 place-items-center mx-auto `}>
       {profiles.slice(0, MAX_PROFILES).map((profile) => (
         <ProfileCard
           key={profile.name}

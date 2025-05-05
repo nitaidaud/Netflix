@@ -72,7 +72,7 @@ export class VerificationTokenService implements IVerificationTokenService {
     const token = await this.verificationTokenRepository.findById(tokenId);
 
     if (!token) {
-      return { success: false, message: "Invalid token" };
+      return { success: false, message: "Invalid Url" };
     }
 
     const tokenHasExpired = new Date(token.expires) < new Date();

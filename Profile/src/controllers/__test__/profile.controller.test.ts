@@ -100,7 +100,13 @@ describe("ProfileController", () => {
   it("checkLoggedProfile - failure", async () => {
     req.cookies.Token = "token";
     req.cookies.profileToken = "profileToken";
-    mockService.getProfileByToken.mockResolvedValue(null);
+    const mockProfile = {
+      id: "1",
+      name: "test",
+      image: null,
+      favoriteList: null,
+    };
+    mockService.getProfileByToken.mockResolvedValue(mockProfile);
 
     await controller.checkLoggedProfile(req, res);
 
@@ -145,7 +151,6 @@ describe("ProfileController", () => {
       stream: null as any,
     };
     mockService.createProfile.mockResolvedValue({
-      id: "1",
       name: "test",
       image: "mocked/image/url",
       favoriteList: null,

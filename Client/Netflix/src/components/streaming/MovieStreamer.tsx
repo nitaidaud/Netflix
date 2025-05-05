@@ -13,8 +13,6 @@ const MovieStreamer = ({
   url,
   autoPlay = true,
   controls = true,
-  width = "100%",
-  height = "auto",
 }: MovieStreamerProps) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [error, setError] = useState<string | null>(null);

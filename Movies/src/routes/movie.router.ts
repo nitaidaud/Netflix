@@ -2,13 +2,11 @@ import { Request, Response, Router } from "express";
 import { MovieController } from "../controllers/movie.controller";
 import { TOKENS } from "../../tokens";
 import { container } from "../config/inversify";
-import { tvRouter } from "./tv.router";
 
 const movieRouter = Router();
 
 const movieController = container.get<MovieController>(TOKENS.MovieController);
 
-//example for route
 movieRouter.get("/popular", (req: Request, res: Response) => {
   movieController.getPopularMovies(req, res);
 });

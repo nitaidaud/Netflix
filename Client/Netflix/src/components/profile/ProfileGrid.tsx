@@ -1,7 +1,11 @@
 import IProfile from "@/api/interfaces/profile/IProfile";
 import Typography from "@/components/shared/Typography";
 import { useAppDispatch } from "@/store/store";
-import { loginProfile, deleteProfile, clearProfileErrors } from "@/store/slice/profile.slice";
+import {
+  loginProfile,
+  deleteProfile,
+  clearProfileErrors,
+} from "@/store/slice/profile.slice";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
@@ -17,7 +21,6 @@ const ProfileGrid = ({ profiles }: ProfileGridProps) => {
   const [isLogging, setIsLogging] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const profilesCount = profiles.length;
 
   const handleLogin = async (profile: IProfile) => {
     try {
@@ -37,7 +40,7 @@ const ProfileGrid = ({ profiles }: ProfileGridProps) => {
   const showAddButton = profiles.length < MAX_PROFILES;
 
   return (
-    <div className={`grid grid-cols-2 sm:grid-cols-[${profilesCount > 0 ? profilesCount + 1 : "1"}] gap-6 sm:gap-10 place-items-center mx-auto `}>
+    <div className={`grid grid-cols-2 md:flex gap-6 md:gap-10`}>
       {profiles.slice(0, MAX_PROFILES).map((profile) => (
         <ProfileCard
           key={profile.name}

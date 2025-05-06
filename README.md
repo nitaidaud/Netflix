@@ -1,7 +1,7 @@
 # 🎬 Netflix Clone
 
 [![Last Commit](https://img.shields.io/github/last-commit/nitaidaud/Netflix-Clone)](https://github.com/nitaidaud/Netflix-Clone/commits/main)
-[![Tech Stack](https://img.shields.io/badge/Tech%20Stack-Full%20Stack-red)](#-technologies-used)
+[![Tech Stack](https://img.shields.io/badge/Tech%20Stack-Full%20Stack-red)](#%EF%B8%8F-technologies-used)
 [![Issues](https://img.shields.io/github/issues/nitaidaud/Netflix-Clone)](https://github.com/nitaidaud/Netflix-Clone/issues)
 [![Stars](https://img.shields.io/github/stars/nitaidaud/Netflix-Clone)](https://github.com/nitaidaud/Netflix-Clone/stargazers)
 [![Forks](https://img.shields.io/github/forks/nitaidaud/Netflix-Clone)](https://github.com/nitaidaud/Netflix-Clone/network/members)
